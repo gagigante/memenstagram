@@ -1,0 +1,12 @@
+{
+  "name": "memestagram-api",
+  "version": "1.0.0",
+  "main": "index.js",
+  "license": "MIT",
+  "scripts": {
+    "dev:server": "ts-node-dev --respawn --transpileOnly --ignore-watch node_modules src/server.ts"
+  },
+  "devDependencies": {
+    "typescript": "^3.9.6"
+  }
+}
