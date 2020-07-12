@@ -17,7 +17,7 @@ interface IRequestDTO {
   oldPassword?: string;
 }
 
-injectable();
+@injectable()
 class UpdateProfileService {
   constructor(
     @inject('UsersRepository')
@@ -52,7 +52,7 @@ class UpdateProfileService {
       nickname,
     );
 
-    if (userWithUpdatedNickname && userWithUpdatedEmail.id !== userId) {
+    if (userWithUpdatedNickname && userWithUpdatedNickname.id !== userId) {
       throw new AppError('Nickname already in use');
     }
 

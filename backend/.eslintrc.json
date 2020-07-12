@@ -25,6 +25,7 @@
     "eslint-plugin-import-helpers"
   ],
   "rules": {
+    "@typescript-eslint/ban-types": "off",
     "prettier/prettier": "error",
     "class-methods-use-this": "off",
     "no-useless-constructor": "off",
@@ -32,7 +33,7 @@
     "@typescript-eslint/no-unused-vars": [ "error", {
       "argsIgnorePattern": "_"
     }],
-    // "@typescript-eslint/interface-name-prefix": ["error", { "prefixWithI": "always" }],
+    "@typescript-eslint/interface-name-prefix": ["off", { "prefixWithI": "always" }],
     "import/extensions": [
       "error",
       "ignorePackages",

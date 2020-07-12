@@ -1,5 +1,5 @@
 /* eslint-disable camelcase */
-import { Exclude } from 'class-transformer';
+import { Exclude, Expose } from 'class-transformer';
 import {
   Entity,
   Column,
@@ -8,7 +8,7 @@ import {
   UpdateDateColumn,
 } from 'typeorm';
 
-// import uploadConfig from '@config/upload';
+import uploadConfig from '@config/upload';
 
 @Entity('users')
 class User {
@@ -40,21 +40,21 @@ class User {
   @UpdateDateColumn()
   updated_at: Date;
 
-  // @Expose({ name: 'avatar_url' })
-  // getAvatarUrl(): string | null {
-  //   if (!this.avatar) {
-  //     return null;
-  //   }
+  @Expose({ name: 'avatar_url' })
+  getAvatarUrl(): string | null {
+    if (!this.avatar_url) {
+      return null;
+    }
 
-  //   switch (uploadConfig.driver) {
-  //     case 'disk':
-  //       return `${process.env.APP_API_URL}/files/${this.avatar}`;
-  //     case 's3':
-  //       return `https://${uploadConfig.config.aws.bucket}.s3.amazonaws.com/${this.avatar}`;
-  //     default:
-  //       return null;
-  //   }
-  // }
+    switch (uploadConfig.driver) {
+      case 'disk':
+        return `${process.env.APP_API_URL}/files/${this.avatar_url}`;
+      case 's3':
+        return `https://${uploadConfig.config.aws.bucket}.s3.amazonaws.com/${this.avatar_url}`;
+      default:
+        return null;
+    }
+  }
 }
 
 export default User;

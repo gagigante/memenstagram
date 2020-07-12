@@ -9,8 +9,8 @@
     "strictPropertyInitialization": false,
     "removeComments": true,
     "typeRoots": [
-      "./node_modules/@types",
-      "./src/@types"
+      "./src/@types",
+      "./node_modules/@types"
     ],
     "esModuleInterop": true,
     "resolveJsonModule": true,
@@ -23,7 +23,7 @@
       "@modules/*": ["modules/*"],
       "@config/*": ["config/*"],
       "@shared/*": ["shared/*"]
-    },
+    }
   },
   "include": [
     "src/**/*"
