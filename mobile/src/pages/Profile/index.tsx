@@ -1,4 +1,6 @@
 import React, {useState, useCallback} from 'react';
+import {useNavigation} from '@react-navigation/native';
+
 import {View, RefreshControl, ScrollView} from 'react-native';
 
 import {
@@ -21,6 +23,8 @@ import {
 } from './styles';
 
 const Profile: React.FC = () => {
+  const navigation = useNavigation();
+
   const [refreshing, setRefreshing] = useState(false);
 
   const wait = (timeout) => {
@@ -35,10 +39,14 @@ const Profile: React.FC = () => {
     wait(2000).then(() => setRefreshing(false));
   }, []);
 
+  const handleNavigateToEditProfile = useCallback(() => {
+    navigation.navigate('EditProfile');
+  }, [navigation]);
+
   return (
     <Container>
       <ScrollView
-        // contentContainerStyle={styles.scrollView}
+        showsVerticalScrollIndicator={false}
         refreshControl={
           <RefreshControl refreshing={refreshing} onRefresh={handleRefresh} />
         }>
@@ -75,12 +83,14 @@ const Profile: React.FC = () => {
           <BioText>Análise e desenvolvimento de sistemas - IFSP</BioText>
         </ProfileBio>
 
-        <EditProfileButton>
+        <EditProfileButton onPress={handleNavigateToEditProfile}>
           <EditProfileButtonText>Edit Profile</EditProfileButtonText>
         </EditProfileButton>
 
         <Grid>
-          <PostButton>
+          <PostButton
+            onPress={() => navigation.navigate('PostStack', {screen: 'Post'})}
+            activeOpacity={0.8}>
             <Post
               source={{
                 uri:
@@ -89,7 +99,7 @@ const Profile: React.FC = () => {
               resizeMode="contain"
             />
           </PostButton>
-          <PostButton>
+          <PostButton activeOpacity={0.8}>
             <Post
               source={{
                 uri:
@@ -98,7 +108,7 @@ const Profile: React.FC = () => {
               resizeMode="contain"
             />
           </PostButton>
-          <PostButton>
+          <PostButton activeOpacity={0.8}>
             <Post
               source={{
                 uri:
@@ -107,7 +117,7 @@ const Profile: React.FC = () => {
               resizeMode="contain"
             />
           </PostButton>
-          <PostButton>
+          <PostButton activeOpacity={0.8}>
             <Post
               source={{
                 uri:
@@ -116,7 +126,7 @@ const Profile: React.FC = () => {
               resizeMode="contain"
             />
           </PostButton>
-          <PostButton>
+          <PostButton activeOpacity={0.8}>
             <Post
               source={{
                 uri:
@@ -125,7 +135,7 @@ const Profile: React.FC = () => {
               resizeMode="contain"
             />
           </PostButton>
-          <PostButton>
+          <PostButton activeOpacity={0.8}>
             <Post
               source={{
                 uri:
@@ -134,7 +144,7 @@ const Profile: React.FC = () => {
               resizeMode="contain"
             />
           </PostButton>
-          <PostButton>
+          <PostButton activeOpacity={0.8}>
             <Post
               source={{
                 uri:
@@ -143,7 +153,7 @@ const Profile: React.FC = () => {
               resizeMode="contain"
             />
           </PostButton>
-          <PostButton>
+          <PostButton activeOpacity={0.8}>
             <Post
               source={{
                 uri:
@@ -152,7 +162,7 @@ const Profile: React.FC = () => {
               resizeMode="contain"
             />
           </PostButton>
-          <PostButton>
+          <PostButton activeOpacity={0.8}>
             <Post
               source={{
                 uri:
@@ -161,7 +171,7 @@ const Profile: React.FC = () => {
               resizeMode="contain"
             />
           </PostButton>
-          <PostButton>
+          <PostButton activeOpacity={0.8}>
             <Post
               source={{
                 uri:
@@ -170,7 +180,7 @@ const Profile: React.FC = () => {
               resizeMode="contain"
             />
           </PostButton>
-          <PostButton>
+          <PostButton activeOpacity={0.8}>
             <Post
               source={{
                 uri:
@@ -179,7 +189,7 @@ const Profile: React.FC = () => {
               resizeMode="contain"
             />
           </PostButton>
-          <PostButton>
+          <PostButton activeOpacity={0.8}>
             <Post
               source={{
                 uri:
@@ -188,7 +198,7 @@ const Profile: React.FC = () => {
               resizeMode="contain"
             />
           </PostButton>
-          <PostButton>
+          <PostButton activeOpacity={0.8}>
             <Post
               source={{
                 uri:
@@ -197,7 +207,7 @@ const Profile: React.FC = () => {
               resizeMode="contain"
             />
           </PostButton>
-          <PostButton>
+          <PostButton activeOpacity={0.8}>
             <Post
               source={{
                 uri:
@@ -206,7 +216,7 @@ const Profile: React.FC = () => {
               resizeMode="contain"
             />
           </PostButton>
-          <PostButton>
+          <PostButton activeOpacity={0.8}>
             <Post
               source={{
                 uri:
@@ -215,7 +225,7 @@ const Profile: React.FC = () => {
               resizeMode="contain"
             />
           </PostButton>
-          <PostButton>
+          <PostButton activeOpacity={0.8}>
             <Post
               source={{
                 uri:
@@ -224,7 +234,7 @@ const Profile: React.FC = () => {
               resizeMode="contain"
             />
           </PostButton>
-          <PostButton>
+          <PostButton activeOpacity={0.8}>
             <Post
               source={{
                 uri:
@@ -233,7 +243,7 @@ const Profile: React.FC = () => {
               resizeMode="contain"
             />
           </PostButton>
-          <PostButton>
+          <PostButton activeOpacity={0.8}>
             <Post
               source={{
                 uri:
@@ -242,7 +252,7 @@ const Profile: React.FC = () => {
               resizeMode="contain"
             />
           </PostButton>
-          <PostButton>
+          <PostButton activeOpacity={0.8}>
             <Post
               source={{
                 uri:
@@ -251,7 +261,7 @@ const Profile: React.FC = () => {
               resizeMode="contain"
             />
           </PostButton>
-          <PostButton>
+          <PostButton activeOpacity={0.8}>
             <Post
               source={{
                 uri:
@@ -260,7 +270,7 @@ const Profile: React.FC = () => {
               resizeMode="contain"
             />
           </PostButton>
-          <PostButton>
+          <PostButton activeOpacity={0.8}>
             <Post
               source={{
                 uri:
@@ -269,7 +279,7 @@ const Profile: React.FC = () => {
               resizeMode="contain"
             />
           </PostButton>
-          <PostButton>
+          <PostButton activeOpacity={0.8}>
             <Post
               source={{
                 uri:
@@ -278,7 +288,7 @@ const Profile: React.FC = () => {
               resizeMode="contain"
             />
           </PostButton>
-          <PostButton>
+          <PostButton activeOpacity={0.8}>
             <Post
               source={{
                 uri:
@@ -287,7 +297,7 @@ const Profile: React.FC = () => {
               resizeMode="contain"
             />
           </PostButton>
-          <PostButton>
+          <PostButton activeOpacity={0.8}>
             <Post
               source={{
                 uri:
@@ -296,7 +306,7 @@ const Profile: React.FC = () => {
               resizeMode="contain"
             />
           </PostButton>
-          <PostButton>
+          <PostButton activeOpacity={0.8}>
             <Post
               source={{
                 uri:
@@ -305,7 +315,7 @@ const Profile: React.FC = () => {
               resizeMode="contain"
             />
           </PostButton>
-          <PostButton>
+          <PostButton activeOpacity={0.8}>
             <Post
               source={{
                 uri:
@@ -314,7 +324,7 @@ const Profile: React.FC = () => {
               resizeMode="contain"
             />
           </PostButton>
-          <PostButton>
+          <PostButton activeOpacity={0.8}>
             <Post
               source={{
                 uri:
@@ -323,7 +333,7 @@ const Profile: React.FC = () => {
               resizeMode="contain"
             />
           </PostButton>
-          <PostButton>
+          <PostButton activeOpacity={0.8}>
             <Post
               source={{
                 uri:
@@ -332,7 +342,7 @@ const Profile: React.FC = () => {
               resizeMode="contain"
             />
           </PostButton>
-          <PostButton>
+          <PostButton activeOpacity={0.8}>
             <Post
               source={{
                 uri:
@@ -341,7 +351,7 @@ const Profile: React.FC = () => {
               resizeMode="contain"
             />
           </PostButton>
-          <PostButton>
+          <PostButton activeOpacity={0.8}>
             <Post
               source={{
                 uri:
@@ -350,7 +360,7 @@ const Profile: React.FC = () => {
               resizeMode="contain"
             />
           </PostButton>
-          <PostButton>
+          <PostButton activeOpacity={0.8}>
             <Post
               source={{
                 uri:
@@ -359,7 +369,7 @@ const Profile: React.FC = () => {
               resizeMode="contain"
             />
           </PostButton>
-          <PostButton>
+          <PostButton activeOpacity={0.8}>
             <Post
               source={{
                 uri:
@@ -368,7 +378,7 @@ const Profile: React.FC = () => {
               resizeMode="contain"
             />
           </PostButton>
-          <PostButton>
+          <PostButton activeOpacity={0.8}>
             <Post
               source={{
                 uri:
@@ -377,7 +387,7 @@ const Profile: React.FC = () => {
               resizeMode="contain"
             />
           </PostButton>
-          <PostButton>
+          <PostButton activeOpacity={0.8}>
             <Post
               source={{
                 uri:
@@ -386,7 +396,7 @@ const Profile: React.FC = () => {
               resizeMode="contain"
             />
           </PostButton>
-          <PostButton>
+          <PostButton activeOpacity={0.8}>
             <Post
               source={{
                 uri:
@@ -395,7 +405,7 @@ const Profile: React.FC = () => {
               resizeMode="contain"
             />
           </PostButton>
-          <PostButton>
+          <PostButton activeOpacity={0.8}>
             <Post
               source={{
                 uri:
@@ -404,7 +414,7 @@ const Profile: React.FC = () => {
               resizeMode="contain"
             />
           </PostButton>
-          <PostButton>
+          <PostButton activeOpacity={0.8}>
             <Post
               source={{
                 uri:
@@ -413,7 +423,7 @@ const Profile: React.FC = () => {
               resizeMode="contain"
             />
           </PostButton>
-          <PostButton>
+          <PostButton activeOpacity={0.8}>
             <Post
               source={{
                 uri:
@@ -422,7 +432,7 @@ const Profile: React.FC = () => {
               resizeMode="contain"
             />
           </PostButton>
-          <PostButton>
+          <PostButton activeOpacity={0.8}>
             <Post
               source={{
                 uri:
@@ -431,7 +441,7 @@ const Profile: React.FC = () => {
               resizeMode="contain"
             />
           </PostButton>
-          <PostButton>
+          <PostButton activeOpacity={0.8}>
             <Post
               source={{
                 uri:

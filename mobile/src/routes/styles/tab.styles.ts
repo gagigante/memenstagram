@@ -10,13 +10,13 @@ export const IconWrapper = styled.View<IconWrapperProps>`
   ${(props) =>
     props.focused &&
     css`
-      border: 1.4px solid #000;
+      border: 1px solid #000;
     `}
 `;
 
 export const Avatar = styled.Image`
-  margin: 4px;
-  width: 24px;
-  height: 24px;
-  border-radius: 12px;
+  margin: 2px;
+  width: 20px;
+  height: 20px;
+  border-radius: 10px;
 `;

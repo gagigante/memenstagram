@@ -11,9 +11,12 @@ import Search from '../pages/Search';
 import Activity from '../pages/Activity';
 import Profile from '../pages/Profile';
 
+import ActivityStackRoutes from './activity.routes';
+import ProfileStackRoutes from './profile.routes';
+
 const Tab = createBottomTabNavigator();
 
-const TabRoutes: React.FC = () => (
+const MainTabRoutes: React.FC = () => (
   <Tab.Navigator
     tabBarOptions={{
       activeTintColor: '#000',
@@ -46,16 +49,16 @@ const TabRoutes: React.FC = () => (
     />
 
     <Tab.Screen
-      name="Activity"
+      name="ActivityStackRoutes"
       options={{
         tabBarIcon: ({color}) => <Icon size={25} name="heart" color={color} />,
-        title: 'Favoritos',
+        title: 'Activity',
       }}
-      component={Activity}
+      component={ActivityStackRoutes}
     />
 
     <Tab.Screen
-      name="Profile"
+      name="ProfileStack"
       options={{
         tabBarIcon: ({focused}) => (
           <IconWrapper focused={focused}>
@@ -68,9 +71,9 @@ const TabRoutes: React.FC = () => (
           </IconWrapper>
         ),
       }}
-      component={Profile}
+      component={ProfileStackRoutes}
     />
   </Tab.Navigator>
 );
 
-export default TabRoutes;
+export default MainTabRoutes;
