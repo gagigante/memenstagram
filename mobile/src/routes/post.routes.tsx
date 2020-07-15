@@ -3,6 +3,7 @@ import {createStackNavigator} from '@react-navigation/stack';
 
 // import Icon from 'react-native-vector-icons/Feather';
 
+import Profile from '../pages/Profile';
 import Post from '../pages/Post';
 import Likes from '../pages/Likes';
 import Comments from '../pages/Comments';
@@ -35,6 +36,14 @@ const PostStackRoutes: React.FC = () => (
       //   headerShown: false,
       //   gestureEnabled: false,
       // }}
+    />
+    <PostStack.Screen
+      name="Profile"
+      component={Profile}
+      options={{
+        headerShown: false,
+        gestureEnabled: false,
+      }}
     />
   </PostStack.Navigator>
 );

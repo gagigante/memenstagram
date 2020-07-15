@@ -3,13 +3,14 @@ import styled from 'styled-components/native';
 
 const imageWidth = Dimensions.get('window').width;
 
-export const Container = styled.View``;
+export const Container = styled.View`
+  background-color: #fff;
+`;
 
-export const UserStrip = styled.View`
+export const UserStrip = styled.TouchableOpacity`
   flex-direction: row;
   justify-content: flex-start;
   align-items: center;
-  background-color: #fff;
   padding: 10px 15px;
 `;
 

@@ -1,5 +1,5 @@
-import React, {useState} from 'react';
-import {useNavigation} from '@react-navigation/native';
+import React, {useCallback} from 'react';
+import {useNavigation, StackActions} from '@react-navigation/native';
 import ViewMoreText from 'react-native-view-more-text';
 
 import Icon from 'react-native-vector-icons/Feather';
@@ -18,10 +18,18 @@ import {
 const Post: React.FC = () => {
   const navigation = useNavigation();
 
+  const handleNavigateToProfile = useCallback(() => {
+    // navigation.navigate('Profile');
+
+    const pushAction = StackActions.push('Profile');
+
+    navigation.dispatch(pushAction);
+  }, [navigation]);
+
   return (
     <Container>
       <ScrollView showsVerticalScrollIndicator={false}>
-        <UserStrip>
+        <UserStrip onPress={handleNavigateToProfile}>
           <Avatar
             source={{
               uri:
