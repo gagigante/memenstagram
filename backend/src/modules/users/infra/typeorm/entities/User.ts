@@ -1,4 +1,3 @@
-/* eslint-disable camelcase */
 import { Exclude, Expose } from 'class-transformer';
 import {
   Entity,
@@ -22,10 +21,21 @@ class User {
   email: string;
 
   @Column()
+  phone_number: string;
+
+  @Column()
   nickname: string;
 
   @Column()
   bio: string;
+
+  @Column()
+  @Exclude()
+  confirmation_code: string;
+
+  @Column()
+  @Exclude()
+  confirmation_status: string;
 
   @Column()
   @Exclude()

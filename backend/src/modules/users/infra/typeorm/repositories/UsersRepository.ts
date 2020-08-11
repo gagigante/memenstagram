@@ -26,6 +26,16 @@ class UsersRepository implements IUsersRepository {
     return user;
   }
 
+  public async findByPhoneNumber(
+    phoneNumber: string,
+  ): Promise<User | undefined> {
+    const user = await this.ormRepository.findOne({
+      where: { phone_number: phoneNumber },
+    });
+
+    return user;
+  }
+
   public async findByNickname(nickname: string): Promise<User | undefined> {
     const user = await this.ormRepository.findOne({
       where: { nickname },
@@ -34,10 +44,10 @@ class UsersRepository implements IUsersRepository {
     return user;
   }
 
-  public async create(data: ICreateUserDTO): Promise<User> {
+  public create(data: ICreateUserDTO): User {
     const user = this.ormRepository.create(data);
 
-    return this.ormRepository.save(user);
+    return user;
   }
 
   public async save(data: User): Promise<User> {

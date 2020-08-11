@@ -3,7 +3,7 @@ import multer from 'multer';
 import uploadConfig from '@config/upload';
 import { celebrate, Segments, Joi } from 'celebrate';
 
-import ensureAuthenticated from '../middlewares/ensureAutheticated';
+import ensureAuthenticated from '../middlewares/ensureAuthenticated';
 
 import UserAvatarController from '../controllers/UserAvatarController';
 import UsersController from '../controllers/UsersController';
@@ -22,6 +22,7 @@ usersRouter.post(
       name: Joi.string().required(),
       nickname: Joi.string().required(),
       email: Joi.string().email().required(),
+      phone_number: Joi.string().required(),
       password: Joi.string().min(8).required(),
     },
   }),

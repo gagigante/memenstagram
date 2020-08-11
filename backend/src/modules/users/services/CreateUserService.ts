@@ -1,4 +1,5 @@
 import { injectable, inject } from 'tsyringe';
+import crypto from 'crypto';
 
 import AppError from '@shared/errors/AppError';
 
@@ -11,6 +12,7 @@ interface IRequestDTO {
   name: string;
   nickname: string;
   email: string;
+  phoneNumber: string;
   password: string;
 }
 
@@ -27,6 +29,7 @@ class CreateUserService {
   public async execute({
     name,
     email,
+    phoneNumber,
     nickname,
     password,
   }: IRequestDTO): Promise<User> {
@@ -34,6 +37,12 @@ class CreateUserService {
 
     if (checkUserExists) {
       throw new AppError('E-mail already in use.');
+    }
+
+    checkUserExists = await this.usersRepository.findByPhoneNumber(phoneNumber);
+
+    if (checkUserExists) {
+      throw new AppError('Phone number already in use.');
     }
 
     checkUserExists = await this.usersRepository.findByNickname(nickname);
@@ -44,11 +53,13 @@ class CreateUserService {
 
     const hashedPassword = await this.hashProvider.generateHash(password);
 
-    const user = await this.usersRepository.create({
+    const user = this.usersRepository.create({
       name,
       nickname,
       email,
+      phone_number: phoneNumber,
       password: hashedPassword,
+      confirmation_code: crypto.randomBytes(3).toString('hex'),
     });
 
     await this.usersRepository.save(user);
