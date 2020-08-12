@@ -5,10 +5,12 @@ import { celebrate, Segments, Joi } from 'celebrate';
 
 import ensureAuthenticated from '../middlewares/ensureAuthenticated';
 
+import UserPhoneNumberController from '../controllers/UserPhoneNumberController';
 import UserAvatarController from '../controllers/UserAvatarController';
 import UsersController from '../controllers/UsersController';
 
 const usersController = new UsersController();
+const userPhoneNumberController = new UserPhoneNumberController();
 const userAvatarController = new UserAvatarController();
 
 const usersRouter = Router();
@@ -34,6 +36,17 @@ usersRouter.patch(
   ensureAuthenticated,
   upload.single('avatar'),
   userAvatarController.update,
+);
+
+usersRouter.patch(
+  '/phone',
+  celebrate({
+    [Segments.BODY]: {
+      phone_number: Joi.string().required(),
+    },
+  }),
+  ensureAuthenticated,
+  userPhoneNumberController.update,
 );
 
 export default usersRouter;
