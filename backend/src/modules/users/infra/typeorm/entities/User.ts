@@ -30,18 +30,6 @@ class User {
   bio: string;
 
   @Column()
-  @Exclude()
-  confirmation_code: string;
-
-  @Column()
-  @Exclude()
-  confirmation_status: boolean;
-
-  @Column()
-  @Exclude()
-  password: string;
-
-  @Column()
   avatar_url: string;
 
   @Column()
@@ -58,6 +46,18 @@ class User {
 
   @UpdateDateColumn()
   updated_at: Date;
+
+  @Column()
+  @Exclude()
+  confirmation_code: string;
+
+  @Column()
+  @Exclude()
+  confirmation_status: boolean;
+
+  @Column()
+  @Exclude()
+  password: string;
 
   @Expose({ name: 'avatar_url' })
   getAvatarUrl(): string | null {
