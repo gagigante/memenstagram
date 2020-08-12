@@ -7,6 +7,7 @@ import IUsersRepository from '../repositories/IUsersRepository';
 import User from '../infra/typeorm/entities/User';
 
 interface IRequestDTO {
+  loggedUserId: string;
   nickname: string;
 }
 
@@ -17,15 +18,17 @@ class ShowProfileService {
     private usersRepository: IUsersRepository,
   ) {}
 
-  public async execute({ nickname }: IRequestDTO): Promise<User> {
-    const user = await this.usersRepository.findByNickname(nickname);
+  public async execute({ nickname, loggedUserId }: IRequestDTO): Promise<User> {
+    const loggedUser = await this.usersRepository.findById(loggedUserId);
 
-    if (!user) {
-      throw new AppError('User not found');
+    if (!loggedUser.confirmation_status) {
+      throw new AppError('You need to verify your account.');
     }
 
-    if (!user.confirmation_status) {
-      throw new AppError('You need to verify your account.');
+    const user = await this.usersRepository.findByNickname(nickname);
+
+    if (!user || !user.confirmation_status) {
+      throw new AppError('User was not found.');
     }
 
     return classToClass(user);

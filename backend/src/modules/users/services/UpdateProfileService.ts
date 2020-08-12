@@ -1,4 +1,5 @@
 import { injectable, inject } from 'tsyringe';
+import { classToClass } from 'class-transformer';
 
 import AppError from '@shared/errors/AppError';
 
@@ -39,7 +40,7 @@ class UpdateProfileService {
     const user = await this.usersRepository.findById(userId);
 
     if (!user) {
-      throw new AppError('User not found');
+      throw new AppError('User was not found.');
     }
 
     if (!user.confirmation_status) {
@@ -84,7 +85,7 @@ class UpdateProfileService {
 
     await this.usersRepository.save(user);
 
-    return user;
+    return classToClass(user);
   }
 }
 

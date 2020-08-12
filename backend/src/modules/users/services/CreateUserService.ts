@@ -1,5 +1,6 @@
 import { injectable, inject } from 'tsyringe';
 import crypto from 'crypto';
+import { classToClass } from 'class-transformer';
 
 import AppError from '@shared/errors/AppError';
 
@@ -64,7 +65,7 @@ class CreateUserService {
 
     await this.usersRepository.save(user);
 
-    return user;
+    return classToClass(user);
   }
 }
 

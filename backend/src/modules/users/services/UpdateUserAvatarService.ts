@@ -1,4 +1,5 @@
 import { injectable, inject } from 'tsyringe';
+import { classToClass } from 'class-transformer';
 
 import AppError from '@shared/errors/AppError';
 import IStorageProvider from '@shared/containers/providers/StorageProvider/models/IStorageProvider';
@@ -25,7 +26,7 @@ class UpdateUserAvatarService {
     const user = await this.usersRepository.findById(userId);
 
     if (!user) {
-      throw new AppError('Only authenticated users can change avatar.', 401);
+      throw new AppError('User was not found.');
     }
 
     if (!user.confirmation_status) {
@@ -42,9 +43,7 @@ class UpdateUserAvatarService {
 
     await this.usersRepository.save(user);
 
-    delete user.password;
-
-    return user;
+    return classToClass(user);
   }
 }
 
