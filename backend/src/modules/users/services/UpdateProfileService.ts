@@ -42,6 +42,10 @@ class UpdateProfileService {
       throw new AppError('User not found');
     }
 
+    if (!user.confirmation_status) {
+      throw new AppError('You need to verify your account.');
+    }
+
     const userWithUpdatedEmail = await this.usersRepository.findByEmail(email);
 
     if (userWithUpdatedEmail && userWithUpdatedEmail.id !== userId) {

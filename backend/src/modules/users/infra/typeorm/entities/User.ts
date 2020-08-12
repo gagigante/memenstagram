@@ -35,7 +35,7 @@ class User {
 
   @Column()
   @Exclude()
-  confirmation_status: string;
+  confirmation_status: boolean;
 
   @Column()
   @Exclude()
@@ -43,6 +43,15 @@ class User {
 
   @Column()
   avatar_url: string;
+
+  @Column()
+  posts_qtt: number;
+
+  @Column()
+  followers_qtt: number;
+
+  @Column()
+  follows_qtt: number;
 
   @CreateDateColumn()
   created_at: Date;

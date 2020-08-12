@@ -28,6 +28,10 @@ class UpdateUserAvatarService {
       throw new AppError('Only authenticated users can change avatar.', 401);
     }
 
+    if (!user.confirmation_status) {
+      throw new AppError('You need to verify your account.');
+    }
+
     if (user.avatar_url) {
       await this.storageProvider.deleteFile(user.avatar_url);
     }

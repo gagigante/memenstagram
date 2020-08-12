@@ -11,7 +11,7 @@ const profileRouter = Router();
 
 profileRouter.use(ensureAuthenticated);
 
-profileRouter.get('/', profileController.show);
+profileRouter.get('/:nickname', profileController.show);
 profileRouter.put(
   '/',
   celebrate({
