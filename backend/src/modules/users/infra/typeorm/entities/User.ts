@@ -52,7 +52,6 @@ class User {
   confirmation_code: string;
 
   @Column()
-  @Exclude()
   confirmation_status: boolean;
 
   @Column()

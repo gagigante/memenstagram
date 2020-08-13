@@ -33,13 +33,19 @@ class UpdateUserPhoneNumberService {
       phoneNumber,
     );
 
-    // this.value.match(/^(?=.{0,10}$)\d{0,9}(\.\d{1,2})?$/);
+    const isPhoneNumberValid = phoneNumber.match(
+      /([+]?\d{1,2}[.-\s]?)?(\d{3}[.-]?){2}\d{4}/g,
+    );
+
+    if (!isPhoneNumberValid) {
+      throw new AppError('Invalid phone number.');
+    }
 
     if (
       userWithUpdatedPhoneNumber &&
       userWithUpdatedPhoneNumber.id !== userId
     ) {
-      throw new AppError('Phone number already in use');
+      throw new AppError('Phone number already in use.');
     }
 
     user.confirmation_status = false;
