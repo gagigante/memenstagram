@@ -13,9 +13,10 @@ export const ImageView = styled.View`
 `;
 
 export const Title = styled.Text`
+  font-family: 'Billabong';
   text-align: center;
-  font-size: 32px;
-  margin-bottom: 32px;
+  font-size: 56px;
+  /* margin-bottom: 0px; */
 `;
 
 export const InputView = styled.View`

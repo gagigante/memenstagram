@@ -47,12 +47,12 @@ const SignIn: React.FC = () => {
       </InputView>
 
       <InputView>
-        <Input secureTextEntry={passwordVisibility} placeholder="Password" />
+        <Input secureTextEntry={!passwordVisibility} placeholder="Password" />
 
         <EyeButton onPress={togglePasswordVisibility}>
           <Icon
             size={25}
-            name={passwordVisibility ? 'eye' : 'eye-off'}
+            name={!passwordVisibility ? 'eye' : 'eye-off'}
             color="#C1BCCC"
           />
         </EyeButton>
