@@ -1,16 +1,13 @@
 import React, {useState, useCallback} from 'react';
-import {Image} from 'react-native';
-import Icon from 'react-native-vector-icons/Feather';
+import {KeyboardAvoidingView, ScrollView, Platform} from 'react-native';
+import {useNavigation} from '@react-navigation/native';
 
-import {TouchableOpacity, Text} from 'react-native';
+import SignInput from '../../components/SignInput';
 
 import {
+  containerStyle,
   Container,
-  ImageView,
   Title,
-  InputView,
-  Input,
-  EyeButton,
   Button,
   ButtonText,
   Divider,
@@ -22,62 +19,61 @@ import {
   SignUpButtonText,
 } from './styles';
 
-import logoImg from '../../assets/logo.png';
-
 const SignIn: React.FC = () => {
+  const navigation = useNavigation();
+
   const [passwordVisibility, setPasswordVisibility] = useState(false);
 
   const togglePasswordVisibility = useCallback(() => {
     setPasswordVisibility(!passwordVisibility);
   }, [passwordVisibility]);
 
+  const navigateToSignUp = useCallback(() => {
+    navigation.navigate('SignUp');
+  }, [navigation]);
+
   return (
-    <Container>
-      {/* <ImageView>
-        <Image
-          resizeMode="contain"
-          source={logoImg}
-          style={{paddingHorizontal: 20, width: 280}}
-        />
-      </ImageView> */}
-      <Title>Memenstagram</Title>
+    <KeyboardAvoidingView
+      style={containerStyle}
+      behavior={Platform.OS === 'ios' ? 'padding' : undefined}
+      enabled>
+      <ScrollView
+        contentContainerStyle={containerStyle}
+        keyboardShouldPersistTaps="handled">
+        <Container>
+          <Title>Memenstagram</Title>
 
-      <InputView>
-        <Input placeholder="E-mail" />
-      </InputView>
+          <SignInput placeholder="E-mail" />
 
-      <InputView>
-        <Input secureTextEntry={!passwordVisibility} placeholder="Password" />
-
-        <EyeButton onPress={togglePasswordVisibility}>
-          <Icon
-            size={25}
-            name={!passwordVisibility ? 'eye' : 'eye-off'}
-            color="#C1BCCC"
+          <SignInput
+            placeholder="Password"
+            isPasswordInput
+            passwordVisibility={passwordVisibility}
+            togglePasswordVisibility={togglePasswordVisibility}
           />
-        </EyeButton>
-      </InputView>
 
-      <Button onPress={() => {}}>
-        <ButtonText>Log In</ButtonText>
-      </Button>
+          <Button onPress={() => {}}>
+            <ButtonText>Log In</ButtonText>
+          </Button>
 
-      <Divider />
+          <Divider />
 
-      <ForgotPasswordButton>
-        <ForgotPasswordButtonText>
-          Forgot your password?
-        </ForgotPasswordButtonText>
-      </ForgotPasswordButton>
+          <ForgotPasswordButton onPress={() => {}}>
+            <ForgotPasswordButtonText>
+              Forgot your password?
+            </ForgotPasswordButtonText>
+          </ForgotPasswordButton>
 
-      <Footer>
-        <SignUpText>Don't have an account? </SignUpText>
+          <Footer>
+            <SignUpText>Don't have an account? </SignUpText>
 
-        <SignUpButton>
-          <SignUpButtonText>Sign up.</SignUpButtonText>
-        </SignUpButton>
-      </Footer>
-    </Container>
+            <SignUpButton onPress={navigateToSignUp}>
+              <SignUpButtonText>Sign up.</SignUpButtonText>
+            </SignUpButton>
+          </Footer>
+        </Container>
+      </ScrollView>
+    </KeyboardAvoidingView>
   );
 };
 

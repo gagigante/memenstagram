@@ -1,14 +1,11 @@
 import styled from 'styled-components/native';
 import {RectButton} from 'react-native-gesture-handler';
 
+export const containerStyle = {flex: 1};
+
 export const Container = styled.View`
   position: relative;
   flex: 1;
-  justify-content: center;
-`;
-
-export const ImageView = styled.View`
-  align-items: center;
   justify-content: center;
 `;
 
@@ -16,29 +13,6 @@ export const Title = styled.Text`
   font-family: 'Billabong';
   text-align: center;
   font-size: 56px;
-  /* margin-bottom: 0px; */
-`;
-
-export const InputView = styled.View`
-  height: 54px;
-  flex-direction: row;
-  justify-content: space-between;
-  align-items: center;
-  margin: 8px 8%;
-  padding: 0px 8px;
-  background: #f7f7f7;
-  border: 1px solid #e6e6f0;
-  border-radius: 4px;
-`;
-
-export const Input = styled.TextInput`
-  flex: 1;
-`;
-
-export const EyeButton = styled.TouchableOpacity`
-  margin: auto 8px;
-  justify-content: center;
-  align-items: center;
 `;
 
 export const Button = styled(RectButton)`
