@@ -22,15 +22,15 @@ import {
 import AvatarPlaceholder from '../../assets/avatar-placeholder.png';
 
 const SignUp: React.FC = () => {
-  const navigation = useNavigation();
+  const {goBack, reset} = useNavigation();
 
   const [userAvatar, setUserAvatar] = useState<{uri: string} | ReactNode>(
     AvatarPlaceholder,
   );
 
   const handleGoBack = useCallback(() => {
-    navigation.goBack();
-  }, [navigation]);
+    goBack();
+  }, [goBack]);
 
   const handleUpdateAvatar = useCallback(() => {
     ImagePicker.showImagePicker(
@@ -68,8 +68,21 @@ const SignUp: React.FC = () => {
   }, []);
 
   const handleSubmit = useCallback(() => {
-    navigation.navigate('Success');
-  }, [navigation]);
+    reset({
+      index: 0,
+      routes: [
+        {
+          name: 'Success',
+          params: {
+            title: 'Nice job, your brand new account has been created!',
+            description: 'Now you can sign in and LOL',
+            returnTo: 'SignIn',
+            buttonText: 'Go to sign in',
+          },
+        },
+      ],
+    });
+  }, [reset]);
 
   return (
     <KeyboardAvoidingView
