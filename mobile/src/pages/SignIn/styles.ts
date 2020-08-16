@@ -1,7 +1,12 @@
 import styled from 'styled-components/native';
+import {StyleSheet} from 'react-native';
 import {RectButton} from 'react-native-gesture-handler';
 
-export const containerStyle = {flex: 1};
+export const stylesheet = StyleSheet.create({
+  containerStyle: {
+    flex: 1,
+  },
+});
 
 export const Container = styled.View`
   position: relative;
@@ -16,6 +21,7 @@ export const Title = styled.Text`
 `;
 
 export const Button = styled(RectButton)`
+  position: relative;
   height: 54px;
   justify-content: center;
   align-items: center;

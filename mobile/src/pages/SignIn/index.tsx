@@ -1,11 +1,26 @@
-import React, {useState, useCallback} from 'react';
-import {KeyboardAvoidingView, ScrollView, Platform} from 'react-native';
+import React, {useCallback, useRef} from 'react';
+
 import {useNavigation} from '@react-navigation/native';
+
+import {Form} from '@unform/mobile';
+import {FormHandles} from '@unform/core';
+
+import * as Yup from 'yup';
+
+import {
+  Alert,
+  KeyboardAvoidingView,
+  ScrollView,
+  Platform,
+  TextInput,
+} from 'react-native';
+
+import getValidationErrors from '../../utils/getValidationErrors';
 
 import SignInput from '../../components/SignInput';
 
 import {
-  containerStyle,
+  stylesheet,
   Container,
   Title,
   Button,
@@ -19,46 +34,101 @@ import {
   SignUpButtonText,
 } from './styles';
 
+interface SignInFormData {
+  email: string;
+  password: string;
+}
+
 const SignIn: React.FC = () => {
-  const navigation = useNavigation();
+  const formRef = useRef<FormHandles>(null);
+  const passwordInputRef = useRef<TextInput>(null);
 
-  const [passwordVisibility, setPasswordVisibility] = useState(false);
-
-  const togglePasswordVisibility = useCallback(() => {
-    setPasswordVisibility(!passwordVisibility);
-  }, [passwordVisibility]);
+  const {navigate} = useNavigation();
 
   const navigateToSignUp = useCallback(() => {
-    navigation.navigate('SignUp');
-  }, [navigation]);
+    navigate('SignUp');
+  }, [navigate]);
 
   const navigateToForgotPassword = useCallback(() => {
-    navigation.navigate('ForgotPassword');
-  }, [navigation]);
+    navigate('ForgotPassword');
+  }, [navigate]);
+
+  const handleSignIn = useCallback(async (data: SignInFormData) => {
+    try {
+      formRef.current?.setErrors({});
+
+      const schema = Yup.object().shape({
+        email: Yup.string().email().required(),
+        password: Yup.string().required(),
+      });
+
+      await schema.validate(data, {
+        abortEarly: false,
+      });
+
+      // await signIn({
+      //   email: data.email,
+      //   password: data.password,
+      // });
+    } catch (err) {
+      if (err instanceof Yup.ValidationError) {
+        const errors = getValidationErrors(err);
+
+        formRef.current?.setErrors(errors);
+
+        return;
+      }
+
+      Alert.alert(
+        'Authentication error',
+        'An error occurred while logging in, check the credentials',
+      );
+    }
+  }, []);
 
   return (
     <KeyboardAvoidingView
-      style={containerStyle}
+      style={stylesheet.containerStyle}
       behavior={Platform.OS === 'ios' ? 'padding' : undefined}
       enabled>
       <ScrollView
-        contentContainerStyle={containerStyle}
+        contentContainerStyle={stylesheet.containerStyle}
         keyboardShouldPersistTaps="handled">
         <Container>
           <Title>Memenstagram</Title>
 
-          <SignInput placeholder="E-mail" />
+          <Form ref={formRef} onSubmit={handleSignIn}>
+            <SignInput
+              name="email"
+              placeholder="E-mail"
+              autoCorrect={false}
+              autoCapitalize="none"
+              keyboardType="email-address"
+              returnKeyType="next"
+              onSubmitEditing={() => {
+                passwordInputRef.current?.focus();
+              }}
+            />
 
-          <SignInput
-            placeholder="Password"
-            isPasswordInput
-            passwordVisibility={passwordVisibility}
-            togglePasswordVisibility={togglePasswordVisibility}
-          />
+            <SignInput
+              ref={passwordInputRef}
+              name="password"
+              passwordInput
+              placeholder="Password"
+              autoCapitalize="none"
+              returnKeyType="send"
+              onSubmitEditing={() => {
+                formRef.current?.submitForm();
+              }}
+            />
 
-          <Button onPress={() => {}}>
-            <ButtonText>Log In</ButtonText>
-          </Button>
+            <Button
+              onPress={() => {
+                formRef.current?.submitForm();
+              }}>
+              <ButtonText>Log In</ButtonText>
+            </Button>
+          </Form>
 
           <Divider />
 

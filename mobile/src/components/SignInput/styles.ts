@@ -1,6 +1,11 @@
-import styled from 'styled-components/native';
+import styled, {css} from 'styled-components/native';
 
-export const Container = styled.View`
+interface ContainerProps {
+  isFocused: boolean;
+  isWrong: boolean;
+}
+
+export const Container = styled.View<ContainerProps>`
   height: 54px;
   flex-direction: row;
   justify-content: space-between;
@@ -10,9 +15,21 @@ export const Container = styled.View`
   background: #f7f7f7;
   border: 1px solid #e6e6f0;
   border-radius: 4px;
+
+  ${(props) =>
+    props.isFocused &&
+    css`
+      border-color: #4287f5;
+    `}
+
+  ${(props) =>
+    props.isWrong &&
+    css`
+      border-color: #c53030;
+    `}
 `;
 
-export const Input = styled.TextInput`
+export const TextInput = styled.TextInput`
   flex: 1;
 `;
 

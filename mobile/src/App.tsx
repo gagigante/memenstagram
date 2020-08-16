@@ -4,7 +4,6 @@ import React from 'react';
 import {StatusBar} from 'react-native';
 import {NavigationContainer} from '@react-navigation/native';
 
-// import SignIn from './pages/SignIn';
 import Routes from './routes';
 
 const src: React.FC = () => {

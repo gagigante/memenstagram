@@ -1,8 +1,18 @@
 import styled from 'styled-components/native';
+import {StyleSheet} from 'react-native';
 import {RectButton} from 'react-native-gesture-handler';
 
-export const KeyboardAvoidingViewStyle = {position: 'relative', flex: 1};
-export const scrollViewStyle = {paddingVertical: 16, position: 'relative'};
+export const stylesheet = StyleSheet.create({
+  KeyboardAvoidingViewStyle: {
+    position: 'relative',
+    flex: 1,
+  },
+
+  scrollViewStyle: {
+    paddingVertical: 16,
+    position: 'relative',
+  },
+});
 
 export const Container = styled.View`
   flex: 1;

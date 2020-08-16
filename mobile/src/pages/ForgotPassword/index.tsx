@@ -23,23 +23,25 @@ const ForgotPassword: React.FC = () => {
     setCountry(country);
   };
 
-  // useEffect(() => {
-  //   reset({
-  //     index: 0,
-  //     routes: [
-  //       {
-  //         name: 'Success',
-  //         params: {
-  //           title: 'password successfully reseted',
-  //           description:
-  //             'Your password has been reseted and sended by SMS to your phone number. Check it out!',
-  //           returnTo: 'SignIn',
-  //           buttonText: 'Go to sign in',
-  //         },
-  //       },
-  //     ],
-  //   });
-  // }, [reset]);
+  useEffect(() => {
+    setTimeout(() => {
+      reset({
+        index: 0,
+        routes: [
+          {
+            name: 'Success',
+            params: {
+              title: 'password successfully reseted',
+              description:
+                'Your password has been reseted and sended by SMS to your phone number. Check it out!',
+              returnTo: 'SignIn',
+              buttonText: 'Go to sign in',
+            },
+          },
+        ],
+      });
+    }, 2000);
+  }, [reset]);
 
   return (
     <Container>
