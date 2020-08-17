@@ -15,6 +15,8 @@ import {
   TextInput,
 } from 'react-native';
 
+import {useAuth} from '../../hooks/auth';
+
 import getValidationErrors from '../../utils/getValidationErrors';
 
 import SignInput from '../../components/SignInput';
@@ -45,6 +47,8 @@ const SignIn: React.FC = () => {
 
   const {navigate} = useNavigation();
 
+  const {signIn} = useAuth();
+
   const navigateToSignUp = useCallback(() => {
     navigate('SignUp');
   }, [navigate]);
@@ -53,38 +57,41 @@ const SignIn: React.FC = () => {
     navigate('ForgotPassword');
   }, [navigate]);
 
-  const handleSignIn = useCallback(async (data: SignInFormData) => {
-    try {
-      formRef.current?.setErrors({});
+  const handleSignIn = useCallback(
+    async (data: SignInFormData) => {
+      try {
+        formRef.current?.setErrors({});
 
-      const schema = Yup.object().shape({
-        email: Yup.string().email().required(),
-        password: Yup.string().required(),
-      });
+        const schema = Yup.object().shape({
+          email: Yup.string().email().required(),
+          password: Yup.string().required(),
+        });
 
-      await schema.validate(data, {
-        abortEarly: false,
-      });
+        await schema.validate(data, {
+          abortEarly: false,
+        });
 
-      // await signIn({
-      //   email: data.email,
-      //   password: data.password,
-      // });
-    } catch (err) {
-      if (err instanceof Yup.ValidationError) {
-        const errors = getValidationErrors(err);
+        await signIn({
+          email: data.email,
+          password: data.password,
+        });
+      } catch (err) {
+        if (err instanceof Yup.ValidationError) {
+          const errors = getValidationErrors(err);
 
-        formRef.current?.setErrors(errors);
+          formRef.current?.setErrors(errors);
 
-        return;
+          return;
+        }
+
+        Alert.alert(
+          'Authentication error',
+          'An error occurred while logging in, check the credentials',
+        );
       }
-
-      Alert.alert(
-        'Authentication error',
-        'An error occurred while logging in, check the credentials',
-      );
-    }
-  }, []);
+    },
+    [signIn],
+  );
 
   return (
     <KeyboardAvoidingView
