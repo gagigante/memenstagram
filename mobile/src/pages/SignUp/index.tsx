@@ -104,7 +104,14 @@ const SignUp: React.FC = () => {
           return;
         }
 
-        Alert.alert('Error', 'An error occurred while create account');
+        // console.log(err.response.data.message);
+
+        Alert.alert(
+          'Error',
+          err.response
+            ? err.response.data.message
+            : 'An error occurred while create account',
+        );
       }
     },
     [reset],
