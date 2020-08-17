@@ -1,4 +1,4 @@
-import React, {useState, useCallback, useRef} from 'react';
+import React, {useCallback, useRef} from 'react';
 
 import {useNavigation} from '@react-navigation/native';
 
@@ -13,36 +13,31 @@ import {
   Platform,
   Alert,
   TextInput,
-  NativeModulesStatic,
 } from 'react-native';
 
 import getValidationErrors from '../../utils/getValidationErrors';
 
-import ImagePicker from 'react-native-image-picker';
-
 import Icon from 'react-native-vector-icons/Feather';
+
+import api from '../../services/api';
 
 import SignInput from '../../components/SignInput';
 
 import {
   stylesheet,
   Container,
-  UserAvatarButton,
-  UserAvatar,
-  UserAvatarIconView,
+  Title,
   Button,
   ButtonText,
   Divider,
   BackButton,
 } from './styles';
 
-import AvatarPlaceholder from '../../assets/avatar-placeholder.png';
-
 interface SignUpFormData {
   name: string;
   nickname: string;
   email: string;
-  phone: string;
+  phone_number: string;
   password: string;
   password_confirmation: string;
 }
@@ -57,48 +52,9 @@ const SignUp: React.FC = () => {
 
   const {goBack, reset} = useNavigation();
 
-  const [userAvatar, setUserAvatar] = useState<
-    {uri: string} | NativeModulesStatic
-  >(AvatarPlaceholder);
-
   const handleGoBack = useCallback(() => {
     goBack();
   }, [goBack]);
-
-  const handleUpdateAvatar = useCallback(() => {
-    ImagePicker.showImagePicker(
-      {
-        title: 'Selecione uma foto de perfil',
-        cancelButtonTitle: 'Cancelar',
-        takePhotoButtonTitle: 'Usar câmera',
-        chooseFromLibraryButtonTitle: 'Escolher da galeria',
-      },
-      (response) => {
-        if (response.didCancel) {
-          return;
-        }
-
-        if (response.error) {
-          Alert.alert(response.error);
-          return;
-        }
-
-        setUserAvatar({uri: response.uri});
-
-        // const data = new FormData();
-
-        // data.append('avatar', {
-        //   type: 'image/jpeg',
-        //   name: `${user.id}.jpg`,
-        //   uri: response.uri,
-        // });
-
-        // api.patch('users/avatar', data).then((apiResponse) => {
-        //   updateUser(apiResponse.data);
-        // });
-      },
-    );
-  }, []);
 
   const handleCreateAccount = useCallback(
     async (data: SignUpFormData) => {
@@ -111,7 +67,7 @@ const SignUp: React.FC = () => {
           name: Yup.string().required(),
           nickname: Yup.string().required(),
           email: Yup.string().email().required(),
-          phone: Yup.string().required(),
+          phone_number: Yup.string().required(),
           password: Yup.string().required(),
           password_confirmation: Yup.string()
             .required()
@@ -122,18 +78,19 @@ const SignUp: React.FC = () => {
           abortEarly: false,
         });
 
-        // should create account and update avatar if exists
+        delete data.password_confirmation;
+
+        const response = await api.post('users', data);
+
+        const newUser = response.data;
 
         reset({
           index: 0,
           routes: [
             {
-              name: 'Success',
+              name: 'ActivateAccount',
               params: {
-                title: 'Account successfully created',
-                description: 'Now you can login with your credentials',
-                returnTo: 'SignIn',
-                buttonText: 'Go to sign in',
+                user_id: newUser.id,
               },
             },
           ],
@@ -147,10 +104,7 @@ const SignUp: React.FC = () => {
           return;
         }
 
-        Alert.alert(
-          'Authentication error',
-          'An error occurred while logging in, check the credentials',
-        );
+        Alert.alert('Error', 'An error occurred while create account');
       }
     },
     [reset],
@@ -170,15 +124,9 @@ const SignUp: React.FC = () => {
         contentContainerStyle={stylesheet.scrollViewStyle}
         keyboardShouldPersistTaps="handled">
         <Container>
+          <Title>Memenstagram</Title>
+
           <Form ref={formRef} onSubmit={handleCreateAccount}>
-            <UserAvatarButton onPress={handleUpdateAvatar} activeOpacity={0.9}>
-              <UserAvatar source={userAvatar} />
-
-              <UserAvatarIconView>
-                <Icon size={24} color="#fff" name="camera" />
-              </UserAvatarIconView>
-            </UserAvatarButton>
-
             <SignInput
               name="name"
               placeholder="Name"
@@ -217,7 +165,7 @@ const SignUp: React.FC = () => {
 
             <SignInput
               ref={phoneInputRef}
-              name="phone"
+              name="phone_number"
               placeholder="Phone number"
               autoCorrect={false}
               autoCapitalize="none"
