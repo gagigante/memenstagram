@@ -3,6 +3,12 @@ import aws, { SNS } from 'aws-sdk';
 import ISMSProvider from '../models/ISMSProvider';
 import ISendSMSDTO from '../dtos/ISendSMSDTO';
 
+interface IResponseDTO {
+  phoneNumber: string;
+  subject: string;
+  message: string;
+}
+
 class SNSSMSProvider implements ISMSProvider {
   private client: SNS;
 
@@ -13,17 +19,24 @@ class SNSSMSProvider implements ISMSProvider {
   }
 
   public async sendSMS({
-    message,
-    subject,
     phoneNumber,
-  }: ISendSMSDTO): Promise<void> {
+    subject,
+    message,
+  }: ISendSMSDTO): Promise<IResponseDTO> {
     await this.client
       .publish({
-        Message: message,
-        Subject: subject,
         PhoneNumber: phoneNumber,
+        Message: message,
+        MessageAttributes: {
+          'AWS.SNS.SMS.SenderID': {
+            DataType: 'String',
+            StringValue: subject,
+          },
+        },
       })
       .promise();
+
+    return { phoneNumber, subject, message };
   }
 }
 
