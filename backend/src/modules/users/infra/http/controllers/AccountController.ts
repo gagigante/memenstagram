@@ -6,7 +6,8 @@ import ActivateAccountService from '@modules/users/services/ActivateAccountServi
 
 export default class AccountController {
   public async update(request: Request, response: Response): Promise<Response> {
-    const { user_id, confirmation_code } = request.body;
+    const { user_id } = request.params;
+    const { confirmation_code } = request.body;
 
     const activateAccount = container.resolve(ActivateAccountService);
 

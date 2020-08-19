@@ -1,21 +1,9 @@
 import ISMSProvider from '../models/ISMSProvider';
 import ISendSMSDTO from '../dtos/ISendSMSDTO';
 
-interface IResponseDTO {
-  phoneNumber: string;
-  subject: string;
-  message: string;
-}
-
 class ConsoleSMSProvider implements ISMSProvider {
-  public sendSMS({ phoneNumber, subject, message }: ISendSMSDTO): IResponseDTO {
+  public sendSMS({ phoneNumber, subject, message }: ISendSMSDTO): void {
     console.log({ phoneNumber, subject, message });
-
-    return {
-      subject,
-      phoneNumber,
-      message,
-    };
   }
 }
 
