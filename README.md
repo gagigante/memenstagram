@@ -4,15 +4,39 @@ Desafio: Criar uma rede social no estilo Instagram para postagem de memes em ima
 
 Principais funcionalidades:
 
-  Usuários:
+<br /><br />
 
- - Cadastro de usuários: O usuário deve ser capaz de criar uma conta na plataforma
+# Usuários:
 
-- Verificação de cadastro: O usuário, depois de criar deve receber um SMS contendo o código para ativação da conta
+<br />
 
-- Redefinição de senha: O usuário poderá redefinir sua senha. O sistema deve enviar um SMS ao usuário contendo uma senha temporária, após o primeiro login realizado com a senha temporária o usuário deverá fornecer uma nova senha
+### Cadastro de usuários: 
 
+#### **RF**
+- O usuário deve poder criar uma conta na plataforma
 
+#### **RNF**
+#### **RN**
+
+<br />
+
+### Verificação de cadastro:
+
+#### **RF**
+- O usuário, depois de criar uma conta, deve poder ativar sua conta com um código recebido por SMS
+
+#### **RNF**
+#### **RN**
+
+<br />
+
+### Redefinição de senha: 
+
+#### **RN**
+- O usuário deve poder redefinir sua senha através de uma senha temporária enviada por SMS
+
+#### **RNF**
+#### **RF**
 
 
 
