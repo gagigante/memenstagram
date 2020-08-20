@@ -6,7 +6,7 @@ import ISMSProvider from '@shared/containers/providers/SMSProvider/models/ISMSPr
 import IUsersRepository from '../repositories/IUsersRepository';
 
 interface IRequestDTO {
-  phoneNumber: string;
+  userId: string;
 }
 
 @injectable()
@@ -19,8 +19,8 @@ class SendActivationCodeSmsService {
     private smsProvider: ISMSProvider,
   ) {}
 
-  public async execute({ phoneNumber }: IRequestDTO): Promise<void | object> {
-    const user = await this.usersRepository.findByPhoneNumber(phoneNumber);
+  public async execute({ userId }: IRequestDTO): Promise<void | object> {
+    const user = await this.usersRepository.findById(userId);
 
     if (!user) {
       throw new AppError('User was not found.');
@@ -28,7 +28,7 @@ class SendActivationCodeSmsService {
 
     return this.smsProvider.sendSMS({
       subject: 'CODE',
-      phoneNumber,
+      phoneNumber: user.phone_number,
       message: `Your verification code is ${user.confirmation_code}`,
     });
   }

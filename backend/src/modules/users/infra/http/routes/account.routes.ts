@@ -10,10 +10,10 @@ const smsAccountCodeController = new SMSAccountCodeController();
 const accountRouter = Router();
 
 accountRouter.get(
-  '/code',
+  '/code/:user_id',
   celebrate({
-    [Segments.BODY]: {
-      phone_number: Joi.string().required(),
+    [Segments.PARAMS]: {
+      user_id: Joi.string().uuid().required(),
     },
   }),
   smsAccountCodeController.send,
