@@ -25,6 +25,9 @@
     "eslint-plugin-import-helpers"
   ],
   "rules": {
+    "@typescript-eslint/no-var-requires": 0,
+
+
     "@typescript-eslint/ban-types": "off",
     "prettier/prettier": "error",
     "class-methods-use-this": "off",
