@@ -13,10 +13,12 @@ Principais funcionalidades:
 ### Cadastro de usuários: 
 
 #### **RF**
-- O usuário deve poder criar uma conta na plataforma
+- O usuário deve poder criar uma conta na plataforma com seu nome, nickname, e-mail, telefone e senha
 
 #### **RNF**
+
 #### **RN**
+- Não deve ser permitido criar contas com nicknames, e-mails ou telefones que já estejam sendo utilizados
 
 <br />
 
@@ -26,6 +28,8 @@ Principais funcionalidades:
 - O usuário, depois de criar uma conta, deve poder ativar sua conta com um código recebido por SMS
 
 #### **RNF**
+- O SMS será enviado utilizando Twilio
+
 #### **RN**
 
 <br />
@@ -33,13 +37,15 @@ Principais funcionalidades:
 ### Redefinição de senha: 
 
 #### **RN**
-- O usuário deve poder redefinir sua senha através de uma senha temporária enviada por SMS
+- O usuário deve poder redefinir sua senha através de uma senha temporária enviada por SMS. Assim que o login com a senha temporária for realizado o usuário deverá alterar sua senha
 
 #### **RNF**
+
 #### **RF**
+- O SMS será enviado utilizando Twilio
 
 
-
+<br /><br /><br />
  - Alteração de perfil
  - Apagar conta
  - Um usuário pode seguir outros usuários
