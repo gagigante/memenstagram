@@ -22,7 +22,7 @@ export default class UsersController {
       password,
     });
 
-    await sendActivationCodeSmsService.execute({ phoneNumber: phone_number });
+    await sendActivationCodeSmsService.execute({ userId: user.id });
 
     return response.json(classToClass(user));
   }

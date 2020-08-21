@@ -27,7 +27,6 @@ class SendActivationCodeSmsService {
     }
 
     return this.smsProvider.sendSMS({
-      subject: 'CODE',
       phoneNumber: user.phone_number,
       message: `Your verification code is ${user.confirmation_code}`,
     });
