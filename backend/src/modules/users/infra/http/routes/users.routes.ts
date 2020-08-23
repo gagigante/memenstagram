@@ -42,7 +42,9 @@ usersRouter.patch(
   '/phone',
   celebrate({
     [Segments.BODY]: {
-      phone_number: Joi.string().required(),
+      phone_number: Joi.string()
+        .required()
+        .regex(/^\+?[1-9]\d{4,14}$/),
     },
   }),
   ensureAuthenticated,
