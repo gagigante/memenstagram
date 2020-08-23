@@ -6,7 +6,7 @@
     "port": 5432,
     "username": "postgres",
     "password": "docker",
-    "database": "memestagram-pg",
+    "database": "memenstagram-pg",
     "entities": [
       "./src/modules/**/infra/typeorm/entities/*.ts"
     ],

@@ -19,7 +19,7 @@ class SendActivationCodeSmsService {
     private smsProvider: ISMSProvider,
   ) {}
 
-  public async execute({ userId }: IRequestDTO): Promise<void | object> {
+  public async execute({ userId }: IRequestDTO): Promise<void> {
     const user = await this.usersRepository.findById(userId);
 
     if (!user) {

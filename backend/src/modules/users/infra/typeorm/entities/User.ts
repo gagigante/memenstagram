@@ -33,21 +33,6 @@ class User {
   avatar_url: string;
 
   @Column()
-  posts_qtt: number;
-
-  @Column()
-  followers_qtt: number;
-
-  @Column()
-  follows_qtt: number;
-
-  @CreateDateColumn()
-  created_at: Date;
-
-  @UpdateDateColumn()
-  updated_at: Date;
-
-  @Column()
   @Exclude()
   confirmation_code: string;
 
@@ -57,6 +42,15 @@ class User {
   @Column()
   @Exclude()
   password: string;
+
+  @Column()
+  is_reseted: boolean;
+
+  @CreateDateColumn()
+  created_at: Date;
+
+  @UpdateDateColumn()
+  updated_at: Date;
 
   @Expose({ name: 'avatar_url' })
   getAvatarUrl(): string | null {
