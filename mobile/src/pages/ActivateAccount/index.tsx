@@ -1,4 +1,4 @@
-import React, {useCallback, useRef} from 'react';
+import React, {useCallback, useRef, useState} from 'react';
 
 import {useRoute, useNavigation} from '@react-navigation/native';
 
@@ -43,9 +43,11 @@ const ActivateAccount: React.FC = () => {
 
   const routeParams = params as RouteParams;
 
-  const resentActivationCode = useCallback(() => {
-    console.log('should resend user code');
-  }, []);
+  const resentActivationCode = useCallback(async () => {
+    await api.get(`activate/code/${routeParams.user_id}`);
+
+    Alert.alert('Success', 'The code has been sended to your phone number');
+  }, [routeParams]);
 
   const handleActivateAccount = useCallback(
     async (data: VerifyAccountData) => {
@@ -60,9 +62,8 @@ const ActivateAccount: React.FC = () => {
           abortEarly: false,
         });
 
-        await api.patch('activate', {
+        await api.patch(`activate/${routeParams.user_id}`, {
           ...data,
-          user_id: routeParams.user_id,
         });
 
         reset({
@@ -94,7 +95,7 @@ const ActivateAccount: React.FC = () => {
         );
       }
     },
-    [reset, routeParams.user_id],
+    [reset, routeParams],
   );
 
   return (

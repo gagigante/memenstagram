@@ -1,52 +1,134 @@
-import React, {useEffect, useState} from 'react';
+import React, {useCallback, useRef} from 'react';
+
 import {useNavigation} from '@react-navigation/native';
 
-import {ActivityIndicator} from 'react-native';
+import {Form} from '@unform/mobile';
+import {FormHandles} from '@unform/core';
 
-import {Container} from './styles';
+import * as Yup from 'yup';
+
+import api from '../../services/api';
+
+import {Alert, KeyboardAvoidingView, ScrollView, Platform} from 'react-native';
+
+import getValidationErrors from '../../utils/getValidationErrors';
+
+import SignInput from '../../components/SignInput';
+
+import Icon from 'react-native-vector-icons/Feather';
+
+import {
+  stylesheet,
+  Container,
+  Title,
+  Button,
+  ButtonText,
+  BackButton,
+} from './styles';
+
+interface ForgotPasswordFormData {
+  phone: string;
+}
 
 const ForgotPassword: React.FC = () => {
-  const {reset} = useNavigation();
+  const formRef = useRef<FormHandles>(null);
 
-  const [countryCode, setCountryCode] = useState<CountryCode>('FR');
-  const [country, setCountry] = useState<Country>(null);
-  const [withCountryNameButton, setWithCountryNameButton] = useState<boolean>(
-    false,
-  );
-  const [withFlag, setWithFlag] = useState<boolean>(true);
-  const [withEmoji, setWithEmoji] = useState<boolean>(true);
-  const [withFilter, setWithFilter] = useState<boolean>(true);
-  const [withAlphaFilter, setWithAlphaFilter] = useState<boolean>(false);
-  const [withCallingCode, setWithCallingCode] = useState<boolean>(false);
-  const onSelect = (country: Country) => {
-    setCountryCode(country.cca2);
-    setCountry(country);
-  };
+  const {reset, goBack} = useNavigation();
 
-  useEffect(() => {
-    setTimeout(() => {
-      reset({
-        index: 0,
-        routes: [
-          {
-            name: 'Success',
-            params: {
-              title: 'password successfully reseted',
-              description:
-                'Your password has been reseted and sended by SMS to your phone number. Check it out!',
-              returnTo: 'SignIn',
-              buttonText: 'Go to sign in',
+  const handleGoBack = useCallback(() => {
+    goBack();
+  }, [goBack]);
+
+  const handleResetPassword = useCallback(
+    async (data: ForgotPasswordFormData) => {
+      try {
+        formRef.current?.setErrors({});
+
+        const schema = Yup.object().shape({
+          phone: Yup.string()
+            .required()
+            .matches(/^\+?[1-9]\d{4,14}$/),
+        });
+
+        await schema.validate(data, {
+          abortEarly: false,
+        });
+
+        await api.post(`password/reset/${data.phone}`, {
+          ...data,
+        });
+
+        reset({
+          index: 0,
+          routes: [
+            {
+              name: 'Success',
+              params: {
+                title: 'Password successfully reseted',
+                description:
+                  'Your password has been reseted and sended by SMS to your phone number.',
+                returnTo: 'SignIn',
+                buttonText: 'Go to sign in',
+              },
             },
-          },
-        ],
-      });
-    }, 2000);
-  }, [reset]);
+          ],
+        });
+      } catch (err) {
+        if (err instanceof Yup.ValidationError) {
+          const errors = getValidationErrors(err);
+
+          formRef.current?.setErrors(errors);
+
+          return;
+        }
+
+        Alert.alert(
+          'Error while resetting password',
+          'An error occurred while resetting password, verify your phone and try again',
+        );
+      }
+    },
+    [reset],
+  );
 
   return (
-    <Container>
-      <ActivityIndicator size={64} />
-    </Container>
+    <KeyboardAvoidingView
+      style={stylesheet.containerStyle}
+      behavior={Platform.OS === 'ios' ? 'padding' : undefined}
+      enabled>
+      <BackButton onPress={handleGoBack}>
+        <Icon size={32} name="chevron-left" color="#C1BCCC" />
+      </BackButton>
+
+      <ScrollView
+        contentContainerStyle={stylesheet.containerStyle}
+        keyboardShouldPersistTaps="handled">
+        <Container>
+          <Title>Memenstagram</Title>
+
+          <Form ref={formRef} onSubmit={handleResetPassword}>
+            <SignInput
+              name="phone"
+              placeholder="Phone number. Ex.: +5511912344567"
+              autoCorrect={false}
+              autoCapitalize="none"
+              keyboardType="phone-pad"
+              returnKeyType="send"
+              onSubmitEditing={() => {
+                formRef.current?.submitForm();
+              }}
+            />
+
+            <Button
+              onPress={() => {
+                formRef.current?.submitForm();
+              }}>
+              <ButtonText>Reset password</ButtonText>
+            </Button>
+          </Form>
+        </Container>
+      </ScrollView>
+    </KeyboardAvoidingView>
   );
 };
 

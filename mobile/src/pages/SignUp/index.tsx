@@ -67,7 +67,9 @@ const SignUp: React.FC = () => {
           name: Yup.string().required(),
           nickname: Yup.string().required(),
           email: Yup.string().email().required(),
-          phone_number: Yup.string().required(),
+          phone_number: Yup.string()
+            .required()
+            .matches(/^\+?[1-9]\d{4,14}$/),
           password: Yup.string().required(),
           password_confirmation: Yup.string()
             .required()
