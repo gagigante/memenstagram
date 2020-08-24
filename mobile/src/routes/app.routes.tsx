@@ -1,7 +1,6 @@
 import React from 'react';
 import {createStackNavigator} from '@react-navigation/stack';
 
-// import {View} from 'react-native';
 import Icon from 'react-native-vector-icons/Feather';
 import MainTabRoutes from './mainTab.routes';
 
@@ -18,21 +17,6 @@ const App = createStackNavigator();
 const AppRoutes: React.FC = () => {
   const {user} = useAuth();
 
-  if (user.is_reseted) {
-    return (
-      <App.Navigator>
-        <App.Screen
-          name="RedefinePassword"
-          component={RedefinePassword}
-          options={{
-            headerShown: false,
-            gestureEnabled: false,
-          }}
-        />
-      </App.Navigator>
-    );
-  }
-
   // if (!user.confirmation_status) {
   //   return (
   //     <App.Navigator>
@@ -47,6 +31,21 @@ const AppRoutes: React.FC = () => {
   //     </App.Navigator>
   //   );
   // }
+
+  if (user.is_reseted) {
+    return (
+      <App.Navigator>
+        <App.Screen
+          name="RedefinePassword"
+          component={RedefinePassword}
+          options={{
+            headerShown: false,
+            gestureEnabled: false,
+          }}
+        />
+      </App.Navigator>
+    );
+  }
 
   return (
     <App.Navigator initialRouteName="MainTabRoutes">

@@ -47,7 +47,7 @@ const ForgotPassword: React.FC = () => {
         const schema = Yup.object().shape({
           phone: Yup.string()
             .required()
-            .matches(/^\+?[1-9]\d{4,14}$/),
+            .matches(/\+[1-9]\d{1,14}$/),
         });
 
         await schema.validate(data, {
