@@ -17,11 +17,9 @@ interface User {
   email: string;
   phone_number: string;
   bio: string;
-  posts_qtt: number;
-  followers_qtt: number;
-  follows_qtt: number;
   avatar_url: string;
   confirmation_status: string;
+  is_reseted: boolean;
 }
 
 interface AuthState {

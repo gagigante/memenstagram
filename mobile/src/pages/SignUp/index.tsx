@@ -61,8 +61,6 @@ const SignUp: React.FC = () => {
       try {
         formRef.current?.setErrors({});
 
-        // const phoneRegExp = /^((\\+[1-9]{1,4}[ \\-]*)|(\\([0-9]{2,3}\\)[ \\-]*)|([0-9]{2,4})[ \\-]*)*?[0-9]{3,4}?[ \\-]*[0-9]{3,4}?$/;
-
         const schema = Yup.object().shape({
           name: Yup.string().required(),
           nickname: Yup.string().required(),
@@ -105,8 +103,6 @@ const SignUp: React.FC = () => {
 
           return;
         }
-
-        // console.log(err.response.data.message);
 
         Alert.alert(
           'Error',
@@ -175,7 +171,7 @@ const SignUp: React.FC = () => {
             <SignInput
               ref={phoneInputRef}
               name="phone_number"
-              placeholder="Phone number"
+              placeholder="Phone number. Ex.: +5511912344567"
               autoCorrect={false}
               autoCapitalize="none"
               keyboardType="phone-pad"

@@ -19,7 +19,7 @@ profileRouter.put(
       name: Joi.string().required(),
       nickname: Joi.string().required(),
       email: Joi.string().email().required(),
-      bio: Joi.string().required(),
+      bio: Joi.string().allow(null).allow(''),
       oldPassword: Joi.string(),
       password: Joi.string(),
     },
