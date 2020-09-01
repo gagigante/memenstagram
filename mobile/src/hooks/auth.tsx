@@ -18,7 +18,7 @@ interface User {
   phone_number: string;
   bio: string;
   avatar_url: string;
-  confirmation_status: string;
+  confirmation_status: boolean;
   is_reseted: boolean;
 }
 
