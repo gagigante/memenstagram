@@ -2,6 +2,7 @@ import React, {useRef, useCallback} from 'react';
 
 import {Form} from '@unform/mobile';
 import {FormHandles} from '@unform/core';
+import {useNavigation} from '@react-navigation/native';
 
 import * as Yup from 'yup';
 
@@ -41,6 +42,8 @@ const RedefinePassword: React.FC = () => {
   const passwordInputRef = useRef<TextInput>(null);
   const passwordConfirmationInputRef = useRef<TextInput>(null);
 
+  const {reset} = useNavigation();
+
   const {user, updateUser} = useAuth();
 
   const handleRedefinePassword = useCallback(
@@ -65,7 +68,16 @@ const RedefinePassword: React.FC = () => {
           password: data.password,
         });
 
-        updateUser(response.data);
+        await updateUser(response.data);
+
+        reset({
+          index: 0,
+          routes: [
+            {
+              name: 'MainTabRoutes',
+            },
+          ],
+        });
       } catch (err) {
         if (err instanceof Yup.ValidationError) {
           const errors = getValidationErrors(err);
@@ -81,7 +93,7 @@ const RedefinePassword: React.FC = () => {
         );
       }
     },
-    [updateUser, user],
+    [updateUser, user, reset],
   );
 
   return (

@@ -1,20 +1,22 @@
 import React from 'react';
-
+import {View} from 'react-native';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 
 import Icon from 'react-native-vector-icons/Feather';
 
 import {IconWrapper, Avatar} from './styles/tab.styles';
 
-import Home from '../pages/Home';
-import Search from '../pages/Search';
-import Activity from '../pages/Activity';
-import Profile from '../pages/Profile';
+// import Home from '../pages/Home';
+// import Search from '../pages/Search';
+// import Activity from '../pages/Activity';
+// import Profile from '../pages/Profile';
 
-import ActivityStackRoutes from './activity.routes';
+// import ActivityStackRoutes from './activity.routes';
 import ProfileStackRoutes from './profile.routes';
 
 const Tab = createBottomTabNavigator();
+
+const EmptyPage: React.FC = () => <View />;
 
 const MainTabRoutes: React.FC = () => (
   <Tab.Navigator
@@ -24,41 +26,43 @@ const MainTabRoutes: React.FC = () => (
       showLabel: false,
     }}>
     <Tab.Screen
+      name="Home"
+      component={EmptyPage}
       options={{
         tabBarIcon: ({color}) => <Icon size={25} name="home" color={color} />,
       }}
-      name="Home"
-      component={Home}
     />
+
     <Tab.Screen
       name="Search"
+      component={EmptyPage}
       options={{
         tabBarIcon: ({color}) => <Icon size={25} name="search" color={color} />,
       }}
-      component={Search}
     />
 
     <Tab.Screen
       name="AddPost"
+      component={EmptyPage}
       options={{
         tabBarIcon: ({color}) => (
           <Icon size={25} name="plus-square" color={color} />
         ),
       }}
-      component={Search}
     />
 
     <Tab.Screen
       name="ActivityStackRoutes"
+      component={EmptyPage}
       options={{
         tabBarIcon: ({color}) => <Icon size={25} name="heart" color={color} />,
         title: 'Activity',
       }}
-      component={ActivityStackRoutes}
     />
 
     <Tab.Screen
       name="ProfileStack"
+      component={ProfileStackRoutes}
       options={{
         tabBarIcon: ({focused}) => (
           <IconWrapper focused={focused}>
@@ -71,7 +75,6 @@ const MainTabRoutes: React.FC = () => (
           </IconWrapper>
         ),
       }}
-      component={ProfileStackRoutes}
     />
   </Tab.Navigator>
 );

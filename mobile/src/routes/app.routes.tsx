@@ -2,60 +2,42 @@ import React from 'react';
 import {createStackNavigator} from '@react-navigation/stack';
 
 import Icon from 'react-native-vector-icons/Feather';
+
+import Loading from '../pages/Loading';
+import ActivateAccount from '../pages/ActivateAccount';
+import RedefinePassword from '../pages/RedefinePassword';
+
 import MainTabRoutes from './mainTab.routes';
-
-import {useAuth} from '../hooks/auth';
-
 // import Home from '../pages/Home';
 import EditProfile from '../pages/EditProfile';
-
-import RedefinePassword from '../pages/RedefinePassword';
-import ActivateAccount from '../pages/ActivateAccount';
 
 const App = createStackNavigator();
 
 const AppRoutes: React.FC = () => {
-  const {user} = useAuth();
-
-  // if (!user.confirmation_status) {
-  //   return (
-  //     <App.Navigator>
-  //       <App.Screen
-  //         name="ActivateAccount"
-  //         component={ActivateAccount}
-  //         options={{
-  //           headerShown: false,
-  //           gestureEnabled: false,
-  //         }}
-  //       />
-  //     </App.Navigator>
-  //   );
-  // }
-
-  if (user.is_reseted) {
-    return (
-      <App.Navigator>
-        <App.Screen
-          name="RedefinePassword"
-          component={RedefinePassword}
-          options={{
-            headerShown: false,
-            gestureEnabled: false,
-          }}
-        />
-      </App.Navigator>
-    );
-  }
-
   return (
-    <App.Navigator initialRouteName="MainTabRoutes">
+    <App.Navigator initialRouteName="LoadingPage">
+      <App.Screen
+        name="LoadingPage"
+        component={Loading}
+        options={{headerShown: false}}
+      />
+
+      <App.Screen
+        name="ActivateAccount"
+        component={ActivateAccount}
+        options={{headerShown: false}}
+      />
+
+      <App.Screen
+        name="RedefinePassword"
+        component={RedefinePassword}
+        options={{headerShown: false}}
+      />
+
       <App.Screen
         name="MainTabRoutes"
         component={MainTabRoutes}
-        options={{
-          headerShown: false,
-          gestureEnabled: false,
-        }}
+        options={{headerShown: false}}
       />
 
       <App.Screen

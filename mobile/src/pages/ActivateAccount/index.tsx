@@ -1,4 +1,4 @@
-import React, {useCallback, useRef, useState} from 'react';
+import React, {useCallback, useRef} from 'react';
 
 import {useRoute, useNavigation} from '@react-navigation/native';
 
@@ -12,6 +12,8 @@ import {Alert} from 'react-native';
 import getValidationErrors from '../../utils/getValidationErrors';
 
 import api from '../../services/api';
+
+import {useAuth} from '../../hooks/auth';
 
 import SignInput from '../../components/SignInput';
 
@@ -41,13 +43,17 @@ const ActivateAccount: React.FC = () => {
   const {reset} = useNavigation();
   const {params} = useRoute();
 
+  const {user, updateUser} = useAuth();
+
   const routeParams = params as RouteParams;
 
   const resentActivationCode = useCallback(async () => {
-    await api.get(`activate/code/${routeParams.user_id}`);
+    await api.get(
+      `activate/code/${routeParams ? routeParams.user_id : user.id}`,
+    );
 
     Alert.alert('Success', 'The code has been sended to your phone number');
-  }, [routeParams]);
+  }, [user, routeParams]);
 
   const handleActivateAccount = useCallback(
     async (data: VerifyAccountData) => {
@@ -62,9 +68,27 @@ const ActivateAccount: React.FC = () => {
           abortEarly: false,
         });
 
-        await api.patch(`activate/${routeParams.user_id}`, {
-          ...data,
-        });
+        await api.patch(
+          `activate/${routeParams ? routeParams.user_id : user.id}`,
+          {
+            ...data,
+          },
+        );
+
+        if (user) {
+          await updateUser({...user, confirmation_status: true});
+
+          reset({
+            index: 0,
+            routes: [
+              {
+                name: 'LoadingPage',
+              },
+            ],
+          });
+
+          return;
+        }
 
         reset({
           index: 0,
@@ -95,7 +119,7 @@ const ActivateAccount: React.FC = () => {
         );
       }
     },
-    [reset, routeParams],
+    [reset, routeParams, user, updateUser],
   );
 
   return (
