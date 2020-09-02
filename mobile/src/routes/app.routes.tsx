@@ -11,36 +11,36 @@ import MainTabRoutes from './mainTab.routes';
 // import Home from '../pages/Home';
 import EditProfile from '../pages/EditProfile';
 
-const App = createStackNavigator();
+const Root = createStackNavigator();
 
 const AppRoutes: React.FC = () => {
   return (
-    <App.Navigator initialRouteName="LoadingPage">
-      <App.Screen
+    <Root.Navigator initialRouteName="LoadingPage" mode="modal">
+      <Root.Screen
         name="LoadingPage"
         component={Loading}
         options={{headerShown: false}}
       />
 
-      <App.Screen
+      <Root.Screen
         name="ActivateAccount"
         component={ActivateAccount}
         options={{headerShown: false}}
       />
 
-      <App.Screen
+      <Root.Screen
         name="RedefinePassword"
         component={RedefinePassword}
         options={{headerShown: false}}
       />
 
-      <App.Screen
+      <Root.Screen
         name="MainTabRoutes"
         component={MainTabRoutes}
         options={{headerShown: false}}
       />
 
-      <App.Screen
+      <Root.Screen
         name="EditProfile"
         component={EditProfile}
         options={({navigation}) => ({
@@ -72,7 +72,7 @@ const AppRoutes: React.FC = () => {
           },
         })}
       />
-    </App.Navigator>
+    </Root.Navigator>
   );
 };
 
