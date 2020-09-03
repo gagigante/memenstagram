@@ -15,35 +15,23 @@ const Root = createStackNavigator();
 
 const AppRoutes: React.FC = () => {
   return (
-    <Root.Navigator initialRouteName="LoadingPage" mode="modal">
-      <Root.Screen
-        name="LoadingPage"
-        component={Loading}
-        options={{headerShown: false}}
-      />
+    <Root.Navigator
+      initialRouteName="LoadingPage"
+      mode="modal"
+      screenOptions={{headerShown: false}}>
+      <Root.Screen name="LoadingPage" component={Loading} />
 
-      <Root.Screen
-        name="ActivateAccount"
-        component={ActivateAccount}
-        options={{headerShown: false}}
-      />
+      <Root.Screen name="ActivateAccount" component={ActivateAccount} />
 
-      <Root.Screen
-        name="RedefinePassword"
-        component={RedefinePassword}
-        options={{headerShown: false}}
-      />
+      <Root.Screen name="RedefinePassword" component={RedefinePassword} />
 
-      <Root.Screen
-        name="MainTabRoutes"
-        component={MainTabRoutes}
-        options={{headerShown: false}}
-      />
+      <Root.Screen name="MainTabRoutes" component={MainTabRoutes} />
 
       <Root.Screen
         name="EditProfile"
         component={EditProfile}
         options={({navigation}) => ({
+          headerShown: true,
           headerLeft: () => (
             <Icon
               name="x"
