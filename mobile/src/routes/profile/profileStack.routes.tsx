@@ -3,9 +3,9 @@ import {createStackNavigator} from '@react-navigation/stack';
 
 // import Icon from 'react-native-vector-icons/Feather';
 
-import Profile from '../pages/Profile';
+import Profile from '../../pages/Profile';
 
-import PostStackRoutes from './post.routes';
+import PostStackRoutes from '../post.routes';
 
 const ProfileStack = createStackNavigator();
 

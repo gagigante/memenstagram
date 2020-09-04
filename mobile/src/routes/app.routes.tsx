@@ -6,10 +6,10 @@ import Icon from 'react-native-vector-icons/Feather';
 import Loading from '../pages/Loading';
 import ActivateAccount from '../pages/ActivateAccount';
 import RedefinePassword from '../pages/RedefinePassword';
-
-import MainTabRoutes from './mainTab.routes';
-// import Home from '../pages/Home';
 import EditProfile from '../pages/EditProfile';
+import EditPhoneNumber from '../pages/EditPhoneNumber';
+
+import MainTabRoutes from './mainTab/mainTab.routes';
 
 const Root = createStackNavigator();
 
@@ -43,18 +43,36 @@ const AppRoutes: React.FC = () => {
           headerLeftContainerStyle: {
             marginLeft: 24,
           },
-          headerRight: () => (
-            <Icon
-              name="check"
-              size={24}
-              color="#4287f5"
-              onPress={() => console.log('entrou')}
-            />
-          ),
           headerRightContainerStyle: {
             marginRight: 24,
           },
           headerTitle: 'Edit Profile',
+          headerTitleStyle: {
+            fontSize: 20,
+          },
+        })}
+      />
+
+      <Root.Screen
+        name="EditPhoneNumber"
+        component={EditPhoneNumber}
+        options={({navigation}) => ({
+          headerShown: true,
+          headerLeft: () => (
+            <Icon
+              name="x"
+              size={24}
+              color="#363636"
+              onPress={() => navigation.goBack()}
+            />
+          ),
+          headerLeftContainerStyle: {
+            marginLeft: 24,
+          },
+          headerRightContainerStyle: {
+            marginRight: 24,
+          },
+          headerTitle: 'Edit Phone',
           headerTitleStyle: {
             fontSize: 20,
           },
