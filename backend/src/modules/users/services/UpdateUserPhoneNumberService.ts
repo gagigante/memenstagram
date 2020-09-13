@@ -53,7 +53,7 @@ class UpdateUserPhoneNumberService {
 
     await this.usersRepository.save(user);
 
-    return classToClass(user);
+    return user;
   }
 }
 
