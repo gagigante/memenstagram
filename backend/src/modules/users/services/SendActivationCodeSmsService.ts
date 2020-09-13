@@ -1,4 +1,5 @@
 import { injectable, inject } from 'tsyringe';
+import crypto from 'crypto';
 
 import AppError from '@shared/errors/AppError';
 
@@ -25,6 +26,10 @@ class SendActivationCodeSmsService {
     if (!user) {
       throw new AppError('User was not found.');
     }
+
+    user.confirmation_code = crypto.randomBytes(3).toString('hex');
+
+    await this.usersRepository.save(user);
 
     return this.smsProvider.sendSMS({
       phoneNumber: user.phone_number,
