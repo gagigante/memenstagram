@@ -8,7 +8,7 @@ import AppProvider from './hooks';
 
 import Routes from './routes';
 
-const src: React.FC = () => {
+const App: React.FC = () => {
   return (
     <NavigationContainer>
       <StatusBar barStyle="dark-content" backgroundColor="#ddd" />
@@ -19,4 +19,4 @@ const src: React.FC = () => {
   );
 };
 
-export default src;
+export default App;
