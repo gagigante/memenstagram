@@ -21,7 +21,11 @@ profileRouter.put(
       email: Joi.string().email().required(),
       bio: Joi.string().allow(null).allow(''),
       oldPassword: Joi.string(),
-      password: Joi.string(),
+      password: Joi.string().when('oldPassword', {
+        is: Joi.exist(),
+        then: Joi.string().required(),
+        otherwise: Joi.string().optional(),
+      }),
     },
   }),
   profileController.update,
