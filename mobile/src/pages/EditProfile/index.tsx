@@ -144,10 +144,10 @@ const EditProfile: React.FC = () => {
   const handleUpdateAvatar = useCallback(() => {
     ImagePicker.showImagePicker(
       {
-        title: 'Selecione uma foto de perfil',
-        cancelButtonTitle: 'Cancelar',
-        takePhotoButtonTitle: 'Usar câmera',
-        chooseFromLibraryButtonTitle: 'Escolher da galeria',
+        title: 'Choose a profile photo',
+        cancelButtonTitle: 'Cancel',
+        takePhotoButtonTitle: 'Use camera',
+        chooseFromLibraryButtonTitle: 'Choose from gallery',
       },
       async (response) => {
         if (response.didCancel) {
@@ -155,7 +155,7 @@ const EditProfile: React.FC = () => {
         }
 
         if (response.error) {
-          Alert.alert('Erro ao atualizar avatar');
+          Alert.alert('Error while updating avatar');
           return;
         }
 
