@@ -52,3 +52,11 @@ export const Divider = styled.View`
   margin: 12px 8%;
   height: 1px;
 `;
+
+export const LinkButton = styled.TouchableOpacity`
+  margin: 8px auto;
+`;
+
+export const LinkButtonText = styled.Text`
+  color: #4287f5;
+`;
