@@ -13,18 +13,12 @@ import {Alert, KeyboardAvoidingView, ScrollView, Platform} from 'react-native';
 
 import getValidationErrors from '../../utils/getValidationErrors';
 
-import SignInput from '../../components/SignInput';
-
 import Icon from 'react-native-vector-icons/Feather';
 
-import {
-  stylesheet,
-  Container,
-  Title,
-  Button,
-  ButtonText,
-  BackButton,
-} from './styles';
+import SignInput from '../../components/SignInput';
+import Button from '../../components/Button';
+
+import {stylesheet, Container, Title, BackButton} from './styles';
 
 interface ForgotPasswordFormData {
   phone: string;
@@ -120,11 +114,11 @@ const ForgotPassword: React.FC = () => {
             />
 
             <Button
+              buttonTitle="Reset password"
               onPress={() => {
                 formRef.current?.submitForm();
-              }}>
-              <ButtonText>Reset password</ButtonText>
-            </Button>
+              }}
+            />
           </Form>
         </Container>
       </ScrollView>

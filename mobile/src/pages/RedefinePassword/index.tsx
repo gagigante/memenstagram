@@ -1,4 +1,11 @@
 import React, {useRef, useCallback} from 'react';
+import {
+  Alert,
+  Platform,
+  KeyboardAvoidingView,
+  ScrollView,
+  TextInput,
+} from 'react-native';
 
 import {Form} from '@unform/mobile';
 import {FormHandles} from '@unform/core';
@@ -13,23 +20,9 @@ import {useAuth} from '../../hooks/auth';
 import getValidationErrors from '../../utils/getValidationErrors';
 
 import SignInput from '../../components/SignInput';
+import Button from '../../components/Button';
 
-import {
-  Alert,
-  Platform,
-  KeyboardAvoidingView,
-  ScrollView,
-  TextInput,
-} from 'react-native';
-
-import {
-  stylesheet,
-  Container,
-  Title,
-  Button,
-  ButtonText,
-  Divider,
-} from './styles';
+import {stylesheet, Container, Title, Divider} from './styles';
 
 interface RedefinePasswordFormData {
   oldPassword: string;
@@ -147,11 +140,11 @@ const RedefinePassword: React.FC = () => {
             />
 
             <Button
+              buttonTitle="Redefine password"
               onPress={() => {
                 formRef.current?.submitForm();
-              }}>
-              <ButtonText>Redefine password</ButtonText>
-            </Button>
+              }}
+            />
           </Form>
         </Container>
       </ScrollView>

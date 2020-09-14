@@ -1,7 +1,9 @@
 import React, {useState, useCallback} from 'react';
 import {useNavigation} from '@react-navigation/native';
 
-import {View, RefreshControl, ScrollView} from 'react-native';
+import {TouchableOpacity, Text, RefreshControl, ScrollView} from 'react-native';
+
+import {useAuth} from '../../hooks/auth';
 
 import {
   Container,
@@ -23,6 +25,8 @@ import {
 } from './styles';
 
 const Profile: React.FC = () => {
+  const {signOut} = useAuth();
+
   const navigation = useNavigation();
 
   const [refreshing, setRefreshing] = useState(false);
@@ -86,6 +90,10 @@ const Profile: React.FC = () => {
         <EditProfileButton onPress={handleNavigateToEditProfile}>
           <EditProfileButtonText>Edit Profile</EditProfileButtonText>
         </EditProfileButton>
+
+        <TouchableOpacity onPress={signOut}>
+          <Text>Sair</Text>
+        </TouchableOpacity>
 
         <Grid>
           <PostButton

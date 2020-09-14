@@ -105,8 +105,6 @@ const EditProfile: React.FC = () => {
 
         delete data.passwordConfirmation;
 
-        console.log(data);
-
         const response = await api.put('profile', data);
 
         updateUser(response.data);

@@ -20,13 +20,12 @@ import {useAuth} from '../../hooks/auth';
 import getValidationErrors from '../../utils/getValidationErrors';
 
 import SignInput from '../../components/SignInput';
+import Button from '../../components/Button';
 
 import {
   stylesheet,
   Container,
   Title,
-  Button,
-  ButtonText,
   Divider,
   ForgotPasswordButton,
   ForgotPasswordButtonText,
@@ -116,7 +115,6 @@ const SignIn: React.FC = () => {
                 passwordInputRef.current?.focus();
               }}
             />
-
             <SignInput
               ref={passwordInputRef}
               name="password"
@@ -128,13 +126,12 @@ const SignIn: React.FC = () => {
                 formRef.current?.submitForm();
               }}
             />
-
             <Button
+              buttonTitle="Log In"
               onPress={() => {
                 formRef.current?.submitForm();
-              }}>
-              <ButtonText>Log In</ButtonText>
-            </Button>
+              }}
+            />
           </Form>
 
           <Divider />

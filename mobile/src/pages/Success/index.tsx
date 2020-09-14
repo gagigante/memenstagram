@@ -1,14 +1,9 @@
 import React, {useCallback} from 'react';
 import {useRoute, useNavigation} from '@react-navigation/native';
 
-import {
-  Container,
-  Image,
-  Title,
-  Description,
-  Button,
-  ButtonText,
-} from './styles';
+import Button from '../../components/Button';
+
+import {Container, Image, Title, Description} from './styles';
 
 import SuccessImage from '../../assets/success.png';
 
@@ -43,9 +38,10 @@ const Success: React.FC = () => {
 
       <Description>{routeParams.description}</Description>
 
-      <Button onPress={() => returnTo(routeParams.returnTo)}>
-        <ButtonText>{routeParams.buttonText}</ButtonText>
-      </Button>
+      <Button
+        buttonTitle={routeParams.buttonText}
+        onPress={() => returnTo(routeParams.returnTo)}
+      />
     </Container>
   );
 };

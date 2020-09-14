@@ -16,13 +16,12 @@ import api from '../../services/api';
 import {useAuth} from '../../hooks/auth';
 
 import SignInput from '../../components/SignInput';
+import Button from '../../components/Button';
 
 import {
   Container,
   Title,
   Description,
-  Button,
-  ButtonText,
   Footer,
   SendCodeText,
   SendCodeButton,
@@ -145,11 +144,11 @@ const ActivateAccount: React.FC = () => {
         />
 
         <Button
+          buttonTitle="Verify account"
           onPress={() => {
             formRef.current?.submitForm();
-          }}>
-          <ButtonText>Verify account</ButtonText>
-        </Button>
+          }}
+        />
       </Form>
 
       <Footer>

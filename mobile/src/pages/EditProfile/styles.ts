@@ -22,8 +22,7 @@ export const UserAvatarButton = styled.TouchableOpacity`
   position: relative;
   width: 186px;
   height: 186px;
-  margin-top: 42px;
-  margin-bottom: 32px;
+  margin: 32px auto;
   align-self: center;
 `;
 

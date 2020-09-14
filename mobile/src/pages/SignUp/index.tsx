@@ -22,16 +22,9 @@ import Icon from 'react-native-vector-icons/Feather';
 import api from '../../services/api';
 
 import SignInput from '../../components/SignInput';
+import Button from '../../components/Button';
 
-import {
-  stylesheet,
-  Container,
-  Title,
-  Button,
-  ButtonText,
-  Divider,
-  BackButton,
-} from './styles';
+import {stylesheet, Container, Title, Divider, BackButton} from './styles';
 
 interface SignUpFormData {
   name: string;
@@ -39,7 +32,7 @@ interface SignUpFormData {
   email: string;
   phone_number: string;
   password: string;
-  password_confirmation: string;
+  password_confirmation?: string;
 }
 
 const SignUp: React.FC = () => {
@@ -208,11 +201,11 @@ const SignUp: React.FC = () => {
             />
 
             <Button
+              buttonTitle="Create account"
               onPress={() => {
                 formRef.current?.submitForm();
-              }}>
-              <ButtonText>Create account</ButtonText>
-            </Button>
+              }}
+            />
           </Form>
         </Container>
       </ScrollView>
