@@ -2,3 +2,4 @@ tmp/uploads/*
 node_modules
 dist
 .env
+coverage

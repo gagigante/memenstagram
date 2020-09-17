@@ -4,10 +4,10 @@ import { celebrate, Segments, Joi } from 'celebrate';
 import AccountController from '../controllers/AccountController';
 import SMSAccountCodeController from '../controllers/SMSAccountCodeController';
 
+const accountRouter = Router();
+
 const accountController = new AccountController();
 const smsAccountCodeController = new SMSAccountCodeController();
-
-const accountRouter = Router();
 
 accountRouter.get(
   '/code/:user_id',
