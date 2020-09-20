@@ -1,16 +1,16 @@
 import { Request, Response } from 'express';
 import { container } from 'tsyringe';
 
-import UpdatePasswordService from '@modules/users/services/UpdatePasswordService';
+import RedefineUserPasswordService from '@modules/users/services/RedefineUserPasswordService';
 
 export default class passwordController {
   public async update(request: Request, response: Response): Promise<Response> {
     const { user_id } = request.params;
     const { oldPassword, password } = request.body;
 
-    const updatePassword = container.resolve(UpdatePasswordService);
+    const redefinePassword = container.resolve(RedefineUserPasswordService);
 
-    const updatedUser = await updatePassword.execute({
+    const updatedUser = await redefinePassword.execute({
       userId: user_id,
       oldPassword,
       password,

@@ -60,6 +60,7 @@
     "reflect-metadata": "^0.1.13",
     "tsyringe": "^4.3.0",
     "twilio": "^3.49.0",
-    "typeorm": "^0.2.25"
+    "typeorm": "^0.2.25",
+    "uuidv4": "^6.2.3"
   }
 }

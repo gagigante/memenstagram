@@ -21,6 +21,10 @@ class ShowProfileService {
   public async execute({ nickname, loggedUserId }: IRequestDTO): Promise<User> {
     const loggedUser = await this.usersRepository.findById(loggedUserId);
 
+    if (!loggedUser) {
+      throw new AppError('Invalid logged user id');
+    }
+
     if (!loggedUser.confirmation_status) {
       throw new AppError('You need to verify your account.');
     }

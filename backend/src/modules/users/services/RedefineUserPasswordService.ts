@@ -42,23 +42,17 @@ class UpdateUserAvatarService {
       throw new AppError('Password is not reseted');
     }
 
-    if (password && !oldPassword) {
-      throw new AppError('Invalid old password');
+    const checkOldPassword = await this.hashProvider.compareHash(
+      oldPassword,
+      user.password,
+    );
+
+    if (!checkOldPassword) {
+      throw new AppError('Old password does not match');
     }
 
-    if (password && oldPassword) {
-      const checkOldPassword = await this.hashProvider.compareHash(
-        oldPassword,
-        user.password,
-      );
-
-      if (!checkOldPassword) {
-        throw new AppError('Old password does not match');
-      }
-
-      user.password = await this.hashProvider.generateHash(password);
-      user.is_reseted = false;
-    }
+    user.password = await this.hashProvider.generateHash(password);
+    user.is_reseted = false;
 
     await this.usersRepository.save(user);
 

@@ -1,5 +1,4 @@
 import { injectable, inject } from 'tsyringe';
-import { classToClass } from 'class-transformer';
 
 import AppError from '@shared/errors/AppError';
 import IUsersRepository from '../repositories/IUsersRepository';
@@ -29,17 +28,17 @@ class UpdateUserPhoneNumberService {
       throw new AppError('You need to verify your account.');
     }
 
-    const userWithUpdatedPhoneNumber = await this.usersRepository.findByPhoneNumber(
-      phoneNumber,
-    );
-
     const isPhoneNumberValid = phoneNumber.match(
-      /([+]?\d{1,2}[.-\s]?)?(\d{3}[.-]?){2}\d{4}/g,
+      /^\+\d{1,3}\d{1,14}(\s\d{1,13})?/g,
     );
 
     if (!isPhoneNumberValid) {
       throw new AppError('Invalid phone number.');
     }
+
+    const userWithUpdatedPhoneNumber = await this.usersRepository.findByPhoneNumber(
+      phoneNumber,
+    );
 
     if (
       userWithUpdatedPhoneNumber &&
