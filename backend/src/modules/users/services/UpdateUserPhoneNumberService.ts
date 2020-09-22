@@ -29,7 +29,7 @@ class UpdateUserPhoneNumberService {
     }
 
     const isPhoneNumberValid = phoneNumber.match(
-      /^\+\d{1,3}\d{1,14}(\s\d{1,13})?/g,
+      /^\+\d{1,3}\d{1,14}(\s\d{1,13})?/,
     );
 
     if (!isPhoneNumberValid) {

@@ -15,7 +15,7 @@ passwordRouter.post(
     [Segments.PARAMS]: {
       phone_number: Joi.string()
         .required()
-        .regex(/^\+?[1-9]\d{4,14}$/),
+        .regex(/^\+\d{1,3}\d{1,14}(\s\d{1,13})?/),
     },
   }),
   resetPasswordController.create,
