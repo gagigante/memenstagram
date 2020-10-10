@@ -1,47 +1,51 @@
 import IFollowersRepository from '@modules/users/repositories/IFollowersRepository';
-import { getRepository, Repository } from 'typeorm';
+import { getRepository, In, Repository } from 'typeorm';
 
 import IFollowUserDTO from '@modules/users/dtos/IFollowUserDTO';
 import Follower from '../entities/Follower';
+import User from '../entities/User';
 
 class FollowersRepository implements IFollowersRepository {
-  private ormRepository: Repository<Follower>;
+  private ormFollowerRepository: Repository<Follower>;
+
+  private ormUserRepository: Repository<User>;
 
   constructor() {
-    this.ormRepository = getRepository(Follower);
+    this.ormFollowerRepository = getRepository(Follower);
+    this.ormUserRepository = getRepository(User);
   }
 
   public async follow({
     loggedUserId,
     followedUserId,
   }: IFollowUserDTO): Promise<void> {
-    const newFollow = this.ormRepository.create({
+    const newFollow = this.ormFollowerRepository.create({
       user_id: loggedUserId,
       followed_user_id: followedUserId,
     });
 
-    await this.ormRepository.save(newFollow);
+    await this.ormFollowerRepository.save(newFollow);
   }
 
   public async unfollow({
     loggedUserId,
     followedUserId,
   }: IFollowUserDTO): Promise<void> {
-    const follow = await this.ormRepository.findOne({
+    const follow = await this.ormFollowerRepository.findOne({
       where: {
         user_id: loggedUserId,
         followed_user_id: followedUserId,
       },
     });
 
-    await this.ormRepository.remove(follow);
+    await this.ormFollowerRepository.remove(follow);
   }
 
   public async findFollow({
     loggedUserId,
     followedUserId,
   }: IFollowUserDTO): Promise<Follower | undefined> {
-    const follow = await this.ormRepository.findOne({
+    const follow = await this.ormFollowerRepository.findOne({
       where: {
         user_id: loggedUserId,
         followed_user_id: followedUserId,
@@ -51,24 +55,52 @@ class FollowersRepository implements IFollowersRepository {
     return follow;
   }
 
-  public async showUserFollowers(userId: string): Promise<Follower[]> {
-    const followers = await this.ormRepository.find({
+  public async showUserFollowers(userId: string): Promise<User[]> {
+    const followers = await this.ormFollowerRepository.find({
       where: {
         followed_user_id: userId,
       },
     });
 
-    return followers;
+    if (followers.length !== 0) {
+      const followersId = followers.map(item => {
+        return item.user_id;
+      });
+
+      const users = await this.ormUserRepository.find({
+        where: {
+          id: In(followersId),
+        },
+      });
+
+      return users;
+    }
+
+    return [];
   }
 
-  public async showFollowedUsers(userId: string): Promise<Follower[]> {
-    const followers = await this.ormRepository.find({
+  public async showUserFollows(userId: string): Promise<User[]> {
+    const follows = await this.ormFollowerRepository.find({
       where: {
-        followed_user_id: userId,
+        user_id: userId,
       },
     });
 
-    return followers;
+    if (follows.length !== 0) {
+      const followsId = follows.map(item => {
+        return item.followed_user_id;
+      });
+
+      const users = await this.ormUserRepository.find({
+        where: {
+          id: In(followsId),
+        },
+      });
+
+      return users;
+    }
+
+    return [];
   }
 }
 

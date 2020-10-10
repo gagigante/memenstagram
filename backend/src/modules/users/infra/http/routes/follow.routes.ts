@@ -11,6 +11,8 @@ const followController = new FollowController();
 
 followRouter.use(ensureAuthenticated);
 
+followRouter.get('/follow-data', followController.index);
+
 followRouter.get(
   '/follow/:followedUserId',
   celebrate({

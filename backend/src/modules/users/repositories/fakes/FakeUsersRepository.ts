@@ -5,7 +5,7 @@ import IUsersRepository from '../IUsersRepository';
 import ICreateUserDTO from '../../dtos/ICreateUserDTO';
 
 class FakeUsersRepository implements IUsersRepository {
-  private users: User[] = [];
+  public users: User[] = [];
 
   public async findById(id: string): Promise<User | undefined> {
     const user = this.users.find(item => item.id === id);

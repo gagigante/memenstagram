@@ -1,6 +1,7 @@
 import { uuid } from 'uuidv4';
 
 import Follower from '@modules/users/infra/typeorm/entities/Follower';
+import User from '@modules/users/infra/typeorm/entities/User';
 import IFollowersRepository from '../IFollowersRepository';
 import IFollowUserDTO from '../../dtos/IFollowUserDTO';
 
@@ -47,18 +48,12 @@ class FakeFollowersRepository implements IFollowersRepository {
     );
   }
 
-  public async showUserFollowers(userId: string): Promise<Follower[]> {
-    const followers = this.followers.filter(item => item.user_id === userId);
-
-    return followers;
+  public async showUserFollowers(_: string): Promise<User[]> {
+    return [];
   }
 
-  public async showFollowedUsers(userId: string): Promise<Follower[]> {
-    const followers = this.followers.filter(
-      item => item.followed_user_id === userId,
-    );
-
-    return followers;
+  public async showUserFollows(_: string): Promise<User[]> {
+    return [];
   }
 }
 
