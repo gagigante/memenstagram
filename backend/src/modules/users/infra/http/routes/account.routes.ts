@@ -32,4 +32,6 @@ accountRouter.patch(
   accountController.update,
 );
 
+// accountRouter.delete('/', accountController.destroy);
+
 export default accountRouter;
