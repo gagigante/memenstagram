@@ -30,7 +30,7 @@ export default {
   multer: {
     storage: multer.diskStorage({
       destination: tmpFolder,
-      filename(request, file, cb) {
+      filename(_, file, cb) {
         const fileHash = crypto.randomBytes(10).toString('hex');
         const filename = `${fileHash}-${file.originalname}`;
 
