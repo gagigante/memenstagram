@@ -1,11 +1,10 @@
 import { MigrationInterface, QueryRunner, Table } from 'typeorm';
 
-export default class CreateFollowers1600819523898
-  implements MigrationInterface {
+export default class CreatePosts1602378814953 implements MigrationInterface {
   public async up(queryRunner: QueryRunner): Promise<void> {
     await queryRunner.createTable(
       new Table({
-        name: 'followers',
+        name: 'posts',
         columns: [
           {
             name: 'id',
@@ -19,8 +18,17 @@ export default class CreateFollowers1600819523898
             type: 'uuid',
           },
           {
-            name: 'followed_user_id',
-            type: 'uuid',
+            name: 'image_url',
+            type: 'varchar',
+          },
+          {
+            name: 'image_preview_url',
+            type: 'varchar',
+          },
+          {
+            name: 'description',
+            type: 'varchar',
+            length: '350',
           },
           {
             name: 'created_at',
@@ -42,22 +50,12 @@ export default class CreateFollowers1600819523898
             onUpdate: 'CASCADE',
             onDelete: 'CASCADE',
           },
-          {
-            name: 'followed_user_id',
-            referencedTableName: 'users',
-            referencedColumnNames: ['id'],
-            columnNames: ['user_id'],
-            onUpdate: 'CASCADE',
-            onDelete: 'CASCADE',
-          },
         ],
       }),
     );
   }
 
   public async down(queryRunner: QueryRunner): Promise<void> {
-    await queryRunner.dropForeignKey('followers', 'user_id');
-    await queryRunner.dropForeignKey('followers', 'followed_user_id');
-    await queryRunner.dropTable('followers');
+    await queryRunner.dropTable('posts');
   }
 }
