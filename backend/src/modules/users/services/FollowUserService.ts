@@ -26,13 +26,17 @@ class FollowUserService {
     const loggedUser = await this.usersRepository.findById(loggedUserId);
 
     if (!loggedUser) {
-      throw new AppError('Invalid logged user id');
+      throw new AppError('User was not found');
+    }
+
+    if (!loggedUser.confirmation_status) {
+      throw new AppError('You need to verify your account');
     }
 
     const followedUser = await this.usersRepository.findById(followedUserId);
 
-    if (!followedUser) {
-      throw new AppError('Invalid followed user id');
+    if (!followedUser || !followedUser.confirmation_status) {
+      throw new AppError('User to be followed was not found');
     }
 
     if (loggedUserId === followedUserId) {

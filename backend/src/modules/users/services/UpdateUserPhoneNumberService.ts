@@ -21,11 +21,11 @@ class UpdateUserPhoneNumberService {
     const user = await this.usersRepository.findById(userId);
 
     if (!user) {
-      throw new AppError('User was not found.');
+      throw new AppError('User was not found');
     }
 
     if (!user.confirmation_status) {
-      throw new AppError('You need to verify your account.');
+      throw new AppError('You need to verify your account');
     }
 
     const isPhoneNumberValid = phoneNumber.match(
@@ -33,7 +33,7 @@ class UpdateUserPhoneNumberService {
     );
 
     if (!isPhoneNumberValid) {
-      throw new AppError('Invalid phone number.');
+      throw new AppError('Invalid phone number');
     }
 
     const userWithUpdatedPhoneNumber = await this.usersRepository.findByPhoneNumber(
@@ -44,7 +44,7 @@ class UpdateUserPhoneNumberService {
       userWithUpdatedPhoneNumber &&
       userWithUpdatedPhoneNumber.id !== userId
     ) {
-      throw new AppError('Phone number already in use.');
+      throw new AppError('Phone number already in use');
     }
 
     user.confirmation_status = false;

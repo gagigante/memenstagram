@@ -37,19 +37,19 @@ class CreateUserService {
     let checkUserExists = await this.usersRepository.findByEmail(email);
 
     if (checkUserExists) {
-      throw new AppError('E-mail already in use.');
+      throw new AppError('E-mail already in use');
     }
 
     checkUserExists = await this.usersRepository.findByPhoneNumber(phoneNumber);
 
     if (checkUserExists) {
-      throw new AppError('Phone number already in use.');
+      throw new AppError('Phone number already in use');
     }
 
     checkUserExists = await this.usersRepository.findByNickname(nickname);
 
     if (checkUserExists) {
-      throw new AppError('Nickname already in use.');
+      throw new AppError('Nickname already in use');
     }
 
     const hashedPassword = await this.hashProvider.generateHash(password);

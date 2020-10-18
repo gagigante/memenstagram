@@ -24,7 +24,7 @@ class SendActivationCodeSmsService {
     const user = await this.usersRepository.findById(userId);
 
     if (!user) {
-      throw new AppError('User was not found.');
+      throw new AppError('User was not found');
     }
 
     user.confirmation_code = crypto.randomBytes(3).toString('hex');

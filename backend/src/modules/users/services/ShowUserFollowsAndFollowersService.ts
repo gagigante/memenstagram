@@ -28,11 +28,13 @@ class ShowUserFollowsAndFollowers {
     const loggedUser = await this.usersRepository.findById(userId);
 
     if (!loggedUser) {
-      throw new AppError('Invalid user id');
+      throw new AppError('User was not found');
     }
 
-    const follows = await this.followersRepository.showUserFollows(userId);
-    const followers = await this.followersRepository.showUserFollowers(userId);
+    const [follows] = await this.followersRepository.showUserFollows(userId);
+    const [followers] = await this.followersRepository.showUserFollowers(
+      userId,
+    );
 
     return {
       follows: classToClass(follows),

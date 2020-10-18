@@ -30,6 +30,8 @@ describe('FollowUser', () => {
       confirmation_code: '123456',
     });
 
+    user.confirmation_status = true;
+
     const userToUnfollow = fakeUsersRepository.create({
       name: 'John Tre',
       nickname: 'johntre',
@@ -53,6 +55,33 @@ describe('FollowUser', () => {
       loggedUserId: user.id,
       followedUserId: userToUnfollow.id,
     });
+  });
+
+  it('Should not be able to unfollow an user with a non verified account', async () => {
+    const user = fakeUsersRepository.create({
+      name: 'John Doe',
+      nickname: 'johndoe',
+      email: 'johndoe@example.com',
+      phone_number: '+5511123456789',
+      password: '123456',
+      confirmation_code: '123456',
+    });
+
+    const userToUnfollow = fakeUsersRepository.create({
+      name: 'John Tre',
+      nickname: 'johntre',
+      email: 'johntre@example.com',
+      phone_number: '+55987654321',
+      password: '123456',
+      confirmation_code: '123456',
+    });
+
+    await expect(
+      unfollowUserService.execute({
+        loggedUserId: user.id,
+        followedUserId: userToUnfollow.id,
+      }),
+    ).rejects.toBeInstanceOf(AppError);
   });
 
   it('Should not be able to unfollow an user with an invalid userId', async () => {
@@ -83,6 +112,8 @@ describe('FollowUser', () => {
       confirmation_code: '123456',
     });
 
+    user.confirmation_status = true;
+
     await expect(
       unfollowUserService.execute({
         loggedUserId: user.id,
@@ -101,6 +132,8 @@ describe('FollowUser', () => {
       confirmation_code: '123456',
     });
 
+    user.confirmation_status = true;
+
     await expect(
       unfollowUserService.execute({
         loggedUserId: user.id,
@@ -118,6 +151,8 @@ describe('FollowUser', () => {
       password: '123456',
       confirmation_code: '123456',
     });
+
+    user.confirmation_status = true;
 
     const userToUnfollow = fakeUsersRepository.create({
       name: 'John Tre',

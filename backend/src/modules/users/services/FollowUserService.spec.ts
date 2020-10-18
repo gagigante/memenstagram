@@ -30,6 +30,8 @@ describe('FollowUser', () => {
       confirmation_code: '123456',
     });
 
+    user.confirmation_status = true;
+
     const userToFollow = fakeUsersRepository.create({
       name: 'John Tre',
       nickname: 'johntre',
@@ -38,6 +40,8 @@ describe('FollowUser', () => {
       password: '123456',
       confirmation_code: '123456',
     });
+
+    userToFollow.confirmation_status = true;
 
     await followUserService.execute({
       loggedUserId: user.id,
@@ -50,6 +54,35 @@ describe('FollowUser', () => {
     });
   });
 
+  it('Should not be able to follow an user with a non verified account', async () => {
+    const user = fakeUsersRepository.create({
+      name: 'John Doe',
+      nickname: 'johndoe',
+      email: 'johndoe@example.com',
+      phone_number: '+5511123456789',
+      password: '123456',
+      confirmation_code: '123456',
+    });
+
+    const userToFollow = fakeUsersRepository.create({
+      name: 'John Tre',
+      nickname: 'johntre',
+      email: 'johntre@example.com',
+      phone_number: '+55987654321',
+      password: '123456',
+      confirmation_code: '123456',
+    });
+
+    userToFollow.confirmation_status = true;
+
+    await expect(
+      followUserService.execute({
+        loggedUserId: user.id,
+        followedUserId: userToFollow.id,
+      }),
+    ).rejects.toBeInstanceOf(AppError);
+  });
+
   it('Should not be able to follow an user with an invalid userId', async () => {
     const user = fakeUsersRepository.create({
       name: 'John Doe',
@@ -59,6 +92,8 @@ describe('FollowUser', () => {
       password: '123456',
       confirmation_code: '123456',
     });
+
+    user.confirmation_status = true;
 
     await expect(
       followUserService.execute({
@@ -78,6 +113,8 @@ describe('FollowUser', () => {
       confirmation_code: '123456',
     });
 
+    user.confirmation_status = true;
+
     await expect(
       followUserService.execute({
         loggedUserId: user.id,
@@ -95,6 +132,8 @@ describe('FollowUser', () => {
       password: '123456',
       confirmation_code: '123456',
     });
+
+    user.confirmation_status = true;
 
     await expect(
       followUserService.execute({
@@ -114,6 +153,8 @@ describe('FollowUser', () => {
       confirmation_code: '123456',
     });
 
+    user.confirmation_status = true;
+
     const userToFollow = fakeUsersRepository.create({
       name: 'John Tre',
       nickname: 'johntre',
@@ -122,6 +163,8 @@ describe('FollowUser', () => {
       password: '123456',
       confirmation_code: '123456',
     });
+
+    userToFollow.confirmation_status = true;
 
     await followUserService.execute({
       loggedUserId: user.id,

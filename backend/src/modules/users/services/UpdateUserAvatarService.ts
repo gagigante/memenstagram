@@ -1,5 +1,4 @@
 import { injectable, inject } from 'tsyringe';
-import { classToClass } from 'class-transformer';
 
 import AppError from '@shared/errors/AppError';
 import IStorageProvider from '@shared/containers/providers/StorageProvider/models/IStorageProvider';
@@ -26,11 +25,11 @@ class UpdateUserAvatarService {
     const user = await this.usersRepository.findById(userId);
 
     if (!user) {
-      throw new AppError('User was not found.');
+      throw new AppError('User was not found');
     }
 
     if (!user.confirmation_status) {
-      throw new AppError('You need to verify your account.');
+      throw new AppError('You need to verify your account');
     }
 
     if (user.avatar_url) {

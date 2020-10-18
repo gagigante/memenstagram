@@ -25,15 +25,15 @@ class ActivateAccountService {
     const user = await this.usersRepository.findById(user_id);
 
     if (!user) {
-      throw new AppError('User was not found.');
+      throw new AppError('User was not found');
     }
 
     if (user.confirmation_status) {
-      throw new AppError('Account is already verified.');
+      throw new AppError('Account is already verified');
     }
 
     if (user.confirmation_code !== confirmation_code) {
-      throw new AppError('Invalid confirmation code.');
+      throw new AppError('Invalid confirmation code');
     }
 
     user.confirmation_status = true;

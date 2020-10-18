@@ -39,11 +39,11 @@ class UpdateProfileService {
     const user = await this.usersRepository.findById(userId);
 
     if (!user) {
-      throw new AppError('User was not found.');
+      throw new AppError('User was not found');
     }
 
     if (!user.confirmation_status) {
-      throw new AppError('You need to verify your account.');
+      throw new AppError('You need to verify your account');
     }
 
     const userWithUpdatedEmail = await this.usersRepository.findByEmail(email);
