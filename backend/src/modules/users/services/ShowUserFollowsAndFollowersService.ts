@@ -6,7 +6,8 @@ import IFollowersRepository from '../repositories/IFollowersRepository';
 import User from '../infra/typeorm/entities/User';
 
 interface IRequestDTO {
-  userId: string;
+  loggedUserId: string;
+  nickname: string;
 }
 
 interface IResponseDTO {
@@ -24,16 +25,25 @@ class ShowUserFollowsAndFollowers {
     private followersRepository: IFollowersRepository,
   ) {}
 
-  public async execute({ userId }: IRequestDTO): Promise<IResponseDTO> {
-    const loggedUser = await this.usersRepository.findById(userId);
+  public async execute({
+    loggedUserId,
+    nickname,
+  }: IRequestDTO): Promise<IResponseDTO> {
+    const loggedUser = await this.usersRepository.findById(loggedUserId);
 
     if (!loggedUser) {
       throw new AppError('User was not found');
     }
 
-    const [follows] = await this.followersRepository.showUserFollows(userId);
+    const user = await this.usersRepository.findByNickname(nickname);
+
+    if (!user) {
+      throw new AppError('User was not found');
+    }
+
+    const [follows] = await this.followersRepository.showUserFollows(user.id);
     const [followers] = await this.followersRepository.showUserFollowers(
-      userId,
+      user.id,
     );
 
     return {

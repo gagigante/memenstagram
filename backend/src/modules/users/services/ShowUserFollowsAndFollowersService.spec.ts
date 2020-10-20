@@ -68,7 +68,7 @@ describe('ShowUserFollowsAndFollowers', () => {
     });
 
     const userFollowsAndFollowers = await showUserFollowsAndFollowersService.execute(
-      { userId: user.id },
+      { nickname: user.nickname, loggedUserId: user.id },
     );
 
     expect(userFollowsAndFollowers).toEqual({
@@ -81,8 +81,38 @@ describe('ShowUserFollowsAndFollowers', () => {
   });
 
   it('Should not be able to show follows and followers with an invalid user id', async () => {
+    const user = fakeUsersRepository.create({
+      name: 'John Doe',
+      nickname: 'johndoe',
+      email: 'johndoe@example.com',
+      phone_number: '+5511123456789',
+      password: '123456',
+      confirmation_code: '123456',
+    });
+
     await expect(
-      showUserFollowsAndFollowersService.execute({ userId: 'invalid-user-id' }),
+      showUserFollowsAndFollowersService.execute({
+        nickname: user.nickname,
+        loggedUserId: 'invalid-user-id',
+      }),
+    ).rejects.toBeInstanceOf(AppError);
+  });
+
+  it('Should not be able to show follows and followers with an invalid nickname', async () => {
+    const user = fakeUsersRepository.create({
+      name: 'John Doe',
+      nickname: 'johndoe',
+      email: 'johndoe@example.com',
+      phone_number: '+5511123456789',
+      password: '123456',
+      confirmation_code: '123456',
+    });
+
+    await expect(
+      showUserFollowsAndFollowersService.execute({
+        nickname: 'invalid-nickname',
+        loggedUserId: user.id,
+      }),
     ).rejects.toBeInstanceOf(AppError);
   });
 });
