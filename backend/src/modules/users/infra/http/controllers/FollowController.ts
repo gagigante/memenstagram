@@ -8,13 +8,14 @@ import UnfollowUserService from '@modules/users/services/UnfollowUserService';
 export default class FollowController {
   public async index(request: Request, response: Response): Promise<Response> {
     const loggedUserId = request.user.id;
+    const { nickname } = request.params;
 
     const showUserFollowsAndFollowersService = container.resolve(
       ShowUserFollowsAndFollowersService,
     );
 
     const userFollowsAndFollowers = await showUserFollowsAndFollowersService.execute(
-      { userId: loggedUserId },
+      { nickname, loggedUserId },
     );
 
     return response.json(userFollowsAndFollowers);
