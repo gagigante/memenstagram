@@ -55,7 +55,7 @@ class FollowersRepository implements IFollowersRepository {
     return follow;
   }
 
-  public async showUserFollowers(userId: string): Promise<User[]> {
+  public async showUserFollowers(userId: string): Promise<[User[], number]> {
     const followers = await this.ormFollowerRepository.find({
       where: {
         followed_user_id: userId,
@@ -67,7 +67,7 @@ class FollowersRepository implements IFollowersRepository {
         return item.user_id;
       });
 
-      const users = await this.ormUserRepository.find({
+      const users = await this.ormUserRepository.findAndCount({
         where: {
           id: In(followersId),
         },
@@ -76,10 +76,10 @@ class FollowersRepository implements IFollowersRepository {
       return users;
     }
 
-    return [];
+    return [[], 0];
   }
 
-  public async showUserFollows(userId: string): Promise<User[]> {
+  public async showUserFollows(userId: string): Promise<[User[], number]> {
     const follows = await this.ormFollowerRepository.find({
       where: {
         user_id: userId,
@@ -91,7 +91,7 @@ class FollowersRepository implements IFollowersRepository {
         return item.followed_user_id;
       });
 
-      const users = await this.ormUserRepository.find({
+      const users = await this.ormUserRepository.findAndCount({
         where: {
           id: In(followsId),
         },
@@ -100,7 +100,7 @@ class FollowersRepository implements IFollowersRepository {
       return users;
     }
 
-    return [];
+    return [[], 0];
   }
 }
 

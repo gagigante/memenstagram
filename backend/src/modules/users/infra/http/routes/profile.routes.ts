@@ -4,14 +4,18 @@ import { celebrate, Segments, Joi } from 'celebrate';
 import ensureAuthenticated from '../middlewares/ensureAuthenticated';
 
 import ProfileController from '../controllers/ProfileController';
+import FollowController from '../controllers/FollowController';
 
 const profileRouter = Router();
 
 const profileController = new ProfileController();
+const followController = new FollowController();
 
 profileRouter.use(ensureAuthenticated);
 
 profileRouter.get('/:nickname', profileController.show);
+
+profileRouter.get('/:nickname/stats', followController.show);
 
 profileRouter.put(
   '/',

@@ -48,12 +48,12 @@ class FakeFollowersRepository implements IFollowersRepository {
     );
   }
 
-  public async showUserFollowers(_: string): Promise<User[]> {
-    return [];
+  public async showUserFollowers(_: string): Promise<[User[], 0]> {
+    return [[], 0];
   }
 
-  public async showUserFollows(_: string): Promise<User[]> {
-    return [];
+  public async showUserFollows(_: string): Promise<[User[], 0]> {
+    return [[], 0];
   }
 }
 
