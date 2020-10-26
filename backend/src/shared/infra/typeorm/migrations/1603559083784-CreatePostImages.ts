@@ -1,10 +1,11 @@
 import { MigrationInterface, QueryRunner, Table } from 'typeorm';
 
-export default class CreatePosts1602378814953 implements MigrationInterface {
+export default class CreatePostImages1603559083784
+  implements MigrationInterface {
   public async up(queryRunner: QueryRunner): Promise<void> {
     await queryRunner.createTable(
       new Table({
-        name: 'posts',
+        name: 'post_images',
         columns: [
           {
             name: 'id',
@@ -14,13 +15,12 @@ export default class CreatePosts1602378814953 implements MigrationInterface {
             default: 'uuid_generate_v4()',
           },
           {
-            name: 'user_id',
+            name: 'post_id',
             type: 'uuid',
           },
           {
-            name: 'description',
+            name: 'image_url',
             type: 'varchar',
-            length: '350',
           },
           {
             name: 'created_at',
@@ -35,10 +35,10 @@ export default class CreatePosts1602378814953 implements MigrationInterface {
         ],
         foreignKeys: [
           {
-            name: 'user_id',
-            referencedTableName: 'users',
+            name: 'post_id_to_images',
+            referencedTableName: 'posts',
             referencedColumnNames: ['id'],
-            columnNames: ['user_id'],
+            columnNames: ['post_id'],
             onUpdate: 'CASCADE',
             onDelete: 'CASCADE',
           },
@@ -48,6 +48,6 @@ export default class CreatePosts1602378814953 implements MigrationInterface {
   }
 
   public async down(queryRunner: QueryRunner): Promise<void> {
-    await queryRunner.dropTable('posts');
+    await queryRunner.dropTable('post_images');
   }
 }

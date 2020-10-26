@@ -1,10 +1,11 @@
 import { MigrationInterface, QueryRunner, Table } from 'typeorm';
 
-export default class CreatePosts1602378814953 implements MigrationInterface {
+export default class CreatePostLikes1603559592380
+  implements MigrationInterface {
   public async up(queryRunner: QueryRunner): Promise<void> {
     await queryRunner.createTable(
       new Table({
-        name: 'posts',
+        name: 'post_likes',
         columns: [
           {
             name: 'id',
@@ -14,13 +15,12 @@ export default class CreatePosts1602378814953 implements MigrationInterface {
             default: 'uuid_generate_v4()',
           },
           {
-            name: 'user_id',
+            name: 'post_id',
             type: 'uuid',
           },
           {
-            name: 'description',
-            type: 'varchar',
-            length: '350',
+            name: 'user_who_liked_id',
+            type: 'uuid',
           },
           {
             name: 'created_at',
@@ -35,10 +35,18 @@ export default class CreatePosts1602378814953 implements MigrationInterface {
         ],
         foreignKeys: [
           {
-            name: 'user_id',
+            name: 'post_id_to_likes',
+            referencedTableName: 'posts',
+            referencedColumnNames: ['id'],
+            columnNames: ['post_id'],
+            onUpdate: 'CASCADE',
+            onDelete: 'CASCADE',
+          },
+          {
+            name: 'user_id_to_likes',
             referencedTableName: 'users',
             referencedColumnNames: ['id'],
-            columnNames: ['user_id'],
+            columnNames: ['user_who_liked_id'],
             onUpdate: 'CASCADE',
             onDelete: 'CASCADE',
           },
@@ -48,6 +56,6 @@ export default class CreatePosts1602378814953 implements MigrationInterface {
   }
 
   public async down(queryRunner: QueryRunner): Promise<void> {
-    await queryRunner.dropTable('posts');
+    await queryRunner.dropTable('post_likes');
   }
 }
