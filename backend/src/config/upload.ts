@@ -32,7 +32,7 @@ export default {
       destination: tmpFolder,
       filename(_, file, cb) {
         const fileHash = crypto.randomBytes(10).toString('hex');
-        const filename = `${fileHash}-${file.originalname}`;
+        const filename = `${fileHash}-${file.originalname.replace(/\s/g, '')}`;
 
         return cb(null, filename);
       },
