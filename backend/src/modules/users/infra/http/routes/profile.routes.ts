@@ -13,9 +13,25 @@ const followController = new FollowController();
 
 profileRouter.use(ensureAuthenticated);
 
-profileRouter.get('/:nickname', profileController.show);
+profileRouter.get(
+  '/:nickname',
+  celebrate({
+    [Segments.PARAMS]: {
+      nickname: Joi.string().required(),
+    },
+  }),
+  profileController.show,
+);
 
-profileRouter.get('/:nickname/stats', followController.show);
+profileRouter.get(
+  '/:nickname/stats',
+  celebrate({
+    [Segments.PARAMS]: {
+      nickname: Joi.string().required(),
+    },
+  }),
+  followController.show,
+);
 
 profileRouter.put(
   '/',

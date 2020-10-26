@@ -11,7 +11,15 @@ const followController = new FollowController();
 
 followRouter.use(ensureAuthenticated);
 
-followRouter.get('/follow-data/:nickname', followController.index);
+followRouter.get(
+  '/follow-data/:nickname',
+  celebrate({
+    [Segments.PARAMS]: {
+      nickname: Joi.string().required(),
+    },
+  }),
+  followController.index,
+);
 
 followRouter.get(
   '/follow/:followedUserId',
