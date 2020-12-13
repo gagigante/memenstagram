@@ -10,21 +10,11 @@ import AsyncStorage from '@react-native-community/async-storage';
 
 import api from '../services/api';
 
-interface User {
-  id: string;
-  name: string;
-  nickname: string;
-  email: string;
-  phone_number: string;
-  bio: string;
-  avatar_url: string;
-  confirmation_status: boolean;
-  is_reseted: boolean;
-}
+import IUser from '../models/IUser';
 
 interface AuthState {
   token: string;
-  user: User;
+  user: IUser;
 }
 
 interface SignInCredentials {
@@ -33,11 +23,11 @@ interface SignInCredentials {
 }
 
 interface AuthContextData {
-  user: User;
+  user: IUser;
   loading: boolean;
   signIn(credentials: SignInCredentials): Promise<void>;
   signOut(): void;
-  updateUser(user: User): Promise<void>;
+  updateUser(user: IUser): Promise<void>;
 }
 
 const AuthContext = createContext<AuthContextData>({} as AuthContextData);
@@ -93,7 +83,7 @@ const AuthProvider: React.FC = ({children}) => {
   }, []);
 
   const updateUser = useCallback(
-    async (user: User) => {
+    async (user: IUser) => {
       await AsyncStorage.setItem('@Memenstagram:user', JSON.stringify(user));
 
       setData({

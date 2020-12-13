@@ -1,13 +1,19 @@
-import React, {useState, useCallback} from 'react';
-import {useNavigation} from '@react-navigation/native';
-
-import {TouchableOpacity, Text, RefreshControl, ScrollView} from 'react-native';
+import React, {useState, useCallback, useLayoutEffect, useEffect} from 'react';
+import {useNavigation, useNavigationState} from '@react-navigation/native';
+import {
+  TouchableOpacity,
+  RefreshControl,
+  ScrollView,
+  ActivityIndicator,
+} from 'react-native';
+import Icon from 'react-native-vector-icons/Feather';
 
 import {useAuth} from '../../hooks/auth';
 
+import api from '../../services/api';
+
 import {
   Container,
-  Nickname,
   ProfileContainer,
   Avatar,
   ProfileInfo,
@@ -22,30 +28,103 @@ import {
   Grid,
   PostButton,
   Post,
+  EmptyContainer,
+  EmptyImage,
+  EmptyText,
+  LoadingContainer,
 } from './styles';
 
-const Profile: React.FC = () => {
-  const {signOut} = useAuth();
+import {ProfileStackParamList} from '../../routes/MainTabRoutes/ProfileStackRoutes';
+import IPost from '../../models/IPost';
+import IUser from '../../models/IUser';
+import IUserStats from '../../models/IUserStats';
 
-  const navigation = useNavigation();
+import AvatarPlaceholder from '../../assets/avatar-placeholder.png';
+import NoPostsPlaceholder from '../../assets/no-posts-placeholder.png';
+import {StackScreenProps} from '@react-navigation/stack';
 
+type Props = StackScreenProps<ProfileStackParamList, 'Profile'>;
+
+const Profile = ({route, navigation}: Props) => {
+  const routeIndex = useNavigationState((state) => state.index);
+
+  const {user, signOut} = useAuth();
+  const {setOptions} = useNavigation();
+
+  const [isLoading, setIsLoading] = useState(true);
   const [refreshing, setRefreshing] = useState(false);
+  const [profileNickname, setProfileNickname] = useState(user.nickname);
+  const [userProfile, setUserProfile] = useState<IUser>();
+  const [userStats, setUserStats] = useState<IUserStats>({} as IUserStats);
+  const [userPosts, setUserPosts] = useState<IPost[]>([] as IPost[]);
 
-  const wait = (timeout) => {
-    return new Promise((resolve) => {
-      setTimeout(resolve, timeout);
-    });
-  };
+  const loadData = useCallback(async () => {
+    let response;
 
-  const handleRefresh = useCallback(() => {
+    response = await api.get(`profile/${profileNickname}`);
+    setUserProfile(response.data);
+
+    response = await api.get(`profile/${profileNickname}/stats`);
+    setUserStats(response.data);
+
+    response = await api.get(`posts/${profileNickname}`);
+    setUserPosts(response.data);
+
+    setIsLoading(false);
+  }, [profileNickname]);
+
+  useEffect(() => {
+    if (route.params) {
+      setProfileNickname(route.params.nickname);
+    }
+
+    loadData();
+  }, [loadData, route.params]);
+
+  const handleRefresh = useCallback(async () => {
     setRefreshing(true);
 
-    wait(2000).then(() => setRefreshing(false));
-  }, []);
+    let response;
+
+    response = await api.get(`profile/${profileNickname}`);
+    setUserProfile(response.data);
+
+    response = await api.get(`profile/${profileNickname}/stats`);
+    setUserStats(response.data);
+
+    response = await api.get(`posts/${profileNickname}`);
+    setUserPosts(response.data);
+
+    setRefreshing(false);
+  }, [profileNickname]);
 
   const handleNavigateToEditProfile = useCallback(() => {
     navigation.navigate('EditProfile');
   }, [navigation]);
+
+  useLayoutEffect(() => {
+    setOptions({
+      headerTitle: userProfile?.nickname,
+    });
+
+    if (routeIndex === 0) {
+      setOptions({
+        headerRight: () => (
+          <TouchableOpacity onPress={signOut}>
+            <Icon size={24} name="log-out" color="#000" />
+          </TouchableOpacity>
+        ),
+      });
+    }
+  }, [setOptions, signOut, userProfile, routeIndex]);
+
+  if (isLoading) {
+    return (
+      <LoadingContainer>
+        <ActivityIndicator size="large" color="#999" />
+      </LoadingContainer>
+    );
+  }
 
   return (
     <Container>
@@ -54,411 +133,64 @@ const Profile: React.FC = () => {
         refreshControl={
           <RefreshControl refreshing={refreshing} onRefresh={handleRefresh} />
         }>
-        <Nickname>gagigante</Nickname>
-
         <ProfileContainer>
           <Avatar
-            source={{
-              uri:
-                'https://avatars2.githubusercontent.com/u/48386738?s=460&u=3f9a149d5c9e6c854b0678f684a5b2c080ab6400&v=4',
-            }}
+            source={
+              userProfile?.avatar_url
+                ? {uri: userProfile?.avatar_url}
+                : AvatarPlaceholder
+            }
           />
 
           <ProfileInfo>
             <Info>
-              <InfoValue>000</InfoValue>
+              <InfoValue>{userStats.posts}</InfoValue>
               <InfoLabel>Posts</InfoLabel>
             </Info>
 
             <Info>
-              <InfoValue>000</InfoValue>
+              <InfoValue>{userStats.followers}</InfoValue>
               <InfoLabel>Followers</InfoLabel>
             </Info>
 
             <Info>
-              <InfoValue>000</InfoValue>
+              <InfoValue>{userStats.following}</InfoValue>
               <InfoLabel>Following</InfoLabel>
             </Info>
           </ProfileInfo>
         </ProfileContainer>
 
         <ProfileBio>
-          <ProfileName>Gabriel Henrique G. da Silva</ProfileName>
-          <BioText>Análise e desenvolvimento de sistemas - IFSP</BioText>
+          <ProfileName>{userProfile?.name}</ProfileName>
+          <BioText>{userProfile?.bio}</BioText>
         </ProfileBio>
 
         <EditProfileButton onPress={handleNavigateToEditProfile}>
           <EditProfileButtonText>Edit Profile</EditProfileButtonText>
         </EditProfileButton>
 
-        <TouchableOpacity onPress={signOut}>
-          <Text>Sair</Text>
-        </TouchableOpacity>
-
-        <Grid>
-          <PostButton
-            onPress={() => navigation.navigate('PostStack', {screen: 'Post'})}
-            activeOpacity={0.8}>
-            <Post
-              source={{
-                uri:
-                  'https://avatars2.githubusercontent.com/u/48386738?s=460&u=3f9a149d5c9e6c854b0678f684a5b2c080ab6400&v=4',
-              }}
-              resizeMode="contain"
-            />
-          </PostButton>
-          <PostButton activeOpacity={0.8}>
-            <Post
-              source={{
-                uri:
-                  'https://avatars2.githubusercontent.com/u/48386738?s=460&u=3f9a149d5c9e6c854b0678f684a5b2c080ab6400&v=4',
-              }}
-              resizeMode="contain"
-            />
-          </PostButton>
-          <PostButton activeOpacity={0.8}>
-            <Post
-              source={{
-                uri:
-                  'https://avatars2.githubusercontent.com/u/48386738?s=460&u=3f9a149d5c9e6c854b0678f684a5b2c080ab6400&v=4',
-              }}
-              resizeMode="contain"
-            />
-          </PostButton>
-          <PostButton activeOpacity={0.8}>
-            <Post
-              source={{
-                uri:
-                  'https://avatars2.githubusercontent.com/u/48386738?s=460&u=3f9a149d5c9e6c854b0678f684a5b2c080ab6400&v=4',
-              }}
-              resizeMode="contain"
-            />
-          </PostButton>
-          <PostButton activeOpacity={0.8}>
-            <Post
-              source={{
-                uri:
-                  'https://avatars2.githubusercontent.com/u/48386738?s=460&u=3f9a149d5c9e6c854b0678f684a5b2c080ab6400&v=4',
-              }}
-              resizeMode="contain"
-            />
-          </PostButton>
-          <PostButton activeOpacity={0.8}>
-            <Post
-              source={{
-                uri:
-                  'https://avatars2.githubusercontent.com/u/48386738?s=460&u=3f9a149d5c9e6c854b0678f684a5b2c080ab6400&v=4',
-              }}
-              resizeMode="contain"
-            />
-          </PostButton>
-          <PostButton activeOpacity={0.8}>
-            <Post
-              source={{
-                uri:
-                  'https://avatars2.githubusercontent.com/u/48386738?s=460&u=3f9a149d5c9e6c854b0678f684a5b2c080ab6400&v=4',
-              }}
-              resizeMode="contain"
-            />
-          </PostButton>
-          <PostButton activeOpacity={0.8}>
-            <Post
-              source={{
-                uri:
-                  'https://avatars2.githubusercontent.com/u/48386738?s=460&u=3f9a149d5c9e6c854b0678f684a5b2c080ab6400&v=4',
-              }}
-              resizeMode="contain"
-            />
-          </PostButton>
-          <PostButton activeOpacity={0.8}>
-            <Post
-              source={{
-                uri:
-                  'https://avatars2.githubusercontent.com/u/48386738?s=460&u=3f9a149d5c9e6c854b0678f684a5b2c080ab6400&v=4',
-              }}
-              resizeMode="contain"
-            />
-          </PostButton>
-          <PostButton activeOpacity={0.8}>
-            <Post
-              source={{
-                uri:
-                  'https://avatars2.githubusercontent.com/u/48386738?s=460&u=3f9a149d5c9e6c854b0678f684a5b2c080ab6400&v=4',
-              }}
-              resizeMode="contain"
-            />
-          </PostButton>
-          <PostButton activeOpacity={0.8}>
-            <Post
-              source={{
-                uri:
-                  'https://avatars2.githubusercontent.com/u/48386738?s=460&u=3f9a149d5c9e6c854b0678f684a5b2c080ab6400&v=4',
-              }}
-              resizeMode="contain"
-            />
-          </PostButton>
-          <PostButton activeOpacity={0.8}>
-            <Post
-              source={{
-                uri:
-                  'https://avatars2.githubusercontent.com/u/48386738?s=460&u=3f9a149d5c9e6c854b0678f684a5b2c080ab6400&v=4',
-              }}
-              resizeMode="contain"
-            />
-          </PostButton>
-          <PostButton activeOpacity={0.8}>
-            <Post
-              source={{
-                uri:
-                  'https://avatars2.githubusercontent.com/u/48386738?s=460&u=3f9a149d5c9e6c854b0678f684a5b2c080ab6400&v=4',
-              }}
-              resizeMode="contain"
-            />
-          </PostButton>
-          <PostButton activeOpacity={0.8}>
-            <Post
-              source={{
-                uri:
-                  'https://avatars2.githubusercontent.com/u/48386738?s=460&u=3f9a149d5c9e6c854b0678f684a5b2c080ab6400&v=4',
-              }}
-              resizeMode="contain"
-            />
-          </PostButton>
-          <PostButton activeOpacity={0.8}>
-            <Post
-              source={{
-                uri:
-                  'https://avatars2.githubusercontent.com/u/48386738?s=460&u=3f9a149d5c9e6c854b0678f684a5b2c080ab6400&v=4',
-              }}
-              resizeMode="contain"
-            />
-          </PostButton>
-          <PostButton activeOpacity={0.8}>
-            <Post
-              source={{
-                uri:
-                  'https://avatars2.githubusercontent.com/u/48386738?s=460&u=3f9a149d5c9e6c854b0678f684a5b2c080ab6400&v=4',
-              }}
-              resizeMode="contain"
-            />
-          </PostButton>
-          <PostButton activeOpacity={0.8}>
-            <Post
-              source={{
-                uri:
-                  'https://avatars2.githubusercontent.com/u/48386738?s=460&u=3f9a149d5c9e6c854b0678f684a5b2c080ab6400&v=4',
-              }}
-              resizeMode="contain"
-            />
-          </PostButton>
-          <PostButton activeOpacity={0.8}>
-            <Post
-              source={{
-                uri:
-                  'https://avatars2.githubusercontent.com/u/48386738?s=460&u=3f9a149d5c9e6c854b0678f684a5b2c080ab6400&v=4',
-              }}
-              resizeMode="contain"
-            />
-          </PostButton>
-          <PostButton activeOpacity={0.8}>
-            <Post
-              source={{
-                uri:
-                  'https://avatars2.githubusercontent.com/u/48386738?s=460&u=3f9a149d5c9e6c854b0678f684a5b2c080ab6400&v=4',
-              }}
-              resizeMode="contain"
-            />
-          </PostButton>
-          <PostButton activeOpacity={0.8}>
-            <Post
-              source={{
-                uri:
-                  'https://avatars2.githubusercontent.com/u/48386738?s=460&u=3f9a149d5c9e6c854b0678f684a5b2c080ab6400&v=4',
-              }}
-              resizeMode="contain"
-            />
-          </PostButton>
-          <PostButton activeOpacity={0.8}>
-            <Post
-              source={{
-                uri:
-                  'https://avatars2.githubusercontent.com/u/48386738?s=460&u=3f9a149d5c9e6c854b0678f684a5b2c080ab6400&v=4',
-              }}
-              resizeMode="contain"
-            />
-          </PostButton>
-          <PostButton activeOpacity={0.8}>
-            <Post
-              source={{
-                uri:
-                  'https://avatars2.githubusercontent.com/u/48386738?s=460&u=3f9a149d5c9e6c854b0678f684a5b2c080ab6400&v=4',
-              }}
-              resizeMode="contain"
-            />
-          </PostButton>
-          <PostButton activeOpacity={0.8}>
-            <Post
-              source={{
-                uri:
-                  'https://avatars2.githubusercontent.com/u/48386738?s=460&u=3f9a149d5c9e6c854b0678f684a5b2c080ab6400&v=4',
-              }}
-              resizeMode="contain"
-            />
-          </PostButton>
-          <PostButton activeOpacity={0.8}>
-            <Post
-              source={{
-                uri:
-                  'https://avatars2.githubusercontent.com/u/48386738?s=460&u=3f9a149d5c9e6c854b0678f684a5b2c080ab6400&v=4',
-              }}
-              resizeMode="contain"
-            />
-          </PostButton>
-          <PostButton activeOpacity={0.8}>
-            <Post
-              source={{
-                uri:
-                  'https://avatars2.githubusercontent.com/u/48386738?s=460&u=3f9a149d5c9e6c854b0678f684a5b2c080ab6400&v=4',
-              }}
-              resizeMode="contain"
-            />
-          </PostButton>
-          <PostButton activeOpacity={0.8}>
-            <Post
-              source={{
-                uri:
-                  'https://avatars2.githubusercontent.com/u/48386738?s=460&u=3f9a149d5c9e6c854b0678f684a5b2c080ab6400&v=4',
-              }}
-              resizeMode="contain"
-            />
-          </PostButton>
-          <PostButton activeOpacity={0.8}>
-            <Post
-              source={{
-                uri:
-                  'https://avatars2.githubusercontent.com/u/48386738?s=460&u=3f9a149d5c9e6c854b0678f684a5b2c080ab6400&v=4',
-              }}
-              resizeMode="contain"
-            />
-          </PostButton>
-          <PostButton activeOpacity={0.8}>
-            <Post
-              source={{
-                uri:
-                  'https://avatars2.githubusercontent.com/u/48386738?s=460&u=3f9a149d5c9e6c854b0678f684a5b2c080ab6400&v=4',
-              }}
-              resizeMode="contain"
-            />
-          </PostButton>
-          <PostButton activeOpacity={0.8}>
-            <Post
-              source={{
-                uri:
-                  'https://avatars2.githubusercontent.com/u/48386738?s=460&u=3f9a149d5c9e6c854b0678f684a5b2c080ab6400&v=4',
-              }}
-              resizeMode="contain"
-            />
-          </PostButton>
-          <PostButton activeOpacity={0.8}>
-            <Post
-              source={{
-                uri:
-                  'https://avatars2.githubusercontent.com/u/48386738?s=460&u=3f9a149d5c9e6c854b0678f684a5b2c080ab6400&v=4',
-              }}
-              resizeMode="contain"
-            />
-          </PostButton>
-          <PostButton activeOpacity={0.8}>
-            <Post
-              source={{
-                uri:
-                  'https://avatars2.githubusercontent.com/u/48386738?s=460&u=3f9a149d5c9e6c854b0678f684a5b2c080ab6400&v=4',
-              }}
-              resizeMode="contain"
-            />
-          </PostButton>
-          <PostButton activeOpacity={0.8}>
-            <Post
-              source={{
-                uri:
-                  'https://avatars2.githubusercontent.com/u/48386738?s=460&u=3f9a149d5c9e6c854b0678f684a5b2c080ab6400&v=4',
-              }}
-              resizeMode="contain"
-            />
-          </PostButton>
-          <PostButton activeOpacity={0.8}>
-            <Post
-              source={{
-                uri:
-                  'https://avatars2.githubusercontent.com/u/48386738?s=460&u=3f9a149d5c9e6c854b0678f684a5b2c080ab6400&v=4',
-              }}
-              resizeMode="contain"
-            />
-          </PostButton>
-          <PostButton activeOpacity={0.8}>
-            <Post
-              source={{
-                uri:
-                  'https://avatars2.githubusercontent.com/u/48386738?s=460&u=3f9a149d5c9e6c854b0678f684a5b2c080ab6400&v=4',
-              }}
-              resizeMode="contain"
-            />
-          </PostButton>
-          <PostButton activeOpacity={0.8}>
-            <Post
-              source={{
-                uri:
-                  'https://avatars2.githubusercontent.com/u/48386738?s=460&u=3f9a149d5c9e6c854b0678f684a5b2c080ab6400&v=4',
-              }}
-              resizeMode="contain"
-            />
-          </PostButton>
-          <PostButton activeOpacity={0.8}>
-            <Post
-              source={{
-                uri:
-                  'https://avatars2.githubusercontent.com/u/48386738?s=460&u=3f9a149d5c9e6c854b0678f684a5b2c080ab6400&v=4',
-              }}
-              resizeMode="contain"
-            />
-          </PostButton>
-          <PostButton activeOpacity={0.8}>
-            <Post
-              source={{
-                uri:
-                  'https://avatars2.githubusercontent.com/u/48386738?s=460&u=3f9a149d5c9e6c854b0678f684a5b2c080ab6400&v=4',
-              }}
-              resizeMode="contain"
-            />
-          </PostButton>
-          <PostButton activeOpacity={0.8}>
-            <Post
-              source={{
-                uri:
-                  'https://avatars2.githubusercontent.com/u/48386738?s=460&u=3f9a149d5c9e6c854b0678f684a5b2c080ab6400&v=4',
-              }}
-              resizeMode="contain"
-            />
-          </PostButton>
-          <PostButton activeOpacity={0.8}>
-            <Post
-              source={{
-                uri:
-                  'https://avatars2.githubusercontent.com/u/48386738?s=460&u=3f9a149d5c9e6c854b0678f684a5b2c080ab6400&v=4',
-              }}
-              resizeMode="contain"
-            />
-          </PostButton>
-          <PostButton activeOpacity={0.8}>
-            <Post
-              source={{
-                uri:
-                  'https://avatars2.githubusercontent.com/u/48386738?s=460&u=3f9a149d5c9e6c854b0678f684a5b2c080ab6400&v=4',
-              }}
-              resizeMode="contain"
-            />
-          </PostButton>
-        </Grid>
+        {userPosts.length >= 1 ? (
+          <Grid>
+            {userPosts.map((post: IPost) => (
+              <PostButton
+                key={post.id}
+                onPress={() => navigation.push('UserPosts')}
+                activeOpacity={0.8}>
+                <Post
+                  source={{
+                    uri: post.postImages[0].image_url,
+                  }}
+                  resizeMode="cover"
+                />
+              </PostButton>
+            ))}
+          </Grid>
+        ) : (
+          <EmptyContainer>
+            <EmptyImage source={NoPostsPlaceholder} resizeMode="contain" />
+            <EmptyText>There's no posts yet</EmptyText>
+          </EmptyContainer>
+        )}
       </ScrollView>
     </Container>
   );

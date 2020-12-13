@@ -42,7 +42,7 @@ import {
 
 import AvatarPlaceholder from '../../assets/avatar-placeholder.png';
 
-interface UpdateUserFormData {
+interface IUpdateUserFormData {
   name: string;
   nickname: string;
   email: string;
@@ -67,7 +67,7 @@ const EditProfile: React.FC = () => {
   const [isLoading, setIsLoading] = useState(false);
 
   const handleUpdateProfile = useCallback(
-    async (data: UpdateUserFormData) => {
+    async (data: IUpdateUserFormData) => {
       try {
         formRef.current?.setErrors({});
 

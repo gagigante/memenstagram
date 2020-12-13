@@ -4,7 +4,7 @@ import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 
 import Icon from 'react-native-vector-icons/Feather';
 
-import {IconWrapper, Avatar} from './styles/tab.styles';
+import {IconWrapper, Avatar} from './styles';
 
 import {useAuth} from '../../hooks/auth';
 
@@ -14,7 +14,7 @@ import {useAuth} from '../../hooks/auth';
 // import Profile from '../pages/Profile';
 
 // import ActivityStackRoutes from './activity.routes';
-import ProfileStackRoutes from '../profile/profileStack.routes';
+import ProfileStackRoutes from './ProfileStackRoutes';
 
 import AvatarPlaceholder from '../../assets/avatar-placeholder.png';
 

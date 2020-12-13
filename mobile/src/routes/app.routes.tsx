@@ -9,7 +9,7 @@ import RedefinePassword from '../pages/RedefinePassword';
 import EditProfile from '../pages/EditProfile';
 import EditPhoneNumber from '../pages/EditPhoneNumber';
 
-import MainTabRoutes from './mainTab/mainTab.routes';
+import MainTabRoutes from './MainTabRoutes';
 
 const Root = createStackNavigator();
 

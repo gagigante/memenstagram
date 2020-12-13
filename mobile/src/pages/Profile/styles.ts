@@ -7,12 +7,6 @@ export const Container = styled.SafeAreaView`
   flex: 1;
 `;
 
-export const Nickname = styled.Text`
-  margin: 12px;
-  font-size: 20px;
-  /* font-weight: bold; */
-`;
-
 export const ProfileContainer = styled.View`
   flex-direction: row;
   justify-content: space-between;
@@ -87,4 +81,27 @@ export const Post = styled.Image`
   width: ${imageWidth}px;
   height: ${imageWidth}px;
   margin: 1px;
+`;
+
+export const EmptyContainer = styled.View`
+  flex: 1;
+  margin-top: 64px;
+  justify-content: center;
+  align-items: center;
+`;
+
+export const EmptyImage = styled.Image`
+  width: 96px;
+  height: 72px;
+`;
+
+export const EmptyText = styled.Text`
+  font-size: 18px;
+  margin-top: 16px;
+`;
+
+export const LoadingContainer = styled.View`
+  flex: 1;
+  justify-content: center;
+  align-items: center;
 `;
