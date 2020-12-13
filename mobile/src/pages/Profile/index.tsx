@@ -53,7 +53,7 @@ const Profile = ({route, navigation}: Props) => {
 
   const [isLoading, setIsLoading] = useState(true);
   const [refreshing, setRefreshing] = useState(false);
-  const [profileNickname, setProfileNickname] = useState(user.nickname);
+  const [profileNickname, setProfileNickname] = useState('');
   const [userProfile, setUserProfile] = useState<IUser>();
   const [userStats, setUserStats] = useState<IUserStats>({} as IUserStats);
   const [userPosts, setUserPosts] = useState<IPost[]>([] as IPost[]);
@@ -74,12 +74,16 @@ const Profile = ({route, navigation}: Props) => {
   }, [profileNickname]);
 
   useEffect(() => {
+    setProfileNickname(user.nickname);
+
     if (route.params) {
       setProfileNickname(route.params.nickname);
     }
 
-    loadData();
-  }, [loadData, route.params]);
+    if (profileNickname !== '') {
+      loadData();
+    }
+  }, [loadData, route.params, user.nickname, profileNickname]);
 
   const handleRefresh = useCallback(async () => {
     setRefreshing(true);
@@ -101,6 +105,10 @@ const Profile = ({route, navigation}: Props) => {
   const handleNavigateToEditProfile = useCallback(() => {
     navigation.navigate('EditProfile');
   }, [navigation]);
+
+  const handleNavigateToUserFollowsAndFollowers = useCallback(() => {
+    navigation.push('UserFollowsAndFollowers', {nickname: profileNickname});
+  }, [navigation, profileNickname]);
 
   useLayoutEffect(() => {
     setOptions({
@@ -148,15 +156,19 @@ const Profile = ({route, navigation}: Props) => {
               <InfoLabel>Posts</InfoLabel>
             </Info>
 
-            <Info>
-              <InfoValue>{userStats.followers}</InfoValue>
-              <InfoLabel>Followers</InfoLabel>
-            </Info>
+            <TouchableOpacity onPress={handleNavigateToUserFollowsAndFollowers}>
+              <Info>
+                <InfoValue>{userStats.followers}</InfoValue>
+                <InfoLabel>Followers</InfoLabel>
+              </Info>
+            </TouchableOpacity>
 
-            <Info>
-              <InfoValue>{userStats.following}</InfoValue>
-              <InfoLabel>Following</InfoLabel>
-            </Info>
+            <TouchableOpacity onPress={handleNavigateToUserFollowsAndFollowers}>
+              <Info>
+                <InfoValue>{userStats.following}</InfoValue>
+                <InfoLabel>Following</InfoLabel>
+              </Info>
+            </TouchableOpacity>
           </ProfileInfo>
         </ProfileContainer>
 
@@ -165,9 +177,11 @@ const Profile = ({route, navigation}: Props) => {
           <BioText>{userProfile?.bio}</BioText>
         </ProfileBio>
 
-        <EditProfileButton onPress={handleNavigateToEditProfile}>
-          <EditProfileButtonText>Edit Profile</EditProfileButtonText>
-        </EditProfileButton>
+        {profileNickname === user.nickname && (
+          <EditProfileButton onPress={handleNavigateToEditProfile}>
+            <EditProfileButtonText>Edit Profile</EditProfileButtonText>
+          </EditProfileButton>
+        )}
 
         {userPosts.length >= 1 ? (
           <Grid>

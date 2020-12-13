@@ -3,11 +3,12 @@ import {createStackNavigator} from '@react-navigation/stack';
 
 import Profile from '../../../pages/Profile';
 import UserPosts from '../../../pages/UserPosts';
+import UserFollowsAndFollowers from '../../../pages/UserFollowsAndFollowers';
 
-// import PostStackRoutes from '../post.routes';
 export type ProfileStackParamList = {
-  Profile: {nickname: string};
+  Profile: {nickname: string} | undefined;
   UserPosts: undefined;
+  UserFollowsAndFollowers: {nickname: string};
   EditProfile: undefined;
 };
 
@@ -41,14 +42,16 @@ const ProfileStackRoutes: React.FC = () => {
         }}
       />
 
-      {/* <ProfileStack.Screen
-        name="PostStack"
-        component={PostStackRoutes}
-        options={{
-          headerShown: false,
-          gestureEnabled: false,
-        }}
-      /> */}
+      <ProfileStack.Screen
+        name="UserFollowsAndFollowers"
+        component={UserFollowsAndFollowers}
+        options={({route}) => ({
+          headerTitle: route.params.nickname,
+          headerStyle: {
+            elevation: 0,
+          },
+        })}
+      />
     </ProfileStack.Navigator>
   );
 };
