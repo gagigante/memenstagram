@@ -20,11 +20,6 @@ jobs:
         node-version: [14.x]
 
     steps:
-      # COPY DIST INSIDE AWS
-      # REPLACE EXISTING CODE
-      # RUN yarn INSIDE AWS
-      # RUN MIGRATIONS
-      # RESTART SERVER
           
     - uses: actions/checkout@v2
     - name: Use Node.js ${{ matrix.node-version }}
@@ -54,6 +49,7 @@ jobs:
       run: 
         yarn build
     
+    # COPY DIST INSIDE AWS
     - name: Copy files inside AWS
       uses: appleboy/scp-action@master
       with:
@@ -63,3 +59,39 @@ jobs:
         key: ${{ secrets.SSH_KEY}}
         source: "backend,!backend/node_modules"
         target: "app/memenstagram"
+        
+    # RUN yarn INSIDE AWS
+    - name: Install dependencies inside AWS
+      uses: appleboy/ssh-action@master
+      with:
+        host: ${{ secrets.SSH_HOST }}
+        username: ${{ secrets.SSH_USER }}
+        port: ${{ secrets.SSH_PORT }}
+        key: ${{ secrets.SSH_KEY}}
+        script: |
+          cd app/memenstagram/backend
+          yarn
+          
+    # RUN MIGRATIONS
+    - name: Run migrations
+      uses: appleboy/ssh-action@master
+      with:
+        host: ${{ secrets.SSH_HOST }}
+        username: ${{ secrets.SSH_USER }}
+        port: ${{ secrets.SSH_PORT }}
+        key: ${{ secrets.SSH_KEY}}
+        script: |
+          cd app/memenstagram/backend
+          ./node_modules/.bin/typeorm migration:run
+          
+    # RESTART SERVER
+    - name: Restart server
+      uses: appleboy/ssh-action@master
+      with:
+        host: ${{ secrets.SSH_HOST }}
+        username: ${{ secrets.SSH_USER }}
+        port: ${{ secrets.SSH_PORT }}
+        key: ${{ secrets.SSH_KEY}}
+        script: |
+          pm2 restart memenstagram-api
+          
