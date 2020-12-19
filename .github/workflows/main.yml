@@ -39,7 +39,6 @@ jobs:
     # RUN BUILD
     - name: Run build
       run: 
-        cd backend
         yarn build
     
     - name: Copy files inside AWS
