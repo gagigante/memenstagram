@@ -60,7 +60,7 @@ jobs:
         source: "backend,!backend/node_modules"
         target: "~/app/memenstagram"
         
-    # RUN yarn INSIDE AWS
+    # RUN PRODUCTIONS SCRIPTS
     - name: Install dependencies inside AWS
       uses: appleboy/ssh-action@master
       with:
@@ -71,16 +71,7 @@ jobs:
         script: |
           cd ~/app/memenstagram/backend
           yarn
-          
-    # RUN MIGRATIONS AND RESTART SERVER
-    - name: Run migrations
-      uses: appleboy/ssh-action@master
-      with:
-        host: ${{ secrets.SSH_HOST }}
-        username: ${{ secrets.SSH_USER }}
-        port: ${{ secrets.SSH_PORT }}
-        key: ${{ secrets.SSH_KEY}}
-        script: |
           cd ~/app/memenstagram/backend
           ./node_modules/.bin/typeorm migration:run
-          pm2 restart memenstagram-api     
+          pm2 restart memenstagram-api
+          
