@@ -71,7 +71,6 @@ jobs:
         script: |
           cd ~/app/memenstagram/backend
           yarn
-          cd ~/app/memenstagram/backend
           ./node_modules/.bin/typeorm migration:run
           pm2 restart memenstagram-api
           
