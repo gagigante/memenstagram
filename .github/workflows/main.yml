@@ -36,7 +36,9 @@ jobs:
       
     # RUN BUILD
     - name: Run build
-      run: yarn build
+      run: 
+        cd backend
+        yarn build
     
     - name: Copy files inside AWS
       uses: appleboy/scp-action@master
