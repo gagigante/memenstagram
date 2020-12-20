@@ -3,6 +3,7 @@ import { celebrate, Segments, Joi } from 'celebrate';
 
 import AccountController from '../controllers/AccountController';
 import SMSAccountCodeController from '../controllers/SMSAccountCodeController';
+// import ensureAuthenticated from '../middlewares/ensureAuthenticated';
 
 const accountRouter = Router();
 
@@ -32,6 +33,6 @@ accountRouter.patch(
   accountController.update,
 );
 
-// accountRouter.delete('/', accountController.destroy);
+// accountRouter.delete('/', ensureAuthenticated, accountController.destroy);
 
 export default accountRouter;
