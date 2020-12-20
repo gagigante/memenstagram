@@ -9,10 +9,9 @@ const followRouter = Router();
 
 const followController = new FollowController();
 
-followRouter.use(ensureAuthenticated);
-
 followRouter.get(
   '/follow-data/:nickname',
+  ensureAuthenticated,
   celebrate({
     [Segments.PARAMS]: {
       nickname: Joi.string().required(),
@@ -23,6 +22,7 @@ followRouter.get(
 
 followRouter.get(
   '/follow/:followedUserId',
+  ensureAuthenticated,
   celebrate({
     [Segments.PARAMS]: {
       followedUserId: Joi.string().uuid().required(),
@@ -33,6 +33,7 @@ followRouter.get(
 
 followRouter.delete(
   '/unfollow/:followedUserId',
+  ensureAuthenticated,
   celebrate({
     [Segments.PARAMS]: {
       followedUserId: Joi.string().uuid().required(),
