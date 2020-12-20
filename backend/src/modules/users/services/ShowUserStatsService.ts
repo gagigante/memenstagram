@@ -58,7 +58,7 @@ class ShowUserStatsService {
       user.id,
     );
 
-    const [, posts] = await this.postsRepository.getUserPosts(user.id);
+    const [, posts] = await this.postsRepository.findUserPosts(user.id);
 
     return {
       posts,
