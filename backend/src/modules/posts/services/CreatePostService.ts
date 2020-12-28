@@ -1,7 +1,6 @@
 import IUsersRepository from '@modules/users/repositories/IUsersRepository';
 import IStorageProvider from '@shared/containers/providers/StorageProvider/models/IStorageProvider';
 import AppError from '@shared/errors/AppError';
-import { classToClass } from 'class-transformer';
 import { inject, injectable } from 'tsyringe';
 import Post from '../infra/typeorm/entities/Post';
 import IPostsRepository from '../repositories/IPostsRepository';
@@ -50,9 +49,11 @@ class CreatePostService {
       await this.storageProvider.saveFile(postImage.image_url);
     });
 
-    const post = await this.postsRepository.createPost(data);
+    const post = this.postsRepository.create(data);
 
-    return classToClass(post);
+    await this.postsRepository.save(post);
+
+    return post;
   }
 }
 

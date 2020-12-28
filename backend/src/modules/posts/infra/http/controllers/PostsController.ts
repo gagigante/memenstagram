@@ -1,5 +1,7 @@
 import { Request, Response } from 'express';
 import { container } from 'tsyringe';
+import { classToClass } from 'class-transformer';
+
 import CreatePostService from '@modules/posts/services/CreatePostService';
 
 export default class PostsController {

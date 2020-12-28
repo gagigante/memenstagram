@@ -26,6 +26,9 @@ class PostImage {
   @UpdateDateColumn()
   updated_at: Date;
 
+  @Column()
+  post_id: string;
+
   @ManyToOne(() => Post, posts => posts.postLikes)
   @JoinColumn({ name: 'post_id' })
   post: Post;
