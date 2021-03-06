@@ -1,7 +1,9 @@
+import { inject, injectable } from 'tsyringe';
+
 import IUsersRepository from '@modules/users/repositories/IUsersRepository';
 import IStorageProvider from '@shared/containers/providers/StorageProvider/models/IStorageProvider';
 import AppError from '@shared/errors/AppError';
-import { inject, injectable } from 'tsyringe';
+
 import Post from '../infra/typeorm/entities/Post';
 import IPostsRepository from '../repositories/IPostsRepository';
 
@@ -45,7 +47,7 @@ class CreatePostService {
       postImages,
     };
 
-    postImages.map(async postImage => {
+    postImages.map(async (postImage) => {
       await this.storageProvider.saveFile(postImage.image_url);
     });
 

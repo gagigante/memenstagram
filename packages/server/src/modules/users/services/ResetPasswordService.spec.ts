@@ -1,6 +1,6 @@
 import AppError from '@shared/errors/AppError';
-
 import FakeSMSProvider from '@shared/containers/providers/SMSProvider/fakes/FakeSMSProvider';
+
 import FakeUsersRepository from '../repositories/fakes/FakeUsersRepository';
 import FakeHashProvider from '../providers/HashProvider/fakes/FakeHashProvider';
 import ResetPasswordService from './ResetPasswordService';

@@ -1,6 +1,7 @@
 import FakeUsersRepository from '@modules/users/repositories/fakes/FakeUsersRepository';
 import FakeStorageProvider from '@shared/containers/providers/StorageProvider/fakes/FakeStorageProvider';
 import AppError from '@shared/errors/AppError';
+
 import FakePostsRepository from '../repositories/fakes/FakePostsRepository';
 import CreatePostService from './CreatePostService';
 
@@ -39,10 +40,7 @@ describe('CreatePost', () => {
     const post = await createPostService.execute({
       loggedUserId: user.id,
       description: 'post-description',
-      postImages: [
-        { image_url: 'image-url' },
-        { image_url: 'image-url-2' },
-      ],
+      postImages: [{ image_url: 'image-url' }, { image_url: 'image-url-2' }],
     });
 
     expect(post).toHaveProperty('id');
@@ -56,10 +54,8 @@ describe('CreatePost', () => {
       createPostService.execute({
         loggedUserId: 'invalid-user-id',
         description: 'post-description',
-        postImages: [
-          { image_url: 'image-url' },
-        ],
-      })
+        postImages: [{ image_url: 'image-url' }],
+      }),
     ).rejects.toBeInstanceOf(AppError);
     expect(savePost).toHaveBeenCalledTimes(0);
   });
@@ -78,10 +74,8 @@ describe('CreatePost', () => {
       createPostService.execute({
         loggedUserId: user.id,
         description: 'post-description',
-        postImages: [
-          { image_url: 'image-url' },
-        ],
-      })
+        postImages: [{ image_url: 'image-url' }],
+      }),
     ).rejects.toBeInstanceOf(AppError);
   });
 });

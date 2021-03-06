@@ -2,8 +2,8 @@ import { injectable, inject } from 'tsyringe';
 
 import AppError from '@shared/errors/AppError';
 import IPostsRepository from '@modules/posts/repositories/IPostsRepository';
-import IUsersRepository from '../repositories/IUsersRepository';
 
+import IUsersRepository from '../repositories/IUsersRepository';
 import IFollowersRepository from '../repositories/IFollowersRepository';
 
 interface IRequestDTO {

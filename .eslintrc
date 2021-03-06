@@ -1,15 +1,17 @@
 {
   "env": {
+    "browser": false,
     "es6": true,
     "node": true,
     "jest": true
   },
   "extends": [
     "airbnb",
-    "plugin:@typescript-eslint/recommended",
+    "prettier",
     "prettier/@typescript-eslint",
-    "plugin:prettier/recommended",
-    "prettier"
+    "plugin:@typescript-eslint/recommended",
+    "plugin:react/recommended",
+    "plugin:prettier/recommended"
   ],
   "globals": {
     "Atomics": "readonly",
@@ -23,17 +25,19 @@
   "plugins": [
     "@typescript-eslint",
     "prettier",
-    "import-helpers"
+    "import-helpers",
+    "react",
+    "react-hooks"
   ],
   "settings": {
     "import/resolver": {
       "typescript": {
-        "alwaysTryTypes": true,
         "project": "packages/*/tsconfig.json"
       }
     }
   },
   "rules": {
+    // TODO: react rules
     "prettier/prettier": "error",
     "class-methods-use-this": "off",
     "no-useless-constructor": "off",
@@ -56,17 +60,6 @@
       "error",
       {
         "devDependencies": true
-      }
-    ],
-    "@typescript-eslint/naming-convention": [
-      "error",
-      {
-        "selector": "interface",
-        "format": ["PascalCase"],
-        "custom": {
-          "regex": "^I[A-Z]",
-          "match": true
-        }
       }
     ],
     "import-helpers/order-imports": [

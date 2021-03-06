@@ -1,4 +1,4 @@
-import React, {useCallback, useRef, useState, useLayoutEffect} from 'react';
+import React, { useCallback, useRef, useState, useLayoutEffect } from 'react';
 import {
   Platform,
   Alert,
@@ -9,26 +9,17 @@ import {
   ActivityIndicator,
   Keyboard,
 } from 'react-native';
-
 import ImagePicker from 'react-native-image-picker';
-
 import Icon from 'react-native-vector-icons/Feather';
-
-import {Form} from '@unform/mobile';
-import {FormHandles} from '@unform/core';
-
+import { Form } from '@unform/mobile';
+import { FormHandles } from '@unform/core';
 import * as Yup from 'yup';
+import { useNavigation } from '@react-navigation/native';
 
 import getValidationErrors from '../../utils/getValidationErrors';
-
-import {useNavigation} from '@react-navigation/native';
-
-import {useAuth} from '../../hooks/auth';
-
+import { useAuth } from '../../hooks/auth';
 import api from '../../services/api';
-
 import SignInput from '../../components/SignInput';
-
 import {
   stylesheet,
   Container,
@@ -39,7 +30,6 @@ import {
   LinkButton,
   LinkButtonText,
 } from './styles';
-
 import AvatarPlaceholder from '../../assets/avatar-placeholder.png';
 
 interface IUpdateUserFormData {
@@ -53,8 +43,8 @@ interface IUpdateUserFormData {
 }
 
 const EditProfile: React.FC = () => {
-  const {user, updateUser} = useAuth();
-  const {navigate, setOptions, reset} = useNavigation();
+  const { user, updateUser } = useAuth();
+  const { navigate, setOptions, reset } = useNavigation();
 
   const formRef = useRef<FormHandles>(null);
   const nicknameInputRef = useRef<TextInput>(null);
@@ -194,15 +184,17 @@ const EditProfile: React.FC = () => {
     <KeyboardAvoidingView
       style={stylesheet.KeyboardAvoidingViewStyle}
       behavior={Platform.OS === 'ios' ? 'padding' : undefined}
-      enabled>
+      enabled
+    >
       <ScrollView
         contentContainerStyle={stylesheet.scrollViewStyle}
-        keyboardShouldPersistTaps="handled">
+        keyboardShouldPersistTaps="handled"
+      >
         <Container>
           <UserAvatarButton onPress={handleUpdateAvatar}>
             <UserAvatar
               source={
-                user.avatar_url ? {uri: user.avatar_url} : AvatarPlaceholder
+                user.avatar_url ? { uri: user.avatar_url } : AvatarPlaceholder
               }
             />
 

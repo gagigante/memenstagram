@@ -1,23 +1,15 @@
-import React, {useCallback, useRef} from 'react';
-
-import {useRoute, useNavigation} from '@react-navigation/native';
-
-import {Form} from '@unform/mobile';
-import {FormHandles} from '@unform/core';
-
+import React, { useCallback, useRef } from 'react';
+import { useRoute, useNavigation } from '@react-navigation/native';
+import { Form } from '@unform/mobile';
+import { FormHandles } from '@unform/core';
 import * as Yup from 'yup';
-
-import {Alert} from 'react-native';
+import { Alert } from 'react-native';
 
 import getValidationErrors from '../../utils/getValidationErrors';
-
 import api from '../../services/api';
-
-import {useAuth} from '../../hooks/auth';
-
+import { useAuth } from '../../hooks/auth';
 import SignInput from '../../components/SignInput';
 import Button from '../../components/Button';
-
 import {
   Container,
   Title,
@@ -39,10 +31,10 @@ interface RouteParams {
 const ActivateAccount: React.FC = () => {
   const formRef = useRef<FormHandles>(null);
 
-  const {reset} = useNavigation();
-  const {params} = useRoute();
+  const { reset } = useNavigation();
+  const { params } = useRoute();
 
-  const {user, updateUser} = useAuth();
+  const { user, updateUser } = useAuth();
 
   const routeParams = params as RouteParams;
 
@@ -75,7 +67,7 @@ const ActivateAccount: React.FC = () => {
         );
 
         if (user) {
-          await updateUser({...user, confirmation_status: true});
+          await updateUser({ ...user, confirmation_status: true });
 
           reset({
             index: 0,
