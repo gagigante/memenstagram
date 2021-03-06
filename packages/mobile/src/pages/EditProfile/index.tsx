@@ -9,7 +9,7 @@ import {
   ActivityIndicator,
   Keyboard,
 } from 'react-native';
-import ImagePicker from 'react-native-image-picker';
+// import { launchCamera, launchImageLibrary } from 'react-native-image-picker';
 import Icon from 'react-native-vector-icons/Feather';
 import { Form } from '@unform/mobile';
 import { FormHandles } from '@unform/core';
@@ -54,7 +54,7 @@ const EditProfile: React.FC = () => {
   const passwordInputRef = useRef<TextInput>(null);
   const passwordConfirmationInputRef = useRef<TextInput>(null);
 
-  const [isLoading, setIsLoading] = useState(false);
+  // const [isLoading, setIsLoading] = useState(false);
 
   const handleUpdateProfile = useCallback(
     async (data: IUpdateUserFormData) => {
@@ -130,7 +130,7 @@ const EditProfile: React.FC = () => {
   );
 
   const handleUpdateAvatar = useCallback(() => {
-    ImagePicker.showImagePicker(
+    /* ImagePicker.showImagePicker(
       {
         title: 'Choose a profile photo',
         cancelButtonTitle: 'Cancel',
@@ -163,7 +163,7 @@ const EditProfile: React.FC = () => {
           setIsLoading(false);
         });
       },
-    );
+    ); */
   }, [updateUser, user.id]);
 
   const handleNavigateToEditPhoneNumber = useCallback(() => {
