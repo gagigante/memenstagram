@@ -1,0 +1,25 @@
+Serviços do módulo de usuários:
+
+ - Conta:
+  - Criar conta - ok
+  - Ativar conta - ok
+  - Redefinir senha - ok
+  - Atualizar senha - ok
+  - Enviar código de confirmação - ok
+
+ - Sessão:
+  - Autenticar - ok
+
+ - Usuário:
+  - Exibir perfil - ok
+  - Atualizar perfil - ok
+  - Atualizar avatar -
+  - Atualizar telefone -
+  - Seguir usuário - ok
+  - Deixar de seguir - ok
+  - Exibir posts, seguidores e seguindo -
+  - Listar seguidores
+
+
+Revisar rotas, respostas, erros, etc
+
