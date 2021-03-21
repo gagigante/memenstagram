@@ -1,11 +1,11 @@
 import { injectable, inject } from 'tsyringe';
 import { classToClass } from 'class-transformer';
 
-import AppError from '@shared/errors/AppError';
-import IUsersRepository from '../repositories/IUsersRepository';
-import IHashProvider from '../providers/HashProvider/models/IHashProvider';
+import User from '@modules/users/infra/typeorm/entities/User';
+import IUsersRepository from '@modules/users/repositories/IUsersRepository';
+import IHashProvider from '@modules/users/providers/HashProvider/models/IHashProvider';
 
-import User from '../infra/typeorm/entities/User';
+import AppError from '@shared/errors/AppError';
 
 interface IRequestDTO {
   userId: string;
@@ -38,8 +38,8 @@ class UpdateUserAvatarService {
       throw new AppError('You need to verify your account');
     }
 
-    if (!user.is_reseted) {
-      throw new AppError('Password is not reseted');
+    if (!user.should_update_password) {
+      throw new AppError('Password is not redefined');
     }
 
     const checkOldPassword = await this.hashProvider.compareHash(
@@ -52,7 +52,7 @@ class UpdateUserAvatarService {
     }
 
     user.password = await this.hashProvider.generateHash(password);
-    user.is_reseted = false;
+    user.should_update_password = false;
 
     await this.usersRepository.save(user);
 

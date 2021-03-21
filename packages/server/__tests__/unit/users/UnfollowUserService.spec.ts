@@ -1,25 +1,26 @@
+import UnfollowUserService from '@modules/users/services/UnfollowUserService';
+import FakeUsersRepository from '@modules/users/repositories/fakes/FakeUsersRepository';
+import FakeFollowersRepository from '@modules/users/repositories/fakes/FakeFollowersRepository';
+
 import AppError from '@shared/errors/AppError';
-import FakeUsersRepository from '../repositories/fakes/FakeUsersRepository';
-import FakeFollowersRepository from '../repositories/fakes/FakeFollowersRepository';
-import FollowUserService from './FollowUserService';
 
 let fakeUsersRepository: FakeUsersRepository;
 let fakeFollowersRepository: FakeFollowersRepository;
-let followUserService: FollowUserService;
+let unfollowUserService: UnfollowUserService;
 
 describe('FollowUser', () => {
   beforeEach(() => {
     fakeUsersRepository = new FakeUsersRepository();
     fakeFollowersRepository = new FakeFollowersRepository();
 
-    followUserService = new FollowUserService(
+    unfollowUserService = new UnfollowUserService(
       fakeUsersRepository,
       fakeFollowersRepository,
     );
   });
 
-  it('Should be able to follow a user', async () => {
-    const createFollow = jest.spyOn(fakeFollowersRepository, 'follow');
+  it('Should be able to unfollow a user', async () => {
+    const unfollow = jest.spyOn(fakeFollowersRepository, 'unfollow');
 
     const user = fakeUsersRepository.create({
       name: 'John Doe',
@@ -32,29 +33,32 @@ describe('FollowUser', () => {
 
     user.confirmation_status = true;
 
-    const userToFollow = fakeUsersRepository.create({
+    const userToUnfollow = fakeUsersRepository.create({
       name: 'John Tre',
       nickname: 'johntre',
       email: 'johntre@example.com',
-      phone_number: '+55987654321',
+      phone_number: '+5511987654321',
       password: '123456',
       confirmation_code: '123456',
     });
 
-    userToFollow.confirmation_status = true;
-
-    await followUserService.execute({
+    fakeFollowersRepository.follow({
       loggedUserId: user.id,
-      followedUserId: userToFollow.id,
+      followedUserId: userToUnfollow.id,
     });
 
-    expect(createFollow).toHaveBeenCalledWith({
+    await unfollowUserService.execute({
       loggedUserId: user.id,
-      followedUserId: userToFollow.id,
+      followedUserId: userToUnfollow.id,
+    });
+
+    expect(unfollow).toHaveBeenCalledWith({
+      loggedUserId: user.id,
+      followedUserId: userToUnfollow.id,
     });
   });
 
-  it('Should not be able to follow an user with a non verified account', async () => {
+  it('Should not be able to unfollow an user with a non verified account', async () => {
     const user = fakeUsersRepository.create({
       name: 'John Doe',
       nickname: 'johndoe',
@@ -64,7 +68,7 @@ describe('FollowUser', () => {
       confirmation_code: '123456',
     });
 
-    const userToFollow = fakeUsersRepository.create({
+    const userToUnfollow = fakeUsersRepository.create({
       name: 'John Tre',
       nickname: 'johntre',
       email: 'johntre@example.com',
@@ -73,17 +77,15 @@ describe('FollowUser', () => {
       confirmation_code: '123456',
     });
 
-    userToFollow.confirmation_status = true;
-
     await expect(
-      followUserService.execute({
+      unfollowUserService.execute({
         loggedUserId: user.id,
-        followedUserId: userToFollow.id,
+        followedUserId: userToUnfollow.id,
       }),
     ).rejects.toBeInstanceOf(AppError);
   });
 
-  it('Should not be able to follow an user with an invalid userId', async () => {
+  it('Should not be able to unfollow an user with an invalid userId', async () => {
     const user = fakeUsersRepository.create({
       name: 'John Doe',
       nickname: 'johndoe',
@@ -93,17 +95,15 @@ describe('FollowUser', () => {
       confirmation_code: '123456',
     });
 
-    user.confirmation_status = true;
-
     await expect(
-      followUserService.execute({
+      unfollowUserService.execute({
         loggedUserId: 'invalid-user-id',
         followedUserId: user.id,
       }),
     ).rejects.toBeInstanceOf(AppError);
   });
 
-  it('Should not be able to follow an user with an invalid followedUserId', async () => {
+  it('Should not be able to unfollow an user with an invalid followedUserId', async () => {
     const user = fakeUsersRepository.create({
       name: 'John Doe',
       nickname: 'johndoe',
@@ -116,14 +116,14 @@ describe('FollowUser', () => {
     user.confirmation_status = true;
 
     await expect(
-      followUserService.execute({
+      unfollowUserService.execute({
         loggedUserId: user.id,
         followedUserId: 'invalid-user-id',
       }),
     ).rejects.toBeInstanceOf(AppError);
   });
 
-  it('Should not be able to follow yourself', async () => {
+  it('Should not be able to unfollow yourself', async () => {
     const user = fakeUsersRepository.create({
       name: 'John Doe',
       nickname: 'johndoe',
@@ -136,14 +136,14 @@ describe('FollowUser', () => {
     user.confirmation_status = true;
 
     await expect(
-      followUserService.execute({
+      unfollowUserService.execute({
         loggedUserId: user.id,
         followedUserId: user.id,
       }),
     ).rejects.toBeInstanceOf(AppError);
   });
 
-  it('Should not be able to follow an already followed user', async () => {
+  it('Should not be able to unfollow an non followed user', async () => {
     const user = fakeUsersRepository.create({
       name: 'John Doe',
       nickname: 'johndoe',
@@ -155,26 +155,19 @@ describe('FollowUser', () => {
 
     user.confirmation_status = true;
 
-    const userToFollow = fakeUsersRepository.create({
+    const userToUnfollow = fakeUsersRepository.create({
       name: 'John Tre',
       nickname: 'johntre',
       email: 'johntre@example.com',
-      phone_number: '+55987654321',
+      phone_number: '+5511987654321',
       password: '123456',
       confirmation_code: '123456',
     });
 
-    userToFollow.confirmation_status = true;
-
-    await followUserService.execute({
-      loggedUserId: user.id,
-      followedUserId: userToFollow.id,
-    });
-
     await expect(
-      followUserService.execute({
+      unfollowUserService.execute({
         loggedUserId: user.id,
-        followedUserId: userToFollow.id,
+        followedUserId: userToUnfollow.id,
       }),
     ).rejects.toBeInstanceOf(AppError);
   });

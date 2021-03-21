@@ -2,3 +2,7 @@ node_modules
 dist
 yarn-error.log
 .vscode
+
+
+// temp
+ormconfig.json

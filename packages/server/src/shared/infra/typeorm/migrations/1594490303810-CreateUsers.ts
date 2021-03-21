@@ -10,8 +10,6 @@ export default class CreateUsers1594490303810 implements MigrationInterface {
             name: 'id',
             type: 'uuid',
             isPrimary: true,
-            generationStrategy: 'uuid',
-            default: 'uuid_generate_v4()',
           },
           {
             name: 'name',
@@ -44,6 +42,11 @@ export default class CreateUsers1594490303810 implements MigrationInterface {
             isNullable: true,
           },
           {
+            name: 'avatar_preview_hash',
+            type: 'varchar',
+            isNullable: true,
+          },
+          {
             name: 'password',
             type: 'varchar',
           },
@@ -57,7 +60,7 @@ export default class CreateUsers1594490303810 implements MigrationInterface {
             default: false,
           },
           {
-            name: 'is_reseted',
+            name: 'should_update_password',
             type: 'bool',
             default: false,
           },

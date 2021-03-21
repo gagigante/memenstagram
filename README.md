@@ -17,10 +17,12 @@ V3:
 
 - ADS
 - Direct messages
+- cacheamento das requisições
 
 V4:
 
 - Stories
+- Gamefication
 
 Desafio: Criar uma rede social no estilo Instagram para postagem de memes em imagens e videos curtos
 

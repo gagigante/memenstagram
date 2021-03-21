@@ -1,6 +1,7 @@
+import User from '@modules/users/infra/typeorm/entities/User';
 import Follower from '@modules/users/infra/typeorm/entities/Follower';
 import IFollowUserDTO from '@modules/users/dtos/IFollowUserDTO';
-import User from '@modules/users/infra/typeorm/entities/User';
+
 
 export default interface IFollowersRepository {
   follow(data: IFollowUserDTO): Promise<void>;

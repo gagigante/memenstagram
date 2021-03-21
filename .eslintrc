@@ -38,14 +38,13 @@
   },
   "rules": {
     // TODO: react rules
+    "@typescript-eslint/no-unused-vars": "off",
+    "no-use-before-define": "off",
     "prettier/prettier": "error",
     "class-methods-use-this": "off",
     "no-useless-constructor": "off",
     "@typescript-eslint/no-useless-constructor": "error",
     "@typescript-eslint/explicit-module-boundary-types": "off",
-    "@typescript-eslint/no-unused-vars": ["error", {
-      "argsIgnorePattern": "_"
-    }],
     "camelcase": "off",
     "import/prefer-default-export": "off",
     "import/extensions": [
@@ -68,7 +67,9 @@
         "newlinesBetween": "always",
         "groups": [
           "module",
-          ["/^@config/", "/^@shared/", "/^@modules/"],
+          "/^@modules/",
+          "/^@shared/",
+          "/^@config/",
           ["parent", "sibling", "index"]
         ],
         "alphabetize": { "order": "ignore", "ignoreCase": true }

@@ -1,7 +1,7 @@
-import AppError from '@shared/errors/AppError';
+import FakeUsersRepository from '@modules/users/repositories/fakes/FakeUsersRepository';
+import ActivateAccountService from '@modules/users/services/ActivateAccountService';
 
-import FakeUsersRepository from '../repositories/fakes/FakeUsersRepository';
-import ActivateAccountService from './ActivateAccountService';
+import AppError from '@shared/errors/AppError';
 
 let fakeUsersRepository: FakeUsersRepository;
 let activateAccountService: ActivateAccountService;

@@ -1,7 +1,9 @@
-import AppError from '@shared/errors/AppError';
+import { classToClass } from 'class-transformer';
 
-import FakeUsersRepository from '../repositories/fakes/FakeUsersRepository';
-import ShowUserProfileService from './ShowUserProfileService';
+import FakeUsersRepository from '@modules/users/repositories/fakes/FakeUsersRepository';
+import ShowUserProfileService from '@modules/users/services/ShowUserProfileService';
+
+import AppError from '@shared/errors/AppError';
 
 let fakeUsersRepository: FakeUsersRepository;
 let showUserProfileService: ShowUserProfileService;
@@ -36,15 +38,15 @@ describe('ShowUserProfile', () => {
 
     user2.confirmation_status = true;
     Object.assign(user2, { avatar_url: null });
-    delete user2.password;
-    delete user2.confirmation_code;
+
+    const serializedUser2 = classToClass(user2);
 
     const response = await showUserProfileService.execute({
       loggedUserId: user.id,
       nickname: user2.nickname,
     });
 
-    expect(response).toEqual(user2);
+    expect(response).toEqual(serializedUser2);
   });
 
   it('Should not be able to show any user profile with a non existing user', async () => {

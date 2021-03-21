@@ -1,7 +1,8 @@
+import ShowUserFollowsAndFollowersService from '@modules/users/services/ShowUserFollowsAndFollowersService';
+import FakeUsersRepository from '@modules/users/repositories/fakes/FakeUsersRepository';
+import FakeFollowersRepository from '@modules/users/repositories/fakes/FakeFollowersRepository';
+
 import AppError from '@shared/errors/AppError';
-import FakeFollowersRepository from '../repositories/fakes/FakeFollowersRepository';
-import FakeUsersRepository from '../repositories/fakes/FakeUsersRepository';
-import ShowUserFollowsAndFollowersService from './ShowUserFollowsAndFollowersService';
 
 let fakeUsersRepository: FakeUsersRepository;
 let fakeFollowersRepository: FakeFollowersRepository;

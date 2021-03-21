@@ -6,7 +6,6 @@ import sessionRouter from '@modules/users/infra/http/routes/sessions.routes';
 import accountRouter from '@modules/users/infra/http/routes/account.routes';
 import passwordRouter from '@modules/users/infra/http/routes/password.routes';
 import followRouter from '@modules/users/infra/http/routes/follow.routes';
-
 import postRouter from '@modules/posts/infra/http/routes/post.routes';
 
 const routes = Router();

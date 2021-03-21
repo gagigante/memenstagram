@@ -5,6 +5,7 @@ const { name } = require('./package.json')
 module.exports = {
   displayName: name,
   name,
+
   // All imported modules in your tests should be mocked automatically
   // automock: false,
 
@@ -26,7 +27,7 @@ module.exports = {
   ],
 
   // The directory where Jest should output its coverage files
-  coverageDirectory: 'coverage',
+  coverageDirectory: '<rootDir>/__tests__/coverage',
 
   // An array of regexp pattern strings used to skip coverage collection
   // coveragePathIgnorePatterns: [
@@ -126,7 +127,7 @@ module.exports = {
   // setupFiles: [],
 
   // A list of paths to modules that run some code to configure or set up the testing framework before each test
-  // setupFilesAfterEnv: [],
+  setupFilesAfterEnv: ['<rootDir>/__tests__/utils/setup.ts'],
 
   // A list of paths to snapshot serializer modules Jest should use for snapshot testing
   // snapshotSerializers: [],

@@ -11,8 +11,6 @@ export default class CreatePostLikes1603559592380
             name: 'id',
             type: 'uuid',
             isPrimary: true,
-            generationStrategy: 'uuid',
-            default: 'uuid_generate_v4()',
           },
           {
             name: 'post_id',

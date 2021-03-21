@@ -1,20 +1,20 @@
-import { uuid } from 'uuidv4';
+import { v4 } from 'uuid';
 
-import User from '../../infra/typeorm/entities/User';
-import IUsersRepository from '../IUsersRepository';
-import ICreateUserDTO from '../../dtos/ICreateUserDTO';
+import User from '@modules/users/infra/typeorm/entities/User';
+import IUsersRepository from '@modules/users/repositories/IUsersRepository';
+import ICreateUserDTO from '@modules/users/dtos/ICreateUserDTO';
 
 class FakeUsersRepository implements IUsersRepository {
   public users: User[] = [];
 
   public async findById(id: string): Promise<User | undefined> {
-    const user = this.users.find(item => item.id === id);
+    const user = this.users.find((item) => item.id === id);
 
     return user;
   }
 
   public async findByEmail(email: string): Promise<User | undefined> {
-    const user = this.users.find(item => item.email === email);
+    const user = this.users.find((item) => item.email === email);
 
     return user;
   }
@@ -22,13 +22,13 @@ class FakeUsersRepository implements IUsersRepository {
   public async findByPhoneNumber(
     phoneNumber: string,
   ): Promise<User | undefined> {
-    const user = this.users.find(item => item.phone_number === phoneNumber);
+    const user = this.users.find((item) => item.phone_number === phoneNumber);
 
     return user;
   }
 
   public async findByNickname(nickname: string): Promise<User | undefined> {
-    const user = this.users.find(item => item.nickname === nickname);
+    const user = this.users.find((item) => item.nickname === nickname);
 
     return user;
   }
@@ -36,7 +36,7 @@ class FakeUsersRepository implements IUsersRepository {
   public create(data: ICreateUserDTO): User {
     const user = new User();
 
-    Object.assign(user, { id: uuid(), ...data });
+    Object.assign(user, { id: v4(), ...data });
 
     this.users.push(user);
 
@@ -44,7 +44,7 @@ class FakeUsersRepository implements IUsersRepository {
   }
 
   public async save(user: User): Promise<User> {
-    const findIndex = this.users.findIndex(item => item.id === user.id);
+    const findIndex = this.users.findIndex((item) => item.id === user.id);
 
     this.users[findIndex] = user;
 

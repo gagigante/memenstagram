@@ -1,11 +1,11 @@
 import { injectable, inject } from 'tsyringe';
 import crypto from 'crypto';
 
-import AppError from '@shared/errors/AppError';
+import IUsersRepository from '@modules/users/repositories/IUsersRepository';
+import IHashProvider from '@modules/users/providers/HashProvider/models/IHashProvider';
 
-import ISMSProvider from '@shared/containers/providers/SMSProvider/models/ISMSProvider';
-import IUsersRepository from '../repositories/IUsersRepository';
-import IHashProvider from '../providers/HashProvider/models/IHashProvider';
+import AppError from '@shared/errors/AppError';
+import ISmsProvider from '@shared/containers/providers/SMSProvider/models/ISmsProvider';
 
 interface IRequestDTO {
   phoneNumber: string;
@@ -21,7 +21,7 @@ class ResetPasswordService {
     private hashProvider: IHashProvider,
 
     @inject('SMSProvider')
-    private smsProvider: ISMSProvider,
+    private smsProvider: ISmsProvider,
   ) {}
 
   public async execute({ phoneNumber }: IRequestDTO): Promise<void> {
@@ -31,16 +31,16 @@ class ResetPasswordService {
       throw new AppError('User was not found');
     }
 
-    const resetedPassword = crypto.randomBytes(3).toString('hex');
+    const tempPassword = crypto.randomBytes(3).toString('hex');
 
-    user.is_reseted = true;
-    user.password = await this.hashProvider.generateHash(resetedPassword);
+    user.should_update_password = true;
+    user.password = await this.hashProvider.generateHash(tempPassword);
 
     await this.usersRepository.save(user);
 
     return this.smsProvider.sendSMS({
       phoneNumber,
-      message: `Your temporary password is ${resetedPassword}`,
+      message: `Your temporary password is ${tempPassword}`,
     });
   }
 }

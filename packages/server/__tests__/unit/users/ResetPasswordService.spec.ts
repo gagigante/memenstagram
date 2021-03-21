@@ -1,20 +1,20 @@
-import AppError from '@shared/errors/AppError';
-import FakeSMSProvider from '@shared/containers/providers/SMSProvider/fakes/FakeSMSProvider';
+import ResetPasswordService from '@modules/users/services/ResetPasswordService';
+import FakeUsersRepository from '@modules/users/repositories/fakes/FakeUsersRepository';
+import FakeHashProvider from '@modules/users/providers/HashProvider/fakes/FakeHashProvider';
 
-import FakeUsersRepository from '../repositories/fakes/FakeUsersRepository';
-import FakeHashProvider from '../providers/HashProvider/fakes/FakeHashProvider';
-import ResetPasswordService from './ResetPasswordService';
+import AppError from '@shared/errors/AppError';
+import FakeSmsProvider from '@shared/containers/providers/SMSProvider/fakes/FakeSmsProvider';
 
 let fakeUsersRepository: FakeUsersRepository;
 let fakeHashProvider: FakeHashProvider;
-let fakeSMSProvider: FakeSMSProvider;
+let fakeSMSProvider: FakeSmsProvider;
 let resetPasswordService: ResetPasswordService;
 
 describe('ResetPassword', () => {
   beforeEach(() => {
     fakeUsersRepository = new FakeUsersRepository();
     fakeHashProvider = new FakeHashProvider();
-    fakeSMSProvider = new FakeSMSProvider();
+    fakeSMSProvider = new FakeSmsProvider();
 
     resetPasswordService = new ResetPasswordService(
       fakeUsersRepository,

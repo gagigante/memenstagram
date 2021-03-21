@@ -1,9 +1,11 @@
 import { injectable, inject } from 'tsyringe';
 import { classToClass } from 'class-transformer';
+
+import User from '@modules/users/infra/typeorm/entities/User';
+import IUsersRepository from '@modules/users/repositories/IUsersRepository';
+import IFollowersRepository from '@modules/users/repositories/IFollowersRepository';
+
 import AppError from '@shared/errors/AppError';
-import IUsersRepository from '../repositories/IUsersRepository';
-import IFollowersRepository from '../repositories/IFollowersRepository';
-import User from '../infra/typeorm/entities/User';
 
 interface IRequestDTO {
   loggedUserId: string;

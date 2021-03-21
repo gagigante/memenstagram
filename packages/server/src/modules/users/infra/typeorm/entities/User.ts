@@ -6,6 +6,7 @@ import {
   CreateDateColumn,
   UpdateDateColumn,
 } from 'typeorm';
+import { v4 } from 'uuid';
 
 import uploadConfig from '@config/upload';
 
@@ -33,6 +34,9 @@ class User {
   avatar_url: string;
 
   @Column()
+  avatar_preview_hash: string;
+
+  @Column()
   @Exclude()
   confirmation_code: string;
 
@@ -44,13 +48,17 @@ class User {
   password: string;
 
   @Column()
-  is_reseted: boolean;
+  should_update_password: boolean;
 
   @CreateDateColumn()
   created_at: Date;
 
   @UpdateDateColumn()
   updated_at: Date;
+
+  constructor() {
+    this.id = v4();
+  }
 
   @Expose({ name: 'avatar_url' })
   getAvatarUrl(): string | null {

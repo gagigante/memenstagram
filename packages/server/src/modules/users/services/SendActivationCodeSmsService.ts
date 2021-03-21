@@ -1,10 +1,10 @@
 import { injectable, inject } from 'tsyringe';
 import crypto from 'crypto';
 
-import AppError from '@shared/errors/AppError';
+import IUsersRepository from '@modules/users/repositories/IUsersRepository';
 
-import ISMSProvider from '@shared/containers/providers/SMSProvider/models/ISMSProvider';
-import IUsersRepository from '../repositories/IUsersRepository';
+import AppError from '@shared/errors/AppError';
+import ISMSProvider from '@shared/containers/providers/SMSProvider/models/ISmsProvider';
 
 interface IRequestDTO {
   userId: string;

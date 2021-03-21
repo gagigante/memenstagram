@@ -1,8 +1,8 @@
-import AppError from '@shared/errors/AppError';
+import FakeUsersRepository from '@modules/users/repositories/fakes/FakeUsersRepository';
+import UpdateUserAvatarService from '@modules/users/services/UpdateUserAvatarService';
 
+import AppError from '@shared/errors/AppError';
 import FakeStorageProvider from '@shared/containers/providers/StorageProvider/fakes/FakeStorageProvider';
-import FakeUsersRepository from '../repositories/fakes/FakeUsersRepository';
-import UpdateUserAvatarService from './UpdateUserAvatarService';
 
 let fakeUsersRepository: FakeUsersRepository;
 let fakeStorageProvider: FakeStorageProvider;
@@ -34,6 +34,7 @@ describe('UpdateUserAvatar', () => {
     await updateUserAvatar.execute({
       userId: user.id,
       avatarFilename: 'avatar.jpg',
+      avatarPreviewHash: 'avatar_hash',
     });
 
     expect(user.avatar_url).toBe('avatar.jpg');
@@ -56,11 +57,13 @@ describe('UpdateUserAvatar', () => {
     await updateUserAvatar.execute({
       userId: user.id,
       avatarFilename: 'avatar.jpg',
+      avatarPreviewHash: 'avatar_hash',
     });
 
     await updateUserAvatar.execute({
       userId: user.id,
       avatarFilename: 'avatar2.jpg',
+      avatarPreviewHash: 'avatar_hash',
     });
 
     expect(deleteFile).toHaveBeenCalledWith('avatar.jpg');
@@ -72,6 +75,7 @@ describe('UpdateUserAvatar', () => {
       updateUserAvatar.execute({
         userId: 'non-existing-user',
         avatarFilename: 'avatar.jpg',
+        avatarPreviewHash: 'avatar_hash',
       }),
     ).rejects.toBeInstanceOf(AppError);
   });
@@ -90,6 +94,7 @@ describe('UpdateUserAvatar', () => {
       updateUserAvatar.execute({
         userId,
         avatarFilename: 'avatar.jpg',
+        avatarPreviewHash: 'avatar_hash',
       }),
     ).rejects.toBeInstanceOf(AppError);
   });

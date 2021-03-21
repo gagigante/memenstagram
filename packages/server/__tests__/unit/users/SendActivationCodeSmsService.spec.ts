@@ -1,17 +1,17 @@
-import AppError from '@shared/errors/AppError';
+import FakeUsersRepository from '@modules/users/repositories/fakes/FakeUsersRepository';
+import SendActivationCodeSmsService from '@modules/users/services/SendActivationCodeSmsService';
 
-import FakeSMSProvider from '@shared/containers/providers/SMSProvider/fakes/FakeSMSProvider';
-import FakeUsersRepository from '../repositories/fakes/FakeUsersRepository';
-import SendActivationCodeSmsService from './SendActivationCodeSmsService';
+import AppError from '@shared/errors/AppError';
+import FakeSmsProvider from '@shared/containers/providers/SMSProvider/fakes/FakeSmsProvider';
 
 let fakeUsersRepository: FakeUsersRepository;
-let fakeSMSProvider: FakeSMSProvider;
+let fakeSMSProvider: FakeSmsProvider;
 let sendActivationCodeSmsService: SendActivationCodeSmsService;
 
 describe('SendActivationCodeSms', () => {
   beforeEach(() => {
     fakeUsersRepository = new FakeUsersRepository();
-    fakeSMSProvider = new FakeSMSProvider();
+    fakeSMSProvider = new FakeSmsProvider();
 
     sendActivationCodeSmsService = new SendActivationCodeSmsService(
       fakeUsersRepository,

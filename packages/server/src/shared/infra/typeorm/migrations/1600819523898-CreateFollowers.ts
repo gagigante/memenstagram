@@ -11,8 +11,6 @@ export default class CreateFollowers1600819523898
             name: 'id',
             type: 'uuid',
             isPrimary: true,
-            generationStrategy: 'uuid',
-            default: 'uuid_generate_v4()',
           },
           {
             name: 'user_id',

@@ -1,9 +1,10 @@
-import AppError from '@shared/errors/AppError';
 import { classToClass } from 'class-transformer';
 
-import FakeHashProvider from '../providers/HashProvider/fakes/FakeHashProvider';
-import FakeUsersRepository from '../repositories/fakes/FakeUsersRepository';
-import RedefineUserPasswordService from './RedefineUserPasswordService';
+import RedefineUserPasswordService from '@modules/users/services/RedefineUserPasswordService';
+import FakeUsersRepository from '@modules/users/repositories/fakes/FakeUsersRepository';
+import FakeHashProvider from '@modules/users/providers/HashProvider/fakes/FakeHashProvider';
+
+import AppError from '@shared/errors/AppError';
 
 let fakeUsersRepository: FakeUsersRepository;
 let fakeHashProvider: FakeHashProvider;
@@ -30,7 +31,7 @@ describe('RedefineUserPassword', () => {
       confirmation_code: '123456',
     });
 
-    user.is_reseted = true;
+    user.should_update_password = true;
     user.confirmation_status = true;
 
     const response = await redefineUserPasswordService.execute({
@@ -71,7 +72,7 @@ describe('RedefineUserPassword', () => {
     ).rejects.toBeInstanceOf(AppError);
   });
 
-  it('Should not be able to redefine password of non reseted account', async () => {
+  it('Should not be able to redefine password of non redefined account', async () => {
     const user = fakeUsersRepository.create({
       name: 'John Doe',
       nickname: 'johndoe',
@@ -102,7 +103,7 @@ describe('RedefineUserPassword', () => {
       confirmation_code: '123456',
     });
 
-    user.is_reseted = true;
+    user.should_update_password = true;
     user.confirmation_status = true;
 
     await expect(

@@ -1,8 +1,9 @@
 import { inject, injectable } from 'tsyringe';
 
+import IUsersRepository from '@modules/users/repositories/IUsersRepository';
+import IFollowersRepository from '@modules/users/repositories/IFollowersRepository';
+
 import AppError from '@shared/errors/AppError';
-import IUsersRepository from '../repositories/IUsersRepository';
-import IFollowersRepository from '../repositories/IFollowersRepository';
 
 interface IRequestDTO {
   loggedUserId: string;

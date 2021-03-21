@@ -1,9 +1,9 @@
 import { injectable, inject } from 'tsyringe';
 
-import AppError from '@shared/errors/AppError';
-import IUsersRepository from '../repositories/IUsersRepository';
+import IUsersRepository from '@modules/users/repositories/IUsersRepository';
+import User from '@modules/users/infra/typeorm/entities/User';
 
-import User from '../infra/typeorm/entities/User';
+import AppError from '@shared/errors/AppError';
 
 interface IRequestDTO {
   userId: string;

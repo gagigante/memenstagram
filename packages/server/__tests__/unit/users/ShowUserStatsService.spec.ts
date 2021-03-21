@@ -1,9 +1,9 @@
-import AppError from '@shared/errors/AppError';
-
+import ShowUserStatsService from '@modules/users/services/ShowUserStatsService';
+import FakeUsersRepository from '@modules/users/repositories/fakes/FakeUsersRepository';
 import FakePostsRepository from '@modules/posts/repositories/fakes/FakePostsRepository';
-import FakeUsersRepository from '../repositories/fakes/FakeUsersRepository';
-import FakeFollowersRepository from '../repositories/fakes/FakeFollowersRepository';
-import ShowUserStatsService from './ShowUserStatsService';
+import FakeFollowersRepository from '@modules/users/repositories/fakes/FakeFollowersRepository';
+
+import AppError from '@shared/errors/AppError';
 
 let fakeUsersRepository: FakeUsersRepository;
 let fakePostsRepository: FakePostsRepository;

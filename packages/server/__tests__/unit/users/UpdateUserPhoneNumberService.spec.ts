@@ -1,7 +1,7 @@
-import AppError from '@shared/errors/AppError';
+import UpdateUserPhoneNumberService from '@modules/users/services/UpdateUserPhoneNumberService';
+import FakeUsersRepository from '@modules/users/repositories/fakes/FakeUsersRepository';
 
-import FakeUsersRepository from '../repositories/fakes/FakeUsersRepository';
-import UpdateUserPhoneNumberService from './UpdateUserPhoneNumberService';
+import AppError from '@shared/errors/AppError';
 
 let fakeUsersRepository: FakeUsersRepository;
 let updateUserPhoneNumberService: UpdateUserPhoneNumberService;

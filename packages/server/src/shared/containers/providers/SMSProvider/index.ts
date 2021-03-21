@@ -1,11 +1,10 @@
 import { container } from 'tsyringe';
 
-import ISMSProvider from './models/ISMSProvider';
+import ISmsProvider from './models/ISmsProvider';
+import ConsoleSmsProvider from './implementations/ConsoleSmsProvider';
+import TwilioSmsProvider from './implementations/TwilioSmsProvider';
 
-import ConsoleSMSProvider from './implementations/ConsoleSMSProvider';
-import TwilioSMSProvider from './implementations/TwilioSMSProvider';
-
-container.registerSingleton<ISMSProvider>(
+container.registerSingleton<ISmsProvider>(
   'SMSProvider',
-  process.env.SMS_DRIVER === 'console' ? ConsoleSMSProvider : TwilioSMSProvider,
+  process.env.SMS_DRIVER === 'console' ? ConsoleSmsProvider : TwilioSmsProvider,
 );

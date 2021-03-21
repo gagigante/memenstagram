@@ -1,10 +1,10 @@
 import { injectable, inject } from 'tsyringe';
 
-import AppError from '@shared/errors/AppError';
+import IUsersRepository from '@modules/users/repositories/IUsersRepository';
+import IFollowersRepository from '@modules/users/repositories/IFollowersRepository';
 import IPostsRepository from '@modules/posts/repositories/IPostsRepository';
 
-import IUsersRepository from '../repositories/IUsersRepository';
-import IFollowersRepository from '../repositories/IFollowersRepository';
+import AppError from '@shared/errors/AppError';
 
 interface IRequestDTO {
   nickname: string;

@@ -1,4 +1,4 @@
-export default interface ISendSMSDTO {
+export default interface ISendSmsDTO {
   phoneNumber: string;
   message: string;
 }
