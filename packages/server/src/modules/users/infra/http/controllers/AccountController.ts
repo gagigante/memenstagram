@@ -1,6 +1,5 @@
 import { Request, Response } from 'express';
 import { container } from 'tsyringe';
-import { classToClass } from 'class-transformer';
 
 import CreateAccountService from '@modules/users/services/CreateAccountService';
 import SendActivationCodeSmsService from '@modules/users/services/SendActivationCodeSmsService';
@@ -39,6 +38,6 @@ export default class AccountController {
       confirmation_code,
     });
 
-    return response.json(classToClass(updatedUser));
+    return response.json(updatedUser);
   }
 }
