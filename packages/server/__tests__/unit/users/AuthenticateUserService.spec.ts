@@ -1,6 +1,7 @@
 import AuthenticateUserService from '@modules/users/services/AuthenticateUserService';
 import FakeUsersRepository from '@modules/users/repositories/fakes/FakeUsersRepository';
 import FakeHashProvider from '@modules/users/providers/HashProvider/fakes/FakeHashProvider';
+import User from '@modules/users/infra/typeorm/entities/User';
 
 import AppError from '@shared/errors/AppError';
 
@@ -35,7 +36,14 @@ describe('AuthenticateUser', () => {
     });
 
     expect(response).toHaveProperty('token');
-    expect(response.user).toEqual(user);
+    expect(response.user).toEqual({
+      id: user.id,
+      name: user.name,
+      nickname: user.nickname,
+      email: user.email,
+      phone_number: user.phone_number,
+      avatar_url: null,
+    });
   });
 
   it('Should not be able to authenticate a non existing user', async () => {
