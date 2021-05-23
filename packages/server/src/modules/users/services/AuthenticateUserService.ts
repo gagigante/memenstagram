@@ -1,5 +1,6 @@
 import { sign } from 'jsonwebtoken';
 import { injectable, inject } from 'tsyringe';
+import { classToClass } from 'class-transformer';
 
 import User from '@modules/users/infra/typeorm/entities/User';
 import IUsersRepository from '@modules/users/repositories/IUsersRepository';
@@ -33,7 +34,11 @@ class AuthenticateUserService {
     const user = await this.usersRepository.findByEmail(email);
 
     if (!user) {
-      throw new AppError('Incorrect email/password combination', 401);
+      throw new AppError(
+        'Incorrect email/password combination',
+        401,
+        'invalid_credentials',
+      );
     }
 
     const passwordMatched = await this.hashProvider.compareHash(
@@ -42,7 +47,11 @@ class AuthenticateUserService {
     );
 
     if (!passwordMatched) {
-      throw new AppError('Incorrect email/password combination', 401);
+      throw new AppError(
+        'Incorrect email/password combination',
+        401,
+        'invalid_credentials',
+      );
     }
 
     const { secret, expiresIn } = authConfig.jwt;
@@ -53,7 +62,7 @@ class AuthenticateUserService {
     });
 
     return {
-      user,
+      user: classToClass(user),
       token,
     };
   }
