@@ -2,10 +2,32 @@ import { Request, Response } from 'express';
 import { container } from 'tsyringe';
 import { classToClass } from 'class-transformer';
 
+import CreateAccountService from '@modules/users/services/CreateAccountService';
+import SendActivationCodeSmsService from '@modules/users/services/SendActivationCodeSmsService';
 import ActivateAccountService from '@modules/users/services/ActivateAccountService';
-// import DeleteAccountService from '@modules/users/services/DeleteAccountService';
 
 export default class AccountController {
+  public async create(request: Request, response: Response): Promise<Response> {
+    const { name, nickname, email, phone_number, password } = request.body;
+
+    const createUser = container.resolve(CreateAccountService);
+    const sendActivationCodeSmsService = container.resolve(
+      SendActivationCodeSmsService,
+    );
+
+    const user = await createUser.execute({
+      name,
+      nickname,
+      email,
+      phoneNumber: phone_number,
+      password,
+    });
+
+    await sendActivationCodeSmsService.execute({ userId: user.id });
+
+    return response.json(user);
+  }
+
   public async update(request: Request, response: Response): Promise<Response> {
     const { user_id } = request.params;
     const { confirmation_code } = request.body;
@@ -19,17 +41,4 @@ export default class AccountController {
 
     return response.json(classToClass(updatedUser));
   }
-
-  /*   public async destroy(
-    request: Request,
-    response: Response,
-  ): Promise<Response> {
-    const loggedUserId = request.user.id;
-
-    const deleteAccount = container.resolve(DeleteAccountService);
-
-    await deleteAccount.execute({ loggedUserId });
-
-    return response.status(204).json();
-  } */
 }

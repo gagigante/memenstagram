@@ -1,4 +1,4 @@
-import CreateUserService from '@modules/users/services/CreateUserService';
+import CreateAccountService from '@modules/users/services/CreateAccountService';
 import FakeUsersRepository from '@modules/users/repositories/fakes/FakeUsersRepository';
 import FakeHashProvider from '@modules/users/providers/HashProvider/fakes/FakeHashProvider';
 
@@ -6,14 +6,14 @@ import AppError from '@shared/errors/AppError';
 
 let fakeUsersRepository: FakeUsersRepository;
 let fakeHashProvider: FakeHashProvider;
-let createUserService: CreateUserService;
+let createUserService: CreateAccountService;
 
 describe('CreateUser', () => {
   beforeEach(() => {
     fakeUsersRepository = new FakeUsersRepository();
     fakeHashProvider = new FakeHashProvider();
 
-    createUserService = new CreateUserService(
+    createUserService = new CreateAccountService(
       fakeUsersRepository,
       fakeHashProvider,
     );

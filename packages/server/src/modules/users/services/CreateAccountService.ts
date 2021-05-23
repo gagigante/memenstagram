@@ -17,7 +17,7 @@ interface IRequestDTO {
 }
 
 @injectable()
-class CreateUserService {
+class CreateAccountService {
   constructor(
     @inject('UsersRepository')
     private usersRepository: IUsersRepository,
@@ -68,4 +68,4 @@ class CreateUserService {
   }
 }
 
-export default CreateUserService;
+export default CreateAccountService;

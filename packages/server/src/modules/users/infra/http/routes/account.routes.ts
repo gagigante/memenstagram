@@ -3,15 +3,28 @@ import { celebrate, Segments, Joi } from 'celebrate';
 
 import AccountController from '../controllers/AccountController';
 import SMSAccountCodeController from '../controllers/SMSAccountCodeController';
-// import ensureAuthenticated from '../middlewares/ensureAuthenticated';
 
 const accountRouter = Router();
 
 const accountController = new AccountController();
 const smsAccountCodeController = new SMSAccountCodeController();
 
+accountRouter.post(
+  '/',
+  celebrate({
+    [Segments.BODY]: {
+      name: Joi.string().required(),
+      nickname: Joi.string().required(),
+      email: Joi.string().email().required(),
+      phone_number: Joi.string().required(),
+      password: Joi.string().min(6).required(),
+    },
+  }),
+  accountController.create,
+);
+
 accountRouter.get(
-  '/code/:user_id',
+  '/activate/code/:user_id',
   celebrate({
     [Segments.PARAMS]: {
       user_id: Joi.string().uuid().required(),
@@ -21,7 +34,7 @@ accountRouter.get(
 );
 
 accountRouter.patch(
-  '/:user_id',
+  '/activate/:user_id',
   celebrate({
     [Segments.PARAMS]: {
       user_id: Joi.string().uuid().required(),
@@ -32,7 +45,5 @@ accountRouter.patch(
   }),
   accountController.update,
 );
-
-// accountRouter.delete('/', ensureAuthenticated, accountController.destroy);
 
 export default accountRouter;
