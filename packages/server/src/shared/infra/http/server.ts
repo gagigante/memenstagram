@@ -6,8 +6,9 @@ import 'express-async-errors';
 import cors from 'cors';
 import { errors } from 'celebrate';
 
-import uploadConfig from '@config/upload';
 import AppError from '@shared/errors/AppError';
+
+import uploadConfig from '@config/upload';
 
 import routes from './routes';
 
@@ -27,7 +28,7 @@ app.use(errors());
 app.use((err: Error, req: Request, res: Response, _: NextFunction) => {
   if (err instanceof AppError) {
     return res.status(err.statusCode).json({
-      status: 'error',
+      status: err.status,
       message: err.message,
     });
   }
