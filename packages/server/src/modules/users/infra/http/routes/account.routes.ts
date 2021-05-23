@@ -30,7 +30,7 @@ accountRouter.get(
       user_id: Joi.string().uuid().required(),
     },
   }),
-  smsAccountCodeController.send,
+  smsAccountCodeController.show,
 );
 
 accountRouter.patch(

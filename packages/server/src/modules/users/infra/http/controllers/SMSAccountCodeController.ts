@@ -4,7 +4,7 @@ import { container } from 'tsyringe';
 import SendActivationCodeSmsService from '@modules/users/services/SendActivationCodeSmsService';
 
 export default class SMSAccountCodeController {
-  public async send(request: Request, response: Response): Promise<Response> {
+  public async show(request: Request, response: Response): Promise<Response> {
     const { user_id } = request.params;
 
     const sendActivationCodeSmsService = container.resolve(
